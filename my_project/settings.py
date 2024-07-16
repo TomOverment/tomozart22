@@ -18,7 +18,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR,'templates')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['8000-tomoverment-tomozart22-7vyyd9dhvch.ws.codeinstitute-ide.net',
                  '.herokuapp.com',
@@ -28,6 +28,19 @@ ALLOWED_HOSTS = ['8000-tomoverment-tomozart22-7vyyd9dhvch.ws.codeinstitute-ide.n
 ALLOWED_HOST = os.environ.get("ALLOWED_HOST")
 if ALLOWED_HOST:
     ALLOWED_HOSTS.append(ALLOWED_HOST)
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.gitpod.io",
+    "https://*.herokuapp.com",
+    "https://*.codeinstitute-ide.net",
+]
+CSRF_TRUSTED_ORIGIN = os.environ.get("CSRF_TRUSTED_ORIGIN")
+if CSRF_TRUSTED_ORIGIN:
+    CSRF_TRUSTED_ORIGINS.append(CSRF_TRUSTED_ORIGIN)
+
+# Print debug info
+print(os.environ.get("DATABASE_URL"))
+print(CSRF_TRUSTED_ORIGINS)
 
 
 # Application definition
@@ -48,6 +61,12 @@ INSTALLED_APPS = [
     'cloudinary',
     'blog_app',
 ]
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,20 +101,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'my_project.wsgi.application'
 
-
 # Database
- #https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-#DATABASES = {
- #   'default': {
-  #      'ENGINE': 'django.db.backends.sqlite3',
-   #     'NAME': BASE_DIR / 'db.sqlite3',
-    #}
-#}
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL', 'sqlite:///' + str(BASE_DIR / 'db.sqlite3')))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
+# DATABASES = {
+#    'default': dj_database_url.parse(os.environ.get('DATABASE_URL', 'sqlite:///' + str(BASE_DIR / 'db.sqlite3')))
+# }
 
 
 # Password validation
