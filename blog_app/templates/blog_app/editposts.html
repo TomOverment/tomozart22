@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %} {{ post.title }} {% endblock %}
+{% block content %}
+
+<h1>{{ post.title }}</h1>
+<h2>{{ post.author.first_name }}
+    {{ post.author.last_name }}
+</h2>
+<br/>
+{{ post.body}}
+<br/></br>
+<h1>Edit Posts!</h1>
+<!---<br/><br/>--->
+<div class="form-group"></div>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class= "btn btn-success">Post</button>
+    <a href="{% url 'delete_post' post.id %}">Delete</a>
+</div>
+
+<a href="{% url 'blog' %}" class="btn btn-success">Back</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
