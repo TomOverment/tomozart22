@@ -1,8 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from .views import delete_post
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 
 urlpatterns = [
@@ -16,6 +17,8 @@ urlpatterns = [
     path('postdetail/<int:pk>/', views.PostDetail.as_view(), name='post_detail'),
     path('blog/', views.PostList.as_view(), name='blog'),
     path('post/<int:post_id>/delete/', delete_post, name='delete_post'),
+
+    
     
 ]
 
