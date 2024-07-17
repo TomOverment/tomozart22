@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} {{ post.title }} {% endblock %}
+{% block content %}
+
+<h1>{{ post.title }}</h1>
+<h2>Created on {{ post.created_on }}</h2>
+{% if post.image %}
+<img src="{{ post.image.url }}" class="img-fluid" alt="{{ post.title }}">
+{% endif %}
+
+<br/><br/>
+<p>{{ post.content|safe }}</p>
+
+</div>
+<div class="container">
+    <a href="{% url 'home' %}" class="btn btn-success">Back</a>
+</div>
+{% endblock %}

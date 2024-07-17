@@ -9,7 +9,7 @@
 
 <head>
     <title>{% block title %} {% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Google Fonts CSS -->
@@ -30,12 +30,15 @@
             height: 100%;
             margin: 0;
         }
-
-        .main-bg {
-            background: linear-gradient(to bottom, #9FA6B2, #e9ecef);
-            min-height: 100%;
+/*might not need body css*/
+        body {
             display: flex;
             flex-direction: column;
+            background-size: cover;
+        }
+
+        main {
+            background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat;
         }
 
         .flex-fill {
@@ -47,19 +50,16 @@
             color: white;
             text-align: center;
             padding: 10px;
-            position: relative;
-            bottom: 0;
-            width: 100%;
         }
     </style>
 </head>
 
-<body class="d-flex flex-column h-100 main-bg">
+<body class="d-flex flex-column h-100">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-md navbar-dark bg-black">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{% static 'images/logo.png' %}" alt="logo" height="25">TOMOZART
+                <img src="{% static 'images/logo.png' %}" alt="logo" height="25">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -67,7 +67,7 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == home_url %}active{% endif %}" aria-current="page" href="{% url 'home' %}">home</a>
+                        <a class="nav-link {% if request.path == home_url %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == 'gallery' %}active{% endif %}" aria-current="page" href="{% url 'gallery' %}">Gallery</a>
@@ -78,16 +78,16 @@
                         <a class="nav-link {% if request.path == 'add_post' %}active{% endif %}" aria-current="page" href="{% url 'add_post' %}">Add Post</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == 'add_post' %}active{% endif %}" aria-current="page" href="{% url 'account_logout' %}">Logout</a>
+                        <a class="nav-link {% if request.path == 'account_logout' %}active{% endif %}" aria-current="page" href="{% url 'account_logout' %}">Logout</a>
                     </li>
 
                     {% else %}
 
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == 'gallery' %}active{% endif %}" aria-current="page" href="{% url 'account_login' %}">Login</a>
+                        <a class="nav-link {% if request.path == 'account_login' %}active{% endif %}" aria-current="page" href="{% url 'account_login' %}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == 'gallery' %}active{% endif %}" aria-current="page" href="{% url 'account_signup' %}">Register</a>
+                        <a class="nav-link {% if request.path == 'account_signup' %}active{% endif %}" aria-current="page" href="{% url 'account_signup' %}">Register</a>
                     </li>
 
                     {% endif %}
@@ -96,7 +96,7 @@
         </div>
     </nav>
 
-    <main class="flex-shrink-0 main-bg">
+    <main class="flex-fill">
         <div class="container">
             <br>
             {% block content %}
@@ -105,16 +105,7 @@
     </main>
 
     <!-- Footer -->
-    <style>
-        .footer {
-          position: fixed;
-          left: 0;
-          bottom: 0;
-          width: 100%;
-        }
-        </style>
-<div class="footer">
-    <footer class="bg-black text-white text-center py-3">
+    <footer class="footer mt-auto">
         <div class="container">
             <p class="mb-1">Made by Thomas A Overment</p>
             <div>
@@ -127,7 +118,7 @@
             </div>
         </div>
     </footer>
-</div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
