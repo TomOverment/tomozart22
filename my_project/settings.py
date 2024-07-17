@@ -52,11 +52,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'cloudinary_storage',
     'allauth.socialaccount.providers.google',
     'cloudinary',
     'blog_app',
@@ -65,6 +65,8 @@ INSTALLED_APPS = [
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
@@ -81,12 +83,14 @@ MIDDLEWARE = [
     
 ]
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 ROOT_URLCONF = 'my_project.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -99,21 +103,22 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'my_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
-#    'default': dj_database_url.parse(os.environ.get('DATABASE_URL', 'sqlite:///' + str(BASE_DIR / 'db.sqlite3')))
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
 # }
+
+DATABASES = {
+   'default': dj_database_url.parse(os.environ.get('DATABASE_URL', 'sqlite:///' + str(BASE_DIR / 'db.sqlite3')))
+}
 
 
 # Password validation
@@ -179,6 +184,7 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+#CRISPY_TEMPLATE_PACK="bootstrap4"
 
 # Email backend for console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
