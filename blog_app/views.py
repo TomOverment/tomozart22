@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseForbidden
 from .models import Artwork
+from django.utils.text import slugify
+
 
 
 class PostList(generic.ListView):
@@ -16,13 +18,16 @@ class PostList(generic.ListView):
     paginate_by = 6
 
 def profile(request):
-    return render(request, 'blog_app/profile.html')
+    if request.user.is_authenticated:
+        drafts = Post.objects.filter(author=request.user, status=0).order_by('-created_on')
+        published = Post.objects.filter(author=request.user, status=1).order_by('-created_on')
+        return render(request, 'blog_app/profile.html', {'drafts': drafts, 'published': published})
+    else:
+        return redirect('login')
+
 
 def about(request):
     return render(request, 'blog_app/about.html')
-
-def gallery(request):
-    return render(request, 'blog_app/gallery.html')
 
 class AddPostView(generic.CreateView):
     model = Post
@@ -31,9 +36,17 @@ class AddPostView(generic.CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        if not form.instance.slug:
+            form.instance.slug = slugify(form.instance.title)
+            original_slug = form.instance.slug
+            counter = 1
+            while Post.objects.filter(slug=form.instance.slug).exists():
+                form.instance.slug = f'{original_slug}-{counter}'
+                counter += 1
         form.save()
         messages.add_message(self.request, messages.SUCCESS, 'Post created successfully!')
         return redirect('home')
+
 
 def post_detail(request, slug):
     queryset = Post.objects.filter(status=1)

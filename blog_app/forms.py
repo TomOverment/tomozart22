@@ -1,26 +1,25 @@
 from django import forms
 from .models import Post, Comment
+from django.utils.text import slugify
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'author', 'content', 'slug', 'status', 'image')
+        fields = ('title', 'content', 'status', 'image')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Post Title'}),
-            'author': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Username'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Comment here'}),
-            'slug': forms.TextInput(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-        }
+            }
+
 
 class UpdateForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'author', 'content', 'status', 'image')
+        fields = ('title', 'content', 'status', 'image')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Post Title'}),
-            'author': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Username'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Comment here'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
