@@ -3,17 +3,19 @@
 {% block content %}
 <div class="container-fluid">
     <h2>Logged in as: {{ request.user.username }}</h2>
-    
+    <hr>
     <h1>Draft Posts</h1>
     <div class="row">
         {% for post in drafts %}
         <div class="col-md-4">
             <div class="card mb-4">
                 {% if post.image %}
-                <img src="{{ post.image.url }}" class="card-img-top" alt="Post image">
+                <a href="{{ post.image.url }}" target="_blank">
+                    <img src="{{ post.image.url }}" class="card-img-top" alt="Post image">
+                </a>
                 {% endif %}
                 <div class="card-body">
-                    <h2 class="card-title">{{ post.title }}</h2>
+                    <h2 class="card-title"><a href="{% url 'update_post' post.pk %}" class="post-link">{{ post.title }}</a></h2>
                     <p class="card-text">{{ post.content|safe }}</p>
                     <a href="{% url 'update_post' post.pk %}">Edit</a>
                     <a href="{% url 'delete_post' post.id %}">Delete</a>
@@ -24,17 +26,19 @@
         <p>No draft posts available.</p>
         {% endfor %}
     </div>
-
+    <hr>
     <h1>Published Posts</h1>
     <div class="row">
         {% for post in published %}
         <div class="col-md-4">
             <div class="card mb-4">
                 {% if post.image %}
-                <img src="{{ post.image.url }}" class="card-img-top" alt="Post image">
+                <a href="{{ post.image.url }}" target="_blank">
+                    <img src="{{ post.image.url }}" class="card-img-top" alt="Post image">
+                </a>
                 {% endif %}
                 <div class="card-body">
-                    <h2 class="card-title">{{ post.title }}</h2>
+                    <h2 class="card-title"><a href="{% url 'update_post' post.pk %}" class="post-link">{{ post.title }}</a></h2>
                     <p class="card-text">{{ post.content|safe }}</p>
                     <a href="{% url 'post_detail' post.slug %}">View</a>
                     <a href="{% url 'update_post' post.pk %}">Edit</a>
