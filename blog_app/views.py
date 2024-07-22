@@ -99,6 +99,18 @@ def delete_post(request, post_id):
 def gallery(request):
     artworks = Artwork.objects.all()
     return render(request, 'gallery.html', {'artworks': artworks})
+
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomSignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Registration successful. You can now log in.')
+            return redirect('account_login')
+    else:
+        form = CustomSignupForm()
+    return render(request, 'registration/signup.html', {'form': form})
     
 
 

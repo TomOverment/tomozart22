@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import dj_database_url
+from django.contrib.messages import constants as messages
 if os.path.isfile("env.py"):
     import env
 
@@ -138,6 +139,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 
 
 # Internationalization
