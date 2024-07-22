@@ -14,4 +14,3 @@ PyJWT==2.8.0
 sqlparse==0.5.0
 urllib3==1.26.19
 whitenoise==6.7.0
-
