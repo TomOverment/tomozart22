@@ -21,10 +21,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-tomoverment-tomozart22-7vyyd9dhvch.ws.codeinstitute-ide.net',
-                 '.herokuapp.com',
-                 '.gitpod.io',
-                 '*',]
+ALLOWED_HOSTS = ['8000-tomoverment-tomozart22-7vyyd9dhvch.ws.codeinstitute-ide.net', '.herokuapp.com','.gitpod.io', '*',] # noqa
 
 ALLOWED_HOST = os.environ.get("ALLOWED_HOST")
 if ALLOWED_HOST:

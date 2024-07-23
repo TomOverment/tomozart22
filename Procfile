@@ -1,1 +1,1 @@
-web: gunicorn tomozart22.wsgi:application --log-file -
+web: gunicorn my_project.wsgi
