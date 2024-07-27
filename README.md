@@ -47,33 +47,15 @@ The intention behind this color scheme is to create a visually cohesive and unob
 ![Colour Scheme](static/images/colours.png)
 
 - **8abe53 - Pistachio:**
-    - Used for the Logo. A tone of green I regularly use in artwork.
-
 - **000000 - White:**
-    - Used for the Logo. A tone of green I regularly use in artwork.
-
-
 - **000000 - Black:**
-    - Used for the Navbar and footer and some text.
-
 - **Fe9ecef - Anti-flash White:**
-    - Used for
-
 - **9fa6b2 - Cadet Grey:**
-    - Used for
-
 - **9188181 - Teal:**
-    - Used for
-
 - **acafaf - Silver:**
-    - Used for 
-
 - **4a4a4f - Davey's Grey:**
-    - Used for 
-
 - **e84610 - Golden Gate Bridge:**
-    - Used for 
-
+     
 ## Font
 
 I used the Lato font, imported from Google Fonts, to maintain a clean and unobtrusive look. This choice ensures that the font does not distract from the content, allowing the artwork and other elements to take center stage.
@@ -238,9 +220,9 @@ The application is built to be fully responsive, ensuring accessibility across m
 
 ![Laptop](static/images/laptop.PNG)
 
-# Django Admin Interface
-
 # Future Features
+
+In future I plan to build on the foundation of my project to use it as an online store selling t-shirts on a print to demand basis and giclee prints.
 
 # Technologies Used
 
@@ -277,6 +259,21 @@ The application is built to be fully responsive, ensuring accessibility across m
 
 # Testing
 
+## HTML Validation
+
+Using validator.w3.org.
+
+| File | Screenshot | Errors |
+| --- | --- | --- |
+| addpost.html | ![Add Post]() |  |
+| editposts.html | ![Edit Post]() |  |
+| index.html | ![Index]() |  |
+| logout.html | ![Logout]() |  |
+| post_confirm_delete.html | ![Delete Post]() |  |
+| post_detail.html | ![Post Detail]() |  |
+| profile.html | ![Profile]() |  |
+| gallery.html | ![Gallery]() |  |
+| base.html | ![Base]() |  |
 
    
 
