@@ -57,11 +57,13 @@ The intention behind this color scheme is to create a visually cohesive and unob
 - **e84610 - Golden Gate Bridge:**
      
 ## Font
-
 I used the Lato font, imported from Google Fonts, to maintain a clean and unobtrusive look. This choice ensures that the font does not distract from the content, allowing the artwork and other elements to take center stage.
 
 ![Lato](static/images/lato.jpg)
 
+## Site Layout
+Here is a flowchart outling the layout of my project.
+![flowchart](flowchart.PNG)
 
 # Project Planning
 
@@ -69,7 +71,7 @@ I used the Lato font, imported from Google Fonts, to maintain a clean and unobtr
 
 The Tomozart project was approached using a blend of Agile methodology, user stories, and Kanban to ensure a flexible, user-focused, and efficient development process. This strategy allowed me to prioritize user needs, adapt to changes quickly, and maintain a steady workflow.
 
-1. Defining the Vision and Goals
+- Defining the Vision and Goals
 The first step in the strategy was to establish a clear vision and set of goals for the Tomozart project. The vision focused on creating an online art gallery that showcases vibrant and diverse artwork while providing an intuitive and engaging user experience. Key goals included:
 
 Showcase artwork in a visually appealing manner.
@@ -77,7 +79,7 @@ Enable users to interact with the content by adding posts with comments and imag
 Ensure accessibility across all devices and browsers.
 Implement a user-friendly and aesthetically pleasing design.
 
-2. User Stories Development
+- User Stories Development
 User stories were created to capture the functionalities and features from the perspective of the end users. Each user story was written in a simple format: "As a [user role], I want [feature or action] so that [reason or benefit]." This approach ensured that all features aligned with user needs and provided clear, actionable items for the development team.
 
 ### User Stories:
@@ -116,7 +118,7 @@ Criterion 1: The blog must have crud functionality.
 Criterion 2: Time and date of posts.
 Criterion 3: Post images as well as comments.
 
-3. Kanban Board
+- Kanban Board
 ![Kanban Board](static/images/kanbanUS.png)
 
 A Kanban board was set up to map out and manage the development process visually. The board was organized into columns that depicted various stages of the workflow: To Do, In Progress, and Done. Each user story transitioned through these columns as work progressed.
@@ -275,6 +277,11 @@ Using validator.w3.org.
 | gallery.html | ![Gallery]() |  |
 | base.html | ![Base]() |  |
 
+## CSS Testing
+
+No errors came up using W3C CSS Validator.
+![css](cssvalidation.PNG)
    
+## Python Testing
 
 
