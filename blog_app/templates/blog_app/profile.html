@@ -52,13 +52,14 @@
     </div>
 
     {% if user.is_authenticated %}
-    <a href="{% url 'account_logout' %}">
-        <button class="btn btn-success btn-login-register">Logout</button>
-    </a>
+    <form action="{% url 'account_logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success btn-login-register">Logout</button>
+    </form>
     {% else %}
-    <a href="{% url 'account_login' %}">
-        <button class="btn btn-success btn-login-register">Login/Register</button>
-    </a>
+    <form action="{% url 'account_login' %}" method="get" style="display:inline;">
+        <button type="submit" class="btn btn-success btn-login-register">Login/Register</button>
+    </form>
     {% endif %}
 </div>
 {% endblock %}
