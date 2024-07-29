@@ -11,23 +11,27 @@ from .models import Artwork
 from django.utils.text import slugify
 
 
-
 class PostList(generic.ListView):
     queryset = Post.objects.filter(status=1).order_by('-created_on')
     template_name = "blog_app/index.html"
     paginate_by = 6
 
+
 def profile(request):
     if request.user.is_authenticated:
-        drafts = Post.objects.filter(author=request.user, status=0).order_by('-created_on')
-        published = Post.objects.filter(author=request.user, status=1).order_by('-created_on')
-        return render(request, 'blog_app/profile.html', {'drafts': drafts, 'published': published})
+        drafts = Post.objects.filter(author=request.user,
+                                     status=0).order_by('-created_on')
+        published = Post.objects.filter(author=request.user,
+                                        status=1).order_by('-created_on')
+        return render(request, 'blog_app/profile.html',
+                      {'drafts': drafts, 'published': published})
     else:
         return redirect('login')
 
 
 def about(request):
     return render(request, 'blog_app/about.html')
+
 
 class AddPostView(generic.CreateView):
     model = Post
@@ -44,7 +48,8 @@ class AddPostView(generic.CreateView):
                 form.instance.slug = f'{original_slug}-{counter}'
                 counter += 1
         form.save()
-        messages.add_message(self.request, messages.SUCCESS, 'Post created successfully!')
+        messages.add_message(self.request, messages.SUCCESS,
+                             'Post created successfully!')
         return redirect('home')
 
 
@@ -53,7 +58,6 @@ def post_detail(request, slug):
     post = get_object_or_404(queryset, slug=slug)
     comments = post.comments.all().order_by("-created_on")
     comment_count = post.comments.filter(approved=True).count()
-    
     if request.method == "POST":
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
@@ -61,11 +65,11 @@ def post_detail(request, slug):
             comment.author = request.user
             comment.post = post
             comment.save()
-            messages.add_message(request, messages.SUCCESS, 'Comment submitted and awaiting approval')
-            return HttpResponseRedirect(request.path_info) 
+            messages.add_message(request, messages.SUCCESS,
+                                 'Comment submitted and awaiting approval')
+            return HttpResponseRedirect(request.path_info)
     else:
         comment_form = CommentForm()
-    
     return render(
         request,
         "blog_app/post_detail.html",
@@ -73,13 +77,15 @@ def post_detail(request, slug):
             "post": post,
             "comments": comments,
             "comment_count": comment_count,
-            "form": comment_form  
+            "form": comment_form
         }
     )
+
 
 class PostDetail(generic.DetailView):
     model = Post
     template_name = "blog_app/post_detail.html"
+
 
 class UpdatePost(generic.UpdateView):
     model = Post
@@ -96,6 +102,7 @@ def delete_post(request, post_id):
         return redirect('home')
     return render(request, 'blog_app/post_confirm_delete.html', {'post': post})
 
+
 def gallery(request):
     artworks = Artwork.objects.all()
     return render(request, 'gallery.html', {'artworks': artworks})
@@ -106,11 +113,9 @@ def register(request):
         form = CustomSignupForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Registration successful. You can now log in.')
+            messages.success(request,
+                             'Registration successful. You can now log in.')
             return redirect('account_login')
     else:
         form = CustomSignupForm()
     return render(request, 'registration/signup.html', {'form': form})
-    
-
-

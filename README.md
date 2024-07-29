@@ -63,7 +63,7 @@ I used the Lato font, imported from Google Fonts, to maintain a clean and unobtr
 
 ## Site Layout
 Here is a flowchart outling the layout of my project.
-![flowchart](flowchart.PNG)
+![flowchart](static/images/flowchart.PNG)
 
 # Project Planning
 
@@ -119,7 +119,7 @@ Criterion 2: Time and date of posts.
 Criterion 3: Post images as well as comments.
 
 - Kanban Board
-![Kanban Board](static/images/kanbanUS.png)
+![Kanban Board](static/images/kanbanUS.PNG)
 
 A Kanban board was set up to map out and manage the development process visually. The board was organized into columns that depicted various stages of the workflow: To Do, In Progress, and Done. Each user story transitioned through these columns as work progressed.
 
@@ -157,8 +157,6 @@ The iterative nature of Agile allowed me to continuously improve the project. Re
 
 Using the GitHub Projects board for this project was a testament to the effectiveness of Kanban boards in managing workflows and maintaining productivity. It reinforced the importance of Agile methodologies in software development, driving home the value of iterative progress and constant refinement.
 
-
-![kanban](static/readme/kanban.png)
 
 ### MoSCoW Prioritization
 
@@ -267,21 +265,36 @@ Using validator.w3.org.
 
 | File | Screenshot | Errors |
 | --- | --- | --- |
-| addpost.html | ![Add Post]() |  |
-| editposts.html | ![Edit Post]() |  |
-| index.html | ![Index]() |  |
+| addpost.html | ![Add Post](static/images/addpost.PNG) | fixed |
+| editpost.html | ![Edit Post](static/images/editpost.PNG) | fixed |
+| index.html | ![Index](static/images/index.PNG) | fixed |
+|            | ![Index2](static/images/index2.PNG) | fixed |
 | logout.html | ![Logout]() |  |
 | post_confirm_delete.html | ![Delete Post]() |  |
 | post_detail.html | ![Post Detail]() |  |
-| profile.html | ![Profile]() |  |
-| gallery.html | ![Gallery]() |  |
-| base.html | ![Base]() |  |
+| profile.html | ![Profile](static/images/profilevaldation.PNG) | fixed |
+| gallery.html | ![Gallery](static/images/galleryvalidation.PNG) | fixed |
+
 
 ## CSS Testing
 
-No errors came up using W3C CSS Validator.
-![css](cssvalidation.PNG)
+No errors came up using W3C CSS Validator for inline CSS or the style.css file.
+![css](static/images/cssvalidation.PNG)
    
 ## Python Testing
+| File | Screenshot | Errors |
+| --- | --- | --- |
+| admin.py | ![admin](static/images/adminpython.PNG) | fixed |
+| apps.py | ![apps](static/images/appspy.PNG) | fixed |
+| forms.py | ![forms](static/images/formspy.PNG) | fixed |
+| models.py | ![models](static/images/modalspy.PNG) | fixed |
+| urls.py | ![urls](static/images/urlspy.PNG) | fixed |
+| views.py | ![views](static/images/viewspy.PNG) | fixed |
+| asgi.py | ![asgi.py](static/images/asgipy.PNG) | fixed |
+| settings.py | ![settings](static/images/settingspy.PNG) | AUTH_PASSWORD_VALIDATORS are too long |
+| my_project/urls.py | ![urls2](static/images/urlspy2.PNG) | fixed |
+| wsgi.py | ![wsgi](static/images/wsgipy2.PNG) | fixed |
+| manage.py | ![manage](static/images/managepy.PNG) | fixed |
+
 
 
