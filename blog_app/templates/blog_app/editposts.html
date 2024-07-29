@@ -3,12 +3,7 @@
 {% block content %}
 
 <h1>{{ post.title }}</h1>
-<h2>{{ post.author.first_name }}
-    {{ post.author.last_name }}
-</h2>
-<br/>
 {{ post.body}}
-<br/><br/>
 <h1>Edit Posts!</h1>
 <div class="form-group"></div>
 <form method="POST">
@@ -17,7 +12,7 @@
     <button class= "btn btn-success">Post</button>
     <a href="{% url 'delete_post' post.id %}">Delete</a>
     <a href="{% url 'home' %}" class="btn btn-success">Back</a>
-</div>
+</form>
 
 
 
