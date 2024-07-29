@@ -8,10 +8,9 @@
 <img src="{{ post.image.url }}" class="img-fluid" alt="{{ post.title }}">
 {% endif %}
 
-<br/><br/>
+<br></br>
 <p>{{ post.content|safe }}</p>
 
-</div>
 <div class="container">
     <a href="{% url 'home' %}" class="btn btn-success">Back</a>
 </div>
