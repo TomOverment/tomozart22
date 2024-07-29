@@ -12,57 +12,58 @@
     </div>
 </div>
 
-    {% if user.is_authenticated %}
-    <div class="row">
-        <div class="col text-center">
-            <div class="alert alert-success" role="alert">
-                You are logged in as {{ user.username }}.
-            </div>
+{% if user.is_authenticated %}
+<div class="row">
+    <div class="col text-center">
+        <div class="alert alert-success" role="alert">
+            You are logged in as {{ user.username }}.
         </div>
     </div>
-    <br>
-    {% else %}
-    <div class="row">
-        <div class="col text-center">
-            <div class="alert alert-warning" role="alert">
-                You are not logged in. Please log in or register to enjoy full access to the gallery and additional features.
-            </div>
+</div>
+<br>
+{% else %}
+<div class="row">
+    <div class="col text-center">
+        <div class="alert alert-warning" role="alert">
+            You are not logged in. Please log in or register to enjoy full access to the gallery and additional features.
         </div>
     </div>
-    <br>
-    {% endif %}
-    <div class="row">
-        {% for post in object_list %}
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="image-container">
-                        <div class="image-flash">
-                            <p class="author">Author: {{ post.author }}</p>
-                        </div>
+</div>
+<br>
+{% endif %}
+<div class="row">
+    {% for post in object_list %}
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="image-container">
+                    <div class="image-flash">
+                        <p class="author">Author: {{ post.author }}</p>
                     </div>
-                    <a href="{% url 'post_detail' post.slug %}" class="post-link">
-                        <h2 class="card-title">{{ post.title }}</h2>
-                    </a>
-                    <hr>
-                    <p class="card-text text-muted h6">{{ post.created_on }}</p>
-                    <p class="card-text">{{ post.content|safe }}</p>
-                    {% if post.image %}
-                    <img src="{{ post.image.url }}" class="img-fluid" alt="{{ post.title }}">
-                    {% endif %}
-                    {% if user.is_authenticated %}
-                        {% if user == post.author or user.is_staff %}
-                        <a href="{% url 'update_post' post.pk %}">Edit</a>
-                        <a href="{% url 'delete_post' post.id %}">Delete</a>
-                        {% endif %}
-                    {% endif %}
                 </div>
+                <a href="{% url 'post_detail' post.slug %}" class="post-link">
+                    <h2 class="card-title">{{ post.title }}</h2>
+                </a>
+                <hr>
+                <p class="card-text text-muted h6">{{ post.created_on }}</p>
+                <p class="card-text">{{ post.content|safe }}</p>
+                {% if post.image %}
+                <img src="{{ post.image.url }}" class="img-fluid" alt="{{ post.title }}">
+                {% endif %}
+                {% if user.is_authenticated %}
+                    {% if user == post.author or user.is_staff %}
+                    <a href="{% url 'update_post' post.pk %}">Edit</a>
+                    <a href="{% url 'delete_post' post.id %}">Delete</a>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
-
-        {% if forloop.counter|divisibleby:3 %}
     </div>
-    <div class="row">
-        {% endif %}
-        {% endfor %}
+
+    {% if forloop.counter|divisibleby:3 %}
+</div>
+<div class="row">
+    {% endif %}
+    {% endfor %}
+</div>
 {% endblock %}
