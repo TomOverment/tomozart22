@@ -9,9 +9,8 @@ Tomo's Art Gallery is a personal project designed to provide an accessible platf
 
 View live site here : https://tomozart22-7e604b91f7b3.herokuapp.com/
 
-## Contents:
-
 ## Features:
+The project includes features for user registration, sign-in, and sign-out, along with the ability to upload and manage posts. Additionally, there is a gallery page showcasing various artworks and a main blog page where users can engage and interact with the content.
 
 ### View Art on the Gallery Page: 
 Admins upload images and descriptions via the Django admin panel. The gallery is automatically organized with Bootstrap and is responsive to different screen sizes.
@@ -66,6 +65,25 @@ Here is a flowchart outling the layout of my project.
 ![flowchart](static/images/flowchart.PNG)
 
 # Project Planning
+
+## Epics
+
+Epic: User Engagement and Content Management System
+Title: User Engagement and Content Management System
+
+Description: This epic encompasses a range of features aimed at enhancing user interaction and content creation on the website. The primary focus is on facilitating seamless communication between users and the artist, enabling content contributions through posts and comments, showcasing the artist's work, and maintaining a blog for updates and events. The overarching goal is to create a user-friendly and interactive platform that encourages engagement and allows for efficient content management.
+
+Objectives: The key objectives include providing users with a means to connect with the artist through social media links, enabling user registration for access to exclusive site features, and supporting user-generated content through posts and comments. Additionally, the epic aims to offer a comprehensive profile management system where users can view and manage their interactions, establish a gallery for showcasing the artist's work, and implement a blog for regular updates and communication with the audience.
+
+User Stories: The epic comprises several user stories that describe specific functionalities. Firstly, users should be able to use social media links to communicate with the artist, ensuring these links are included in the footer and displayed consistently across all pages. Secondly, user registration is crucial, allowing users to sign up and receive confirmation emails, with proper error handling for invalid inputs. Thirdly, the functionality to add posts should be straightforward, enabling users to contribute content by uploading images and adding comments, with all posts visible on the blog.
+
+In terms of profile management, users should have the ability to see their own posts, categorized into drafts and published, and be able to update or delete these posts from their profile page. For the gallery, the artist should be able to upload artwork along with descriptions and titles, with each piece viewable individually. Lastly, the blog functionality should include comprehensive CRUD capabilities, with time and date stamps on posts and support for posting images and comments.
+
+Acceptance Criteria: The acceptance criteria for this epic include the proper implementation and functionality of social media links, user registration with email confirmation and error handling, and an intuitive post-creation interface. The profile system should accurately reflect users' posts and allow for easy management. The gallery should enable the artist to showcase artwork effectively, and the blog must support full CRUD operations with clear timestamps and multimedia content options.
+
+Dependencies: Key dependencies include social media integration, an email service for sending registration confirmations, and a robust content management system (CMS) to support the posts, profile, gallery, and blog functionalities.
+
+Timeline: The timeline for this epic is structured over four weeks. The first week focuses on implementing social media links and user registration features. In the second week, development shifts to the "Add Post" functionality and profile management systems. The third week is dedicated to creating the gallery feature and setting up the artist's admin panel. Finally, the fourth week involves completing the blog functionality and conducting thorough testing across the entire system to ensure all components work seamlessly together.
 
 ## Strategy
 
@@ -269,9 +287,9 @@ Using validator.w3.org.
 | editpost.html | ![Edit Post](static/images/editpost.PNG) | fixed |
 | index.html | ![Index](static/images/index.PNG) | fixed |
 |            | ![Index2](static/images/index2.PNG) | fixed |
-| logout.html | ![Logout]() |  |
-| post_confirm_delete.html | ![Delete Post]() |  |
-| post_detail.html | ![Post Detail]() |  |
+| logout.html | ![Logout](static/images/signout.PNG) | fixed  |
+| post_confirm_delete.html | ![Delete Post](static/images/deletepost.PNG) | fixed  |
+| post_detail.html | ![Post Detail](static/images/postdetail.PNG) |  |
 | profile.html | ![Profile](static/images/profilevaldation.PNG) | fixed |
 | gallery.html | ![Gallery](static/images/galleryvalidation.PNG) | fixed |
 
@@ -282,6 +300,7 @@ No errors came up using W3C CSS Validator for inline CSS or the style.css file.
 ![css](static/images/cssvalidation.PNG)
    
 ## Python Testing
+I used CI Python Linter to validate the python code.
 | File | Screenshot | Errors |
 | --- | --- | --- |
 | admin.py | ![admin](static/images/adminpython.PNG) | fixed |
@@ -296,5 +315,21 @@ No errors came up using W3C CSS Validator for inline CSS or the style.css file.
 | wsgi.py | ![wsgi](static/images/wsgipy2.PNG) | fixed |
 | manage.py | ![manage](static/images/managepy.PNG) | fixed |
 
+## Testing overview
+I corrected all the issues shown in the screenshots and have everything working correctly.
+
+## Manual Testing
+I went through all the account features and found no problems. I may in future change the layout of some things. The user post, edit and delete works well. I will in future make it so admin can upload directly from the site to the gallery page. Some buttons and links had inconsistent styling.
+
+## Deployment
+
+The site is successfully deployed from Heroku.com and can be viewed here: https://tomozart22-7e604b91f7b3.herokuapp.com/
+
+## References
+- I used coolors for the colour pallet.  https://coolors.co/   
+- I used logo.com to quickly create a logo. https://logo.com/
+- All other artwork was my own.
+- I used bootstrap too style the html. https://getbootstrap.com/
+- I made use of chat GPT. https://chatgpt.com/
 
 
