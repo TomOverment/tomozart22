@@ -1,10 +1,10 @@
 # Tomozart Art Gallery Web Site
 ![Example Image](static/images/responsiveviews.jpg)
 ## Introduction:
-### Welcome to Tomo's Art Gallery, the official online art space of Thomas A Overment, also known as Tomo. This web page showcases a vibrant collection of Tomo's artwork, ranging from dynamic spray paintings to intricate mixed media canvas works. Whether you're an art enthusiast or simply curious, this gallery offers a window into the creative world of Tomo.
+Welcome to Tomo's Art Gallery, the official online art space of Thomas A Overment, also known as Tomo. This web page showcases a vibrant collection of Tomo's artwork, ranging from dynamic spray paintings to intricate mixed media canvas works. Whether you're an art enthusiast or simply curious, this gallery offers a window into the creative world of Tomo.
 
 ## Overview:
-### Tomo's Art Gallery is a personal project designed to provide an accessible platform for viewing, sharing, and appreciating Tomo's diverse artistic creations. Visitors can explore a variety of artworks, learn more about the artist, and stay updated with the latest additions to the collection.
+Tomo's Art Gallery is a personal project designed to provide an accessible platform for viewing, sharing, and appreciating Tomo's diverse artistic creations. Visitors can explore a variety of artworks, learn more about the artist, and stay updated with the latest additions to the collection.
 
 
 View live site here : https://tomozart22-7e604b91f7b3.herokuapp.com/

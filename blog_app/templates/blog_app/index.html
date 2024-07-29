@@ -11,7 +11,6 @@
         </div>
     </div>
 
-    <!-- Welcome message for authenticated users -->
     {% if user.is_authenticated %}
     <div class="row">
         <div class="col text-center">
@@ -22,7 +21,6 @@
     </div>
     <br>
     {% else %}
-    <!-- Message for unauthenticated users -->
     <div class="row">
         <div class="col text-center">
             <div class="alert alert-warning" role="alert">
@@ -32,8 +30,6 @@
     </div>
     <br>
     {% endif %}
-
-    <!-- Blog Entries Column -->
     <div class="row">
         {% for post in object_list %}
         <div class="col-md-4">
