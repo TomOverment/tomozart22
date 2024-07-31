@@ -1,6 +1,9 @@
 from pathlib import Path
 import os
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 from django.contrib.messages import constants as messages
 if os.path.isfile("env.py"):
     import env
@@ -13,7 +16,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = [
     '8000-tomoverment-tomozart22-7vyyd9dhvch.ws.codeinstitute-ide.net',
     '.herokuapp.com', '.gitpod.io', '*', ]
@@ -36,7 +39,6 @@ print(os.environ.get("DATABASE_URL"))
 print(CSRF_TRUSTED_ORIGINS)
 
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -135,7 +137,7 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

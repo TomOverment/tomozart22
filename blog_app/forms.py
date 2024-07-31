@@ -6,28 +6,28 @@ from django.utils.text import slugify
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'content', 'status', 'image')
+        fields = ('title', 'content', 'status', 'post_image')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control',
                                             'placeholder': 'Post Title'}),
             'content': forms.Textarea(attrs={'class': 'form-control',
                                              'placeholder': 'Comment here'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'post_image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             }
 
 
 class UpdateForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'content', 'status', 'image')
+        fields = ('title', 'content', 'status', 'post_image')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control',
                                             'placeholder': 'Post Title'}),
             'content': forms.Textarea(attrs={'class': 'form-control',
                                              'placeholder': 'Comment here'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'post_image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
 

@@ -11,11 +11,10 @@ class Post(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                related_name="blog_app_posts")
-    featured_image = CloudinaryField('image', default='placeholder')
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    post_image = CloudinaryField('post_image', default='placeholder')
 
     def __str__(self):
         return self.title + ' | ' + str(self.author)
@@ -39,7 +38,7 @@ class Comment(models.Model):
 class Artwork(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(upload_to='artworks/')
+    artwork_image = CloudinaryField('artwork_image', default='placeholder')
 
     def __str__(self):
         return self.title
