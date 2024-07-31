@@ -3,6 +3,5 @@ from .models import Post
 from .models import Artwork
 
 
-# Register your models here.
 admin.site.register(Post)
 admin.site.register(Artwork)

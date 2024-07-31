@@ -3,12 +3,14 @@ from django.views import generic
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from .models import Post, Comment
+from cloudinary.uploader import upload
 from .forms import PostForm, UpdateForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseForbidden
 from .models import Artwork
 from django.utils.text import slugify
+
 
 
 class PostList(generic.ListView):
