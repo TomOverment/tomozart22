@@ -10,6 +10,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseForbidden
 from .models import Artwork
 from django.utils.text import slugify
+from django.urls import reverse_lazy
 
 
 
@@ -89,10 +90,17 @@ class PostDetail(generic.DetailView):
     template_name = "blog_app/post_detail.html"
 
 
+
 class UpdatePost(generic.UpdateView):
     model = Post
     form_class = UpdateForm
     template_name = "blog_app/editposts.html"
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        messages.add_message(self.request, messages.SUCCESS, 'Post updated successfully!')
+        return super().form_valid(form)
 
 
 def delete_post(request, post_id):
@@ -101,8 +109,10 @@ def delete_post(request, post_id):
         raise PermissionDenied
     if request.method == 'POST':
         post.delete()
+        messages.success(request, 'Post deleted successfully!')
         return redirect('home')
     return render(request, 'blog_app/post_confirm_delete.html', {'post': post})
+
 
 
 def gallery(request):

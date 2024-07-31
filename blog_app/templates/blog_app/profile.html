@@ -9,9 +9,9 @@
         {% for post in drafts %}
         <div class="col-md-4">
             <div class="card mb-4">
-                {% if post.image %}
-                <a href="{{ post.image.url }}" target="_blank">
-                    <img src="{{ post.image.url }}" class="card-img-top" alt="Post image">
+                {% if post.post_image %}
+                <a href="{{ post.post_image.url }}" target="_blank">
+                    <img src="{{ post.post_image.url }}" class="card-img-top" alt="Post image">
                 </a>
                 {% endif %}
                 <div class="card-body">
@@ -32,13 +32,13 @@
         {% for post in published %}
         <div class="col-md-4">
             <div class="card mb-4">
-                {% if post.image %}
-                <a href="{{ post.image.url }}" target="_blank">
-                    <img src="{{ post.image.url }}" class="card-img-top" alt="Post image">
+                {% if post.post_image %}
+                <a href="{{ post.post_image.url }}" target="_blank">
+                    <img src="{{ post.post_image.url }}" class="card-img-top" alt="Post image">
                 </a>
                 {% endif %}
                 <div class="card-body">
-                    <h2 class="card-title"><a href="{% url 'update_post' post.pk %}" class="post-link">{{ post.title }}</a></h2>
+                    <h2 class="card-title"><a href="{% url 'post_detail' post.slug %}" class="post-link">{{ post.title }}</a></h2>
                     <p class="card-text">{{ post.content|safe }}</p>
                     <a href="{% url 'post_detail' post.slug %}">View</a>
                     <a href="{% url 'update_post' post.pk %}">Edit</a>
