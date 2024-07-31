@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% load i18n %}
-{% load account socialaccount %}
 
 {% block title %}{% trans "Sign In" %}{% endblock title %}
 
@@ -12,7 +11,7 @@
         <div class="col-md-8 mt-3 offset-md-2">
             <h3>{% trans "Sign In" %}</h3>
 
-            <p>{% blocktrans %}Rediscover art and creativity. Sign in to explore and share your passion for art.. If
+            <p>{% blocktrans %}Rediscover art and creativity. Sign in to explore and share your passion for art. If
                 you have not created an account yet, then <a class="link" href="{{ signup_url }}">sign up</a>
                 first.{% endblocktrans %}</p>
         </div>
@@ -21,9 +20,17 @@
         <div class="col-md-8 mt-3 offset-md-2">
             <form class="login" method="POST" action="{% url 'account_login' %}">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form.non_field_errors }}
+                <div class="form-group">
+                    {{ form.login.label_tag }}
+                    {{ form.login }}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                </div>
                 {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
                 <button class="btn btn-signup right" type="submit">{% trans "Sign in" %}</button>
             </form>
