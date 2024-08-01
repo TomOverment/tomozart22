@@ -13,7 +13,6 @@ from django.utils.text import slugify
 from django.urls import reverse_lazy
 
 
-
 class PostList(generic.ListView):
     queryset = Post.objects.filter(status=1).order_by('-created_on')
     template_name = "blog_app/index.html"
@@ -90,7 +89,6 @@ class PostDetail(generic.DetailView):
     template_name = "blog_app/post_detail.html"
 
 
-
 class UpdatePost(generic.UpdateView):
     model = Post
     form_class = UpdateForm
@@ -99,7 +97,8 @@ class UpdatePost(generic.UpdateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        messages.add_message(self.request, messages.SUCCESS, 'Post updated successfully!')
+        messages.add_message(self.request, messages.SUCCESS,
+                             'Post updated successfully!')
         return super().form_valid(form)
 
 
@@ -112,7 +111,6 @@ def delete_post(request, post_id):
         messages.success(request, 'Post deleted successfully!')
         return redirect('home')
     return render(request, 'blog_app/post_confirm_delete.html', {'post': post})
-
 
 
 def gallery(request):

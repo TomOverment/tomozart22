@@ -8,6 +8,7 @@ Tomozart Gallery is a personal project designed to provide an accessible platfor
 
 
 View live site here : https://tomozart22-7e604b91f7b3.herokuapp.com/
+Github Repo: https://github.com/TomOverment/tomozart22
 
 ## Features:
 The project includes features for user registration, sign-in, and sign-out, along with the ability to upload and manage posts. Additionally, there is a gallery page showcasing various artworks and a main blog page where users can engage and interact with the content.
@@ -138,7 +139,8 @@ Criterion 1: The blog must have crud functionality.
 Criterion 2: Time and date of posts.
 Criterion 3: Post images as well as comments.
 
-- Kanban Board
+## Kanban Board
+
 ![Kanban Board](static/images/kanbanUS.PNG)
 
 A Kanban board was set up to map out and manage the development process visually. The board was organized into columns that depicted various stages of the workflow: To Do, In Progress, and Done. Each user story transitioned through these columns as work progressed.
@@ -152,6 +154,7 @@ In Progress: Tasks currently under development were moved to this column, indica
 Done: After being completed tasks were placed in the "Done" column, marking their finalization.
 
 ## Agile Practices:
+
 Agile methodology was adopted to encourage adaptability and ongoing enhancement. The project was broken down into brief iterations, with each cycle concentrating on delivering particular features or improvements.
 
 Iteration Planning: At the start of each iteration, I assessed the backlog and chose user stories to prioritize, considering both their importance and the resources at hand.
@@ -168,14 +171,14 @@ I dedicated myself to continuous improvement by consistently evaluating processe
 The strategy for the Tomozart project, using Agile methodology, user stories, and Kanban, allowed for a structured yet flexible approach to development. This approach ensured that the project stayed aligned with user needs, adapted to changes efficiently, and delivered a high-quality product that met the project's goals.
 
 
-### MoSCoW Prioritization
+#### MoSCoW Prioritization
 
 To efficiently prioritize tasks in my project, I utilized the MoSCoW method along with color-coded labels. Each task was assigned a priority level—Low, Medium, or High—based on its importance, using specific labels to clearly indicate its priority status.
 
 This system of visual prioritization maintains clarity and focus, ensuring that the highest-priority tasks are addressed first.
 
 
-## Scope Plane
+#### Scope Plane
 
 As I began this project, I recognized it as an opportunity for both learning and personal development. Without any prior coding experience, I invested time in careful planning.
 
@@ -187,7 +190,7 @@ As I began this project, I recognized it as an opportunity for both learning and
 - Enabling profile management to facilitate user interaction
 - Providing notifications to keep users informed
 
-## Wireframe Template
+#### Wireframe Template
 
 This wireframe shows the basic structure and layout of the application. It provides a visual guide for the placement of elements. The wireframe was created using Balsamiq.
 
@@ -299,12 +302,12 @@ I used CI Python Linter to validate the python code.
 | --- | --- | --- |
 | admin.py | ![admin](static/images/adminpython.PNG) | fixed |
 | apps.py | ![apps](static/images/appspy.PNG) | fixed |
-| forms.py | ![forms](static/images/formspy.PNG) | fixed |
+| forms.py | ![forms](static/images/forms_py.PNG) | fixed |
 | models.py | ![models](static/images/modalspy.PNG) | fixed |
 | urls.py | ![urls](static/images/urlspy.PNG) | fixed |
 | views.py | ![views](static/images/viewspy.PNG) | fixed |
 | asgi.py | ![asgi.py](static/images/asgipy.PNG) | fixed |
-| settings.py | ![settings](static/images/settingspy.PNG) | AUTH_PASSWORD_VALIDATORS are too long |
+| settings.py | ![settings](static/images/settings_py.PNG) | AUTH_PASSWORD_VALIDATORS are too long |
 | my_project/urls.py | ![urls2](static/images/urlspy2.PNG) | fixed |
 | wsgi.py | ![wsgi](static/images/wsgipy2.PNG) | fixed |
 | manage.py | ![manage](static/images/managepy.PNG) | fixed |
@@ -326,4 +329,11 @@ The site is successfully deployed from Heroku.com and can be viewed here: https:
 - I used bootstrap too style the html. https://getbootstrap.com/
 - I made use of chat GPT. https://chatgpt.com/
 
+## Problems
+
+During the first week of the project, I encountered a significant issue due to naming the app in all capital letters. Despite searching for solutions and following a Django renaming guide, I couldn't resolve the problem. Ultimately, I had to start a new project from scratch. It's a mistake I'll definitely not make again.
+
+## Conclusion 
+
+I'm really pleased with my development and progress throughout the course and the final project. Every challenge I faced pushed me to learn and grow as a developer. 
 
