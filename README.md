@@ -235,6 +235,12 @@ The application is built to be fully responsive, ensuring accessibility across m
 
 ![Laptop](static/images/laptop.PNG)
 
+# Django Admin
+
+This is my Django Admin panel where I can manage the site from the backend. I can edit or delete posts, remove unwanted users and update the gallery page.
+
+![admin](static/images/admin.PNG)
+
 # Future Features
 
 In future I plan to build on the foundation of my project to use it as an online store selling t-shirts on a print to demand basis and giclee prints.
@@ -314,7 +320,16 @@ I used CI Python Linter to validate the python code.
 | manage.py | ![manage](static/images/managepy.PNG) | fixed |
 
 ## Testing overview
-I corrected all the issues shown in the screenshots and have everything working correctly.
+I corrected all the issues shown in the screenshots and have everything working correctly. I had errors that were within the Django libarys and could not fix. On the Register and Login pages.
+
+signup.html
+
+![register](static/images/register_errors.PNG)
+
+login.html
+
+![login](static/images/sign_in.PNG)
+
 
 ## Manual Testing
 I went through all the account features and found no problems. I may in future change the layout of some things. The user post, edit and delete works well. I will in future make it so admin can upload directly from the site to the gallery page. A button on the delete post page had inconsistent styling.
