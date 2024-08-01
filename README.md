@@ -252,24 +252,24 @@ In future I plan to build on the foundation of my project to use it as an online
 
 ## Libraries & Frameworks
 
-asgiref==3.8.1
-cloudinary==1.36.0
-crispy-bootstrap5==2024.2
-cryptography==43.0.0
-dj-database-url==2.2.0
-dj3-cloudinary-storage==0.0.6
-Django==5.0.6
-django-allauth==0.63.3
-django-crispy-forms==2.2
-gunicorn==20.1.0
-pillow==10.2.0
-psycopg==3.2.1
-psycopg2==2.9.9
-PyJWT==2.8.0
-setuptools==71.1.0
-sqlparse==0.5.0
-urllib3==1.26.19
-whitenoise==6.7.0
+- asgiref==3.8.1
+- cloudinary==1.36.0
+- crispy-bootstrap5==2024.2
+- cryptography==43.0.0
+- dj-database-url==2.2.0
+- dj3-cloudinary-storage==0.0.6
+- Django==5.0.6
+- django-allauth==0.63.3
+- django-crispy-forms==2.2
+- gunicorn==20.1.0
+- pillow==10.2.0
+- psycopg==3.2.1
+- psycopg2==2.9.9
+- PyJWT==2.8.0
+- setuptools==71.1.0
+- sqlparse==0.5.0
+- urllib3==1.26.19
+- whitenoise==6.7.0
 
 
 # Testing
@@ -287,7 +287,7 @@ Using validator.w3.org.
 | logout.html | ![Logout](static/images/signout.PNG) | fixed  |
 | post_confirm_delete.html | ![Delete Post](static/images/deletepost.PNG) | fixed  |
 | post_detail.html | ![Post Detail](static/images/postdetail.PNG) |  |
-| profile.html | ![Profile](static/images/profilevaldation.PNG) | fixed |
+| profile.html | ![Profile](static/images/profilevalidation.PNG) | fixed |
 | gallery.html | ![Gallery](static/images/galleryvalidation.PNG) | fixed |
 
 
