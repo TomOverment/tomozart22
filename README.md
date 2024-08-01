@@ -65,6 +65,7 @@ I used the Lato font, imported from Google Fonts, to maintain a clean and unobtr
 
 ## Site Layout
 Here is a flowchart outling the layout of my project.
+All the most important links are in the navbar and accessable at all times and the social links are in the fotter. (Social links don't point directly to my accounts because i'm making new ones for artistic purposes)
 
 ![flowchart](static/images/flowchart.PNG)
 
@@ -316,11 +317,17 @@ I used CI Python Linter to validate the python code.
 I corrected all the issues shown in the screenshots and have everything working correctly.
 
 ## Manual Testing
-I went through all the account features and found no problems. I may in future change the layout of some things. The user post, edit and delete works well. I will in future make it so admin can upload directly from the site to the gallery page. Some buttons and links had inconsistent styling.
+I went through all the account features and found no problems. I may in future change the layout of some things. The user post, edit and delete works well. I will in future make it so admin can upload directly from the site to the gallery page. A button on the delete post page had inconsistent styling.
+
+![delete_post](static/images/delete_post_button.PNG)
 
 ## Deployment
 
 The site is successfully deployed from Heroku.com and can be viewed here: https://tomozart22-7e604b91f7b3.herokuapp.com/
+
+Heroku logs:
+
+![Heroku_logs](static/images/heoku_logs.PNG)
 
 ## References
 - I used coolors for the colour pallet.  https://coolors.co/   
@@ -328,6 +335,7 @@ The site is successfully deployed from Heroku.com and can be viewed here: https:
 - All other artwork was my own.
 - I used bootstrap too style the html. https://getbootstrap.com/
 - I made use of chat GPT. https://chatgpt.com/
+- I used font from font awsome. https://fontawesome.com/
 
 ## Problems
 
