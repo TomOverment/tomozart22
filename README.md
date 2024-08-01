@@ -1,10 +1,10 @@
 # Tomozart Art Gallery Web Site
 ![Example Image](static/images/responsiveviews.jpg)
 ## Introduction:
-Welcome to Tomo's Art Gallery, the official online art space of Thomas A Overment, also known as Tomo. This web page showcases a vibrant collection of Tomo's artwork, ranging from dynamic spray paintings to intricate mixed media canvas works. Whether you're an art enthusiast or simply curious, this gallery offers a window into the creative world of Tomo.
+Welcome to Tomo's Art Gallery, the official online art space of Thomas A Overment, also known as Tomo. This web page showcases a vibrant collection of my artwork, ranging from dynamic spray paintings to intricate mixed media canvas works. Whether you're an art enthusiast or simply curious, this gallery offers a window into the creative world of Tomo.
 
 ## Overview:
-Tomo's Art Gallery is a personal project designed to provide an accessible platform for viewing, sharing, and appreciating Tomo's diverse artistic creations. Visitors can explore a variety of artworks, learn more about the artist, and stay updated with the latest additions to the collection.
+Tomozart Gallery is a personal project designed to provide an accessible platform for viewing, sharing, and appreciating the diverse artistic creations. Visitors can explore a variety of artworks, learn more about the artist, and stay updated with the latest additions to the collection.
 
 
 View live site here : https://tomozart22-7e604b91f7b3.herokuapp.com/
@@ -23,7 +23,9 @@ Users can view their draft and published posts on their profile page, where link
 
 ### Register: 
 Users can register to gain the ability to add posts and, in the future, join an optional mailing list.
-Receive Notifications: Users are informed about the success or failure of their actions and their login status.
+
+## Receive Notifications: 
+Users are informed about the success or failure of their actions and their login status.
 
 ### The Blog: 
 Users can view all posts but can only edit or delete their own posts.
@@ -62,6 +64,7 @@ I used the Lato font, imported from Google Fonts, to maintain a clean and unobtr
 
 ## Site Layout
 Here is a flowchart outling the layout of my project.
+
 ![flowchart](static/images/flowchart.PNG)
 
 # Project Planning
@@ -69,13 +72,12 @@ Here is a flowchart outling the layout of my project.
 ## Epics
 
 Epic: User Engagement and Content Management System
-Title: User Engagement and Content Management System
 
 Description: This epic encompasses a range of features aimed at enhancing user interaction and content creation on the website. The primary focus is on facilitating seamless communication between users and the artist, enabling content contributions through posts and comments, showcasing the artist's work, and maintaining a blog for updates and events. The overarching goal is to create a user-friendly and interactive platform that encourages engagement and allows for efficient content management.
 
 Objectives: The key objectives include providing users with a means to connect with the artist through social media links, enabling user registration for access to exclusive site features, and supporting user-generated content through posts and comments. Additionally, the epic aims to offer a comprehensive profile management system where users can view and manage their interactions, establish a gallery for showcasing the artist's work, and implement a blog for regular updates and communication with the audience.
 
-User Stories: The epic comprises several user stories that describe specific functionalities. Firstly, users should be able to use social media links to communicate with the artist, ensuring these links are included in the footer and displayed consistently across all pages. Secondly, user registration is crucial, allowing users to sign up and receive confirmation emails, with proper error handling for invalid inputs. Thirdly, the functionality to add posts should be straightforward, enabling users to contribute content by uploading images and adding comments, with all posts visible on the blog.
+User Stories: The epic breaks down in to several user stories that describe specific functionalities. Firstly, users should be able to use social media links to communicate with the artist, ensuring these links are included in the footer and displayed consistently across all pages. Secondly, user registration is crucial, allowing users to sign up and receive confirmation emails, with proper error handling for invalid inputs. Thirdly, the functionality to add posts should be straightforward, enabling users to contribute content by uploading images and adding comments, with all posts visible on the blog.
 
 In terms of profile management, users should have the ability to see their own posts, categorized into drafts and published, and be able to update or delete these posts from their profile page. For the gallery, the artist should be able to upload artwork along with descriptions and titles, with each piece viewable individually. Lastly, the blog functionality should include comprehensive CRUD capabilities, with time and date stamps on posts and support for posting images and comments.
 
@@ -83,7 +85,7 @@ Acceptance Criteria: The acceptance criteria for this epic include the proper im
 
 Dependencies: Key dependencies include social media integration, an email service for sending registration confirmations, and a robust content management system (CMS) to support the posts, profile, gallery, and blog functionalities.
 
-Timeline: The timeline for this epic is structured over four weeks. The first week focuses on implementing social media links and user registration features. In the second week, development shifts to the "Add Post" functionality and profile management systems. The third week is dedicated to creating the gallery feature and setting up the artist's admin panel. Finally, the fourth week involves completing the blog functionality and conducting thorough testing across the entire system to ensure all components work seamlessly together.
+Timeline: The timeline for this epic is structured over two weeks. The first week focuses on implementing social media links and user registration features, development shifts to the "Add Post" functionality and profile management systems. The second week is dedicated to creating the gallery feature, setting up the artist's admin panel and finally completing the blog functionality and conducting thorough testing across the entire system to ensure all components work seamlessly together.
 
 ## Strategy
 
@@ -100,7 +102,7 @@ Implement a user-friendly and aesthetically pleasing design.
 - User Stories Development
 User stories were created to capture the functionalities and features from the perspective of the end users. Each user story was written in a simple format: "As a [user role], I want [feature or action] so that [reason or benefit]." This approach ensured that all features aligned with user needs and provided clear, actionable items for the development team.
 
-### User Stories:
+## User Stories:
 - Contacting the Artist: As a user, I want to use social media links to ask questions or request commissions, so that I can communicate directly with the artist.
 Success Criteria:
 Criterion 1: Include social media in the footer.
@@ -165,16 +167,6 @@ I dedicated myself to continuous improvement by consistently evaluating processe
 #### Conclusion
 The strategy for the Tomozart project, using Agile methodology, user stories, and Kanban, allowed for a structured yet flexible approach to development. This approach ensured that the project stayed aligned with user needs, adapted to changes efficiently, and delivered a high-quality product that met the project's goals.
 
-## Agile Methodologies - Project Management
-
-Adopting Agile methodologies was pivotal in managing the Kanban Board Project. Agile principles emphasize iterative development, flexibility, and customer feedback, which align perfectly with the project's goals. Utilizing [Github Projects Board ](https://github.com/users/wgwhitecoding/projects/8/views/1), for planning and documenting my work was particularly beneficial. As I was developing a Kanban board application, using a similar tool for project management proved to be both inspirational and practical.
-
-The GitHub Projects board provided a clear visual representation of tasks, progress, and priorities. This not only kept me organized but also allowed me to experience firsthand the benefits of a well-structured Kanban board. Every day, as I moved tasks from 'To Do' to 'In Progress' and finally to 'Done,' I gained insights and ideas that directly influenced the development of the Kanban Board Project.
-
-The iterative nature of Agile allowed me to continuously improve the project. Regular reviews and adjustments ensured that the application evolved in line with user needs and feedback. This approach fostered a dynamic development environment, where adaptability and ongoing enhancement were key.
-
-Using the GitHub Projects board for this project was a testament to the effectiveness of Kanban boards in managing workflows and maintaining productivity. It reinforced the importance of Agile methodologies in software development, driving home the value of iterative progress and constant refinement.
-
 
 ### MoSCoW Prioritization
 
@@ -215,15 +207,16 @@ Several modals are implemented throughout the application.
 ![Artwork](static/images/artworkmod.PNG)
 - **Artwork Modal**: For admin to upload to the Gallery.
 
-#### Database Schema
+## Database Schema
 
 ![Database Schema](static/images/database.png)
 
-### CSRF Tokens
+## CSRF Tokens
 
 CSRF (Cross-Site Request Forgery) tokens are embedded in every form to authenticate the request with the server upon submission. Without these tokens, the site could be exposed to attacks where unauthorized actions might be performed on behalf of the user, potentially compromising user data.
 
 # Responsiveness 
+
 The application is built to be fully responsive, ensuring accessibility across mobile, tablet, and desktop devices. It leverages Bootstrap to manage the responsive layout, ensuring that the interface adapts seamlessly to various screen sizes.
 
 **Mobile Devices**
@@ -256,24 +249,25 @@ In future I plan to build on the foundation of my project to use it as an online
 
 ## Libraries & Frameworks
 
-- asgiref==3.8.1
-- cloudinary==1.36.0
-- crispy-bootstrap5==2024.2
-- cryptography==43.0.0
-- dj-database-url==2.2.0
-- dj3-cloudinary-storage==0.0.6
-- Django==5.0.6
-- django-allauth==0.63.3
-- django-crispy-forms==2.2
-- gunicorn==20.1.0
-- pillow==10.2.0
-- psycopg==3.2.1
-- psycopg2==2.9.9
-- PyJWT==2.8.0
-- setuptools==71.1.0
-- sqlparse==0.5.0
-- urllib3==1.26.19
-- whitenoise==6.7.0
+asgiref==3.8.1
+cloudinary==1.36.0
+crispy-bootstrap5==2024.2
+cryptography==43.0.0
+dj-database-url==2.2.0
+dj3-cloudinary-storage==0.0.6
+Django==5.0.6
+django-allauth==0.63.3
+django-crispy-forms==2.2
+gunicorn==20.1.0
+pillow==10.2.0
+psycopg==3.2.1
+psycopg2==2.9.9
+PyJWT==2.8.0
+setuptools==71.1.0
+sqlparse==0.5.0
+urllib3==1.26.19
+whitenoise==6.7.0
+
 
 # Testing
 
