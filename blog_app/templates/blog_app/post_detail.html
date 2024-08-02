@@ -4,13 +4,12 @@
 
 <h1>{{ post.title }}</h1>
 <h2>Created on {{ post.created_on }}</h2>
-{% if post.image %}
-<img src="{{ post.image.url }}" class="img-fluid" alt="{{ post.title }}">
+{% if post.post_image %}
+    <p>{{ post.post_image.url }}</p>
+    <img src="{{ post.post_image.url }}" class="img-fluid" alt="{{ post.title }}">
 {% endif %}
-
 <br>
 <p>{{ post.content|safe }}</p>
-
 <div class="container">
     <a href="{% url 'home' %}" class="btn btn-success">Back</a>
 </div>
