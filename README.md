@@ -11,8 +11,7 @@ View live site here : https://tomozart22-7e604b91f7b3.herokuapp.com/
 Github Repo: https://github.com/TomOverment/tomozart22
 Kanban Board: https://github.com/users/TomOverment/projects/6
 Django Admin: https://8000-tomoverment-tomozart22-7vyyd9dhvch.ws.codeinstitute-ide.net/admin/
-              Username - tomo
-              Password - overmonstar
+
 
 ## Features:
 The project includes features for user registration, sign-in, and sign-out, along with the ability to upload and manage posts. Additionally, there is a gallery page showcasing various artworks and a main blog page where users can engage and interact with the content.
@@ -244,8 +243,7 @@ The application is built to be fully responsive, ensuring accessibility across m
 
 This is my Django Admin panel where I can manage the site from the backend. I can edit or delete posts, remove unwanted users and update the gallery page.
 Django Admin: https://8000-tomoverment-tomozart22-7vyyd9dhvch.ws.codeinstitute-ide.net/admin/
-              Username - tomo
-              Password - overmonstar
+
 
 ![admin](static/images/admin.PNG)
 
