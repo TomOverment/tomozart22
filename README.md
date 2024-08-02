@@ -10,6 +10,9 @@ Tomozart Gallery is a personal project designed to provide an accessible platfor
 View live site here : https://tomozart22-7e604b91f7b3.herokuapp.com/
 Github Repo: https://github.com/TomOverment/tomozart22
 Kanban Board: https://github.com/users/TomOverment/projects/6
+Django Admin: https://8000-tomoverment-tomozart22-7vyyd9dhvch.ws.codeinstitute-ide.net/admin/
+              Username - tomo
+              Password - overmonstar
 
 ## Features:
 The project includes features for user registration, sign-in, and sign-out, along with the ability to upload and manage posts. Additionally, there is a gallery page showcasing various artworks and a main blog page where users can engage and interact with the content.
@@ -240,6 +243,9 @@ The application is built to be fully responsive, ensuring accessibility across m
 # Django Admin
 
 This is my Django Admin panel where I can manage the site from the backend. I can edit or delete posts, remove unwanted users and update the gallery page.
+Django Admin: https://8000-tomoverment-tomozart22-7vyyd9dhvch.ws.codeinstitute-ide.net/admin/
+              Username - tomo
+              Password - overmonstar
 
 ![admin](static/images/admin.PNG)
 
@@ -321,17 +327,6 @@ I used CI Python Linter to validate the python code.
 | wsgi.py | ![wsgi](static/images/wsgipy2.PNG) | fixed |
 | manage.py | ![manage](static/images/managepy.PNG) | fixed |
 
-## Testing overview
-I corrected all the issues shown in the screenshots and have everything working correctly. I had errors that were within the Django libarys and could not fix. On the Register and Login pages.
-
-signup.html
-
-![register](static/images/register_errors.PNG)
-
-login.html
-
-![login](static/images/sign_in.PNG)
-
 
 ## Manual Testing
 I went through all the account features and found no problems. I may in future change the layout of some things. The user post, edit and delete works well. I will in future make it so admin can upload directly from the site to the gallery page. A button on the delete post page had inconsistent styling.
@@ -346,6 +341,45 @@ Heroku logs:
 
 ![Heroku_logs](static/images/heoku_logs.PNG)
 
+## Deployment Guide for the Tomozart Gallery Website
+
+### Deployment Steps:
+
+#### Creating the Heroku App
+
+- Begin by signing up or logging in to Heroku.
+- In the Heroku Dashboard, click on 'New' and then select 'Create New App'.
+- Choose a unique name for your project.
+- Select the EU region.
+- Click on "Create App".
+- In the "Deploy" tab, choose GitHub as the deployment method.
+- Connect your GitHub account and connect your GitHub repository.
+
+#### Setting Up Environment Variables
+
+- Create `env.py` in the top level of the Django app.
+- Import `os` in `env.py`.
+- Set up necessary environment variables in `env.py`, including the secret key and database URL.
+- Update `settings.py` to use environment variables for secret key and database.
+- Configure environment variables in the Heroku "Settings" tab under "Config Vars".
+- Migrate the models to the new database connection in the terminal.
+- Configure static files and templates directories in `settings.py`.
+- Add Heroku to the `ALLOWED_HOSTS` list.
+
+#### Creating Procfile and Push Changes
+
+- Create a `Procfile` in the top level directory.
+- Add the command to run the project in the `Procfile`.
+- Add, commit, and push the changes to GitHub.
+
+#### Heroku Deployment
+
+- In Heroku, navigate to the Deployment tab and deploy the branch manually.
+- Monitor the build logs for any errors.
+- Upon successful deployment, Heroku will display a link to the live site.
+- Make sure to resolve any deployment errors by adjusting the code as necessary.
+
+
 ## References
 - I used coolors for the colour pallet.  https://coolors.co/   
 - I used logo.com to quickly create a logo. https://logo.com/
@@ -353,6 +387,75 @@ Heroku logs:
 - I used bootstrap too style the html. https://getbootstrap.com/
 - I made use of chat GPT. https://chatgpt.com/
 - I used font from font awsome. https://fontawesome.com/
+
+
+## Manual Testing Results
+
+#### HOME PAGE
+
+| Test                                     | Result |
+|-----------------------------------------|--------|
+| Blog posts displayed as cards           | Pass   |
+| Ability to click on a blog card         | Pass   |
+| Edit and delete comment functionality   | Pass   |
+| User must be logged in to edit/delete | Pass |
+| User cannot delete/edit others' comments | Pass |
+| Prevention of deleting other users' posts  | Pass   |
+| Prevention of posting as other users        | Pass   |
+
+#### FOOTER/NAV BAR
+
+| Test                                     | Result |
+|-----------------------------------------|--------|
+| Navigation links functionality          | Pass   |
+| Social media links functionality        | Pass   |
+
+#### PROFILE PAGE
+
+| Test                                     | Result |
+|-----------------------------------------|--------|
+| Access requires login                   | Pass   |
+| Post creation functionality             | Pass   |
+| Redirect after post submission          | Pass   |
+
+#### LOGIN PAGE
+
+| Test                                    | Result |
+|----------------------------------------|--------|
+| Secure signup functionality            | Pass   |
+| Redirect after successful login        | Pass   |
+
+#### REGISTRATION PAGE
+
+| Test                                    | Result |
+|----------------------------------------|--------|
+| Secure login functionality             | Pass   |
+| Redirect after successful registration | Pass   |
+
+#### LOGOUT PAGE
+
+| Test                                    | Result |
+|----------------------------------------|--------|
+| Logout functionality                   | Pass   |
+| Redirect after successful logout       | Pass   |
+
+#### SECURITY
+
+| Test                                                             | Result |
+|-----------------------------------------------------------------|--------|
+| Check if a user with a valid username-password for interaction | Pass   |
+  
+
+# Known Bugs
+I corrected all the issues shown in the screenshots and have everything working correctly. I had errors that were within the Django libarys and could not fix. On the Register and Login pages.
+
+signup.html
+
+![register](static/images/register_errors.PNG)
+
+login.html
+
+![login](static/images/sign_in.PNG)
 
 ## Problems
 
