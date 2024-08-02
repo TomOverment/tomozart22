@@ -9,6 +9,7 @@ Tomozart Gallery is a personal project designed to provide an accessible platfor
 
 View live site here : https://tomozart22-7e604b91f7b3.herokuapp.com/
 Github Repo: https://github.com/TomOverment/tomozart22
+Kanban Board: https://github.com/users/TomOverment/projects/6
 
 ## Features:
 The project includes features for user registration, sign-in, and sign-out, along with the ability to upload and manage posts. Additionally, there is a gallery page showcasing various artworks and a main blog page where users can engage and interact with the content.
@@ -142,6 +143,7 @@ Criterion 3: Post images as well as comments.
 
 ## Kanban Board
 
+Kanban Board: https://github.com/users/TomOverment/projects/6
 ![Kanban Board](static/images/kanbanUS.PNG)
 
 A Kanban board was set up to map out and manage the development process visually. The board was organized into columns that depicted various stages of the workflow: To Do, In Progress, and Done. Each user story transitioned through these columns as work progressed.
@@ -354,7 +356,7 @@ Heroku logs:
 
 ## Problems
 
-During the first week of the project, I encountered a significant issue due to naming the app in all capital letters. Despite searching for solutions and following a Django renaming guide, I couldn't resolve the problem. Ultimately, I had to start a new project from scratch. It's a mistake I'll definitely not make again.
+During the first week of the project, I encountered a significant issue due to naming the app in all capital letters. Despite searching for solutions and following a Django renaming guide, I couldn't resolve the problem. Ultimately, I had to start a new project transfering my code. It's a mistake I'll definitely not make again.
 
 ## Conclusion 
 
