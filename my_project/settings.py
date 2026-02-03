@@ -10,12 +10,12 @@ import cloudinary.api
 
 from django.contrib.messages import constants as messages
 
-# ✅ Define BASE_DIR first
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Load .env (try project root, then BASE_DIR)
+load_dotenv(BASE_DIR.parent / ".env")  # ../.env
+load_dotenv(BASE_DIR / ".env")         # ./ .env
+print("ENV_PATHS checked:", BASE_DIR.parent / ".env", BASE_DIR / ".env")
+print("CLOUDINARY_CLOUD_NAME =", os.getenv("CLOUDINARY_CLOUD_NAME"))
 
-# ✅ Then load .env (since yours is in tomozart22)
-ENV_PATH = BASE_DIR / ".env"
-load_dotenv(ENV_PATH)
 
 
 
@@ -52,6 +52,7 @@ print(os.environ.get("DATABASE_URL"))
 print(CSRF_TRUSTED_ORIGINS)
 
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
