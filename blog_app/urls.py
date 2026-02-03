@@ -17,6 +17,8 @@ urlpatterns = [
     path('postdetail/<int:pk>/', views.PostDetail.as_view(),
          name='post_detail'),
     path('post/<int:post_id>/delete/', delete_post, name='delete_post'),
+    path("shop/", views.shop, name="shop"),
+
 
 ]
 

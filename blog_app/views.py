@@ -34,6 +34,9 @@ def profile(request):
 def about(request):
     return render(request, 'blog_app/about.html')
 
+def shop(request):
+    return render(request, "shop.html")
+
 
 class AddPostView(generic.CreateView):
     model = Post
@@ -129,3 +132,5 @@ def register(request):
     else:
         form = CustomSignupForm()
     return render(request, 'registration/signup.html', {'form': form})
+
+
