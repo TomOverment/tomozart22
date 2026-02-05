@@ -86,6 +86,11 @@
                            href="{% url 'shop' %}">Shop</a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'cart' %}active{% endif %}"
+                           href="{% url 'cart' %}">Cart</a>
+                    </li>
+
                     {% if user.is_authenticated %}
 
                         <li class="nav-item">

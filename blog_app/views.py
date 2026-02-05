@@ -120,6 +120,9 @@ def gallery(request):
     artworks = Artwork.objects.all()
     return render(request, 'gallery.html', {'artworks': artworks})
 
+def cart(request):
+    return render(request, "cart.html")
+
 
 def register(request):
     if request.method == 'POST':

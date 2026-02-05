@@ -1,20 +1,19 @@
-from pathlib import Path
-import os
-
 import dj_database_url
-from dotenv import load_dotenv
-
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
 from django.contrib.messages import constants as messages
 
-# Load .env (try project root, then BASE_DIR)
-load_dotenv(BASE_DIR.parent / ".env")  # ../.env
-load_dotenv(BASE_DIR / ".env")         # ./ .env
-print("ENV_PATHS checked:", BASE_DIR.parent / ".env", BASE_DIR / ".env")
-print("CLOUDINARY_CLOUD_NAME =", os.getenv("CLOUDINARY_CLOUD_NAME"))
+from pathlib import Path
+import os
+
+from dotenv import load_dotenv
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load .env from project root (same folder as manage.py)
+load_dotenv(BASE_DIR / ".env")
 
 
 
@@ -71,6 +70,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
 
     "blog_app",
+    "store",
 ]
 
 SITE_ID = 1
