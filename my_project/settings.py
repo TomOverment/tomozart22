@@ -12,6 +12,9 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 # Load .env from project root (same folder as manage.py)
 load_dotenv(BASE_DIR / ".env")
 

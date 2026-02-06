@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="mb-0">Cart</h1>
+        <a href="{% url 'store:shop' %}" class="btn btn-outline-dark">
+            Back to Shop
+        </a>
+    </div>
+
+    {% if items %}
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th style="width: 120px;">Price</th>
+                        <th style="width: 160px;">Qty</th>
+                        <th style="width: 140px;">Line total</th>
+                        <th style="width: 90px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in items %}
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">{{ i.product.name }}</div>
+                                {% if i.product.category %}
+                                    <div class="text-muted small">{{ i.product.category }}</div>
+                                {% endif %}
+                            </td>
+
+                            <td>£{{ i.product.price }}</td>
+
+                            <td>
+                                <form method="post" action="{% url 'store:cart_set_qty' i.product.id %}" class="d-flex gap-2">
+                                    {% csrf_token %}
+                                    <input
+                                        type="number"
+                                        name="qty"
+                                        value="{{ i.qty }}"
+                                        min="0"
+                                        max="99"
+                                        class="form-control form-control-sm"
+                                        style="max-width: 90px;"
+                                    >
+                                    <button type="submit" class="btn btn-sm btn-outline-dark">
+                                        Update
+                                    </button>
+                                </form>
+                                <div class="text-muted small mt-1">Set to 0 removes</div>
+                            </td>
+
+                            <td class="fw-bold">£{{ i.line_total }}</td>
+
+                            <td>
+                                <form method="post" action="{% url 'store:cart_remove' i.product.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <div class="card shadow-sm" style="min-width: 280px;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Items</span>
+                        <span class="fw-semibold">{{ count }}</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold">Total</span>
+                        <span class="fw-bold">£{{ total }}</span>
+                    </div>
+
+                    <button class="btn btn-dark w-100 mt-3" disabled>
+                        Checkout (next step)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="alert alert-secondary">
+            Your cart is empty (for now).
+        </div>
+        <a href="{% url 'store:shop' %}" class="btn btn-dark">Browse products</a>
+    {% endif %}
+</div>
+{% endblock %}
