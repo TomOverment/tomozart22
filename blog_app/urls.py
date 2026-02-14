@@ -4,6 +4,7 @@ from .views import delete_post
 from django.conf import settings
 from django.conf.urls.static import static
 
+app_name = "blog"
 
 urlpatterns = [
     path('', views.PostList.as_view(), name='home'),

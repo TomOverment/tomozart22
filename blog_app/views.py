@@ -34,10 +34,6 @@ def profile(request):
 def about(request):
     return render(request, 'blog_app/about.html')
 
-def shop(request):
-    return render(request, "shop.html")
-
-
 class AddPostView(generic.CreateView):
     model = Post
     form_class = PostForm
@@ -119,9 +115,6 @@ def delete_post(request, post_id):
 def gallery(request):
     artworks = Artwork.objects.all()
     return render(request, 'gallery.html', {'artworks': artworks})
-
-def cart(request):
-    return render(request, "cart.html")
 
 
 def register(request):
