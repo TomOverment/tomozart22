@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <a href="{% url 'store:shop' %}" class="btn btn-outline-dark mb-3">
+    ← Back to Shop
+  </a>
+
+  <div class="row g-4">
+    <div class="col-md-6">
+      {% if product.image %}
+        <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ product.name }}">
+      {% endif %}
+    </div>
+
+    <div class="col-md-6">
+      <h1 class="mb-2">{{ product.name }}</h1>
+
+      {% if product.category %}
+        <div class="text-muted mb-3">{{ product.category }}</div>
+      {% endif %}
+
+      <h3 class="mb-3">£{{ product.price }}</h3>
+
+      {% if product.description %}
+        <p>{{ product.description }}</p>
+      {% else %}
+        <p class="text-muted">No description yet.</p>
+      {% endif %}
+
+      <form method="post" action="{% url 'store:cart_add' product.id %}">
+        {% csrf_token %}
+        <button class="btn btn-dark">Add to cart</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

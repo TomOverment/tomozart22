@@ -17,14 +17,23 @@
             {% for product in products %}
                 <div class="col-12 col-sm-6 col-lg-4">
                     <div class="card h-100 shadow-sm">
-                        {% if product.image %}
-                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                        {% else %}
-                            <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="No image">
-                        {% endif %}
+
+                        <!-- Image links to product detail -->
+                        <a href="{% url 'store:product_detail' product.id %}" class="text-decoration-none">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="No image">
+                            {% endif %}
+                        </a>
 
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title mb-1">{{ product.name }}</h5>
+
+                            <!-- Name links to product detail -->
+                            <a href="{% url 'store:product_detail' product.id %}"
+                               class="text-decoration-none text-dark">
+                                <h5 class="card-title mb-1">{{ product.name }}</h5>
+                            </a>
 
                             {% if product.description %}
                                 <p class="card-text text-muted small mb-2">
@@ -35,6 +44,7 @@
                             <div class="mt-auto d-flex align-items-center justify-content-between">
                                 <span class="fw-bold">£{{ product.price }}</span>
 
+                                <!-- Add to Cart stays a form -->
                                 <form method="post" action="{% url 'store:cart_add' product.id %}">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-dark btn-sm">
@@ -42,6 +52,13 @@
                                     </button>
                                 </form>
                             </div>
+
+                            <!-- Optional: explicit "View details" link -->
+                            <a href="{% url 'store:product_detail' product.id %}"
+                               class="btn btn-outline-dark btn-sm mt-3">
+                                View details
+                            </a>
+
                         </div>
                     </div>
                 </div>

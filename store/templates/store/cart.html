@@ -4,97 +4,115 @@
 
 {% block content %}
 <div class="container py-4">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h1 class="mb-0">Cart</h1>
-        <a href="{% url 'store:shop' %}" class="btn btn-outline-dark">
-            Back to Shop
-        </a>
+
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h1 class="mb-0">Cart</h1>
+    <a href="{% url 'store:shop' %}" class="btn btn-outline-dark">Back to Shop</a>
+  </div>
+
+  {% if items %}
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th style="width:120px;">Price</th>
+            <th style="width:150px;">Qty</th>
+            <th style="width:140px;">Line total</th>
+            <th style="width:90px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in items %}
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-3">
+
+                  {% if i.product.image %}
+                    {# hover preview trigger (keeps you on cart) #}
+                    <img
+                      src="{{ i.product.image.url }}"
+                      alt="{{ i.product.name }}"
+                      class="cart-thumb js-hover-thumb"
+                      data-preview-img="{{ i.product.image.url }}"
+                      data-preview-title="{{ i.product.name|escape }}"
+                      data-preview-desc="{{ i.product.description|default:''|truncatewords:30|escape }}"
+                    >
+                  {% endif %}
+
+                  <div>
+                    <div class="fw-semibold">{{ i.product.name }}</div>
+                    {% if i.product.category %}
+                      <div class="text-muted small">{{ i.product.category }}</div>
+                    {% endif %}
+
+                    {# Optional: “View details” opens new tab so cart page stays #}
+                    <a href="{% url 'store:product_detail' i.product.id %}"
+                       target="_blank" rel="noopener"
+                       class="small text-decoration-none">
+                      View details
+                    </a>
+                  </div>
+
+                </div>
+              </td>
+
+              <td>£{{ i.product.price }}</td>
+
+              <td>
+                <form method="post" action="{% url 'store:cart_set_qty' i.product.id %}">
+                  {% csrf_token %}
+                  <input
+                    type="number"
+                    name="qty"
+                    value="{{ i.qty }}"
+                    min="0"
+                    max="99"
+                    class="form-control form-control-sm"
+                    style="max-width:90px;"
+                    oninput="this.form.submit()"
+                  >
+                </form>
+              </td>
+
+              <td class="fw-bold">£{{ i.line_total }}</td>
+
+              <td>
+                <form method="post" action="{% url 'store:cart_remove' i.product.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
 
-    {% if items %}
-        <div class="table-responsive">
-            <table class="table align-middle">
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th style="width: 120px;">Price</th>
-                        <th style="width: 160px;">Qty</th>
-                        <th style="width: 140px;">Line total</th>
-                        <th style="width: 90px;"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for i in items %}
-                        <tr>
-                            <td>
-                                <div class="fw-semibold">{{ i.product.name }}</div>
-                                {% if i.product.category %}
-                                    <div class="text-muted small">{{ i.product.category }}</div>
-                                {% endif %}
-                            </td>
+    <div class="d-flex justify-content-end mt-4">
+      <div class="card shadow-sm" style="min-width:280px;">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <span class="text-muted">Items</span>
+            <span class="fw-semibold">{{ count }}</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <span class="fw-bold">Total</span>
+            <span class="fw-bold">£{{ total }}</span>
+          </div>
 
-                            <td>£{{ i.product.price }}</td>
-
-                            <td>
-                                <form method="post" action="{% url 'store:cart_set_qty' i.product.id %}" class="d-flex gap-2">
-                                    {% csrf_token %}
-                                    <input
-                                        type="number"
-                                        name="qty"
-                                        value="{{ i.qty }}"
-                                        min="0"
-                                        max="99"
-                                        class="form-control form-control-sm"
-                                        style="max-width: 90px;"
-                                    >
-                                    <button type="submit" class="btn btn-sm btn-outline-dark">
-                                        Update
-                                    </button>
-                                </form>
-                                <div class="text-muted small mt-1">Set to 0 removes</div>
-                            </td>
-
-                            <td class="fw-bold">£{{ i.line_total }}</td>
-
-                            <td>
-                                <form method="post" action="{% url 'store:cart_remove' i.product.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        Remove
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+          <a href="{% url 'store:checkout_start' %}" class="btn btn-dark w-100 mt-3">
+            Checkout
+          </a>
         </div>
+      </div>
+    </div>
 
-        <div class="d-flex justify-content-end">
-            <div class="card shadow-sm" style="min-width: 280px;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <span class="text-muted">Items</span>
-                        <span class="fw-semibold">{{ count }}</span>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between">
-                        <span class="fw-bold">Total</span>
-                        <span class="fw-bold">£{{ total }}</span>
-                    </div>
+  {% else %}
+    <div class="alert alert-secondary">Your cart is empty (for now).</div>
+    <a href="{% url 'store:shop' %}" class="btn btn-dark">Browse products</a>
+  {% endif %}
 
-                    <button class="btn btn-dark w-100 mt-3" disabled>
-                        Checkout (next step)
-                    </button>
-                </div>
-            </div>
-        </div>
-
-    {% else %}
-        <div class="alert alert-secondary">
-            Your cart is empty (for now).
-        </div>
-        <a href="{% url 'store:shop' %}" class="btn btn-dark">Browse products</a>
-    {% endif %}
 </div>
 {% endblock %}

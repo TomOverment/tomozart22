@@ -57,6 +57,14 @@
     </style>
 </head>
 
+<div id="hoverPreview" class="hover-preview-fixed" aria-hidden="true">
+  <img id="hoverPreviewImg" alt="">
+  <div class="hover-content">
+    <strong id="hoverPreviewTitle"></strong>
+    <p id="hoverPreviewDesc"></p>
+  </div>
+</div>
+
 <body class="d-flex flex-column h-100">
 
 <!-- Navigation -->
@@ -190,6 +198,74 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
+<script>
+(() => {
+  const preview = document.getElementById("hoverPreview");
+  const img = document.getElementById("hoverPreviewImg");
+  const title = document.getElementById("hoverPreviewTitle");
+  const desc = document.getElementById("hoverPreviewDesc");
+
+  if (!preview || !img || !title || !desc) return;
+
+  const GAP = 12;
+
+  function positionNextTo(el) {
+    const r = el.getBoundingClientRect();
+
+    // show first so we can measure it
+    preview.style.display = "block";
+    const pr = preview.getBoundingClientRect();
+
+    let left = r.right + GAP;
+    let top = r.top;
+
+    // flip left if overflowing
+    if (left + pr.width > window.innerWidth - 10) {
+      left = r.left - pr.width - GAP;
+    }
+
+    // clamp vertically
+    if (top + pr.height > window.innerHeight - 10) {
+      top = window.innerHeight - pr.height - 10;
+    }
+    if (top < 10) top = 10;
+
+    preview.style.left = `${left}px`;
+    preview.style.top = `${top}px`;
+  }
+
+  function show(el) {
+    img.src = el.dataset.previewImg || "";
+    img.alt = el.dataset.previewTitle || "";
+    title.textContent = el.dataset.previewTitle || "";
+    desc.textContent = el.dataset.previewDesc || "";
+    positionNextTo(el);
+  }
+
+  function hide() {
+    preview.style.display = "none";
+  }
+
+  document.addEventListener("mouseover", (e) => {
+    const el = e.target.closest(".js-hover-thumb");
+    if (!el) return;
+
+    show(el);
+
+    const onMove = () => positionNextTo(el);
+    el.addEventListener("mousemove", onMove);
+
+    el.addEventListener("mouseleave", () => {
+      el.removeEventListener("mousemove", onMove);
+      hide();
+    }, { once: true });
+  });
+
+  // safety: hide on scroll/resize
+  window.addEventListener("scroll", hide, true);
+  window.addEventListener("resize", hide);
+})();
+</script>
 
 </body>
 </html>
