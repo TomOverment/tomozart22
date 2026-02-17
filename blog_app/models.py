@@ -20,7 +20,7 @@ class Post(models.Model):
         return self.title + ' | ' + str(self.author)
 
     def get_absolute_url(self):
-        return reverse('post_detail', args=[self.slug])
+        return reverse('blog:post_detail', args=[self.slug])
 
 
 class Comment(models.Model):

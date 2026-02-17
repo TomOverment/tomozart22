@@ -57,13 +57,6 @@
     </style>
 </head>
 
-<div id="hoverPreview" class="hover-preview-fixed" aria-hidden="true">
-  <img id="hoverPreviewImg" alt="">
-  <div class="hover-content">
-    <strong id="hoverPreviewTitle"></strong>
-    <p id="hoverPreviewDesc"></p>
-  </div>
-</div>
 
 <body class="d-flex flex-column h-100">
 
@@ -200,31 +193,41 @@
         crossorigin="anonymous"></script>
 <script>
 (() => {
-  const preview = document.getElementById("hoverPreview");
-  const img = document.getElementById("hoverPreviewImg");
-  const title = document.getElementById("hoverPreviewTitle");
-  const desc = document.getElementById("hoverPreviewDesc");
-
-  if (!preview || !img || !title || !desc) return;
-
   const GAP = 12;
+  const DELAY = 500; // ms (increase if you want more delay)
 
-  function positionNextTo(el) {
+  let timer = null;
+  let currentEl = null;
+
+  function getEls() {
+    return {
+      preview: document.getElementById("hoverPreview"),
+      img: document.getElementById("hoverPreviewImg"),
+      title: document.getElementById("hoverPreviewTitle"),
+      desc: document.getElementById("hoverPreviewDesc"),
+    };
+  }
+
+  function clearTimer() {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+  }
+
+  function place(preview, el) {
     const r = el.getBoundingClientRect();
-
-    // show first so we can measure it
     preview.style.display = "block";
+
     const pr = preview.getBoundingClientRect();
 
     let left = r.right + GAP;
     let top = r.top;
 
-    // flip left if overflowing
     if (left + pr.width > window.innerWidth - 10) {
       left = r.left - pr.width - GAP;
     }
 
-    // clamp vertically
     if (top + pr.height > window.innerHeight - 10) {
       top = window.innerHeight - pr.height - 10;
     }
@@ -235,38 +238,93 @@
   }
 
   function show(el) {
+    const { preview, img, title, desc } = getEls();
+    if (!preview || !img || !title || !desc) return;
+
     img.src = el.dataset.previewImg || "";
     img.alt = el.dataset.previewTitle || "";
     title.textContent = el.dataset.previewTitle || "";
     desc.textContent = el.dataset.previewDesc || "";
-    positionNextTo(el);
+
+    place(preview, el);
+
+    requestAnimationFrame(() => preview.classList.add("show"));
   }
 
   function hide() {
-    preview.style.display = "none";
+    const { preview } = getEls();
+    if (!preview) return;
+
+    preview.classList.remove("show");
+    setTimeout(() => {
+      if (!currentEl) preview.style.display = "none";
+    }, 180);
   }
+
+  // Use event delegation BUT with mouseenter-like behaviour:
+  // We track the closest thumb and only start timer once per entry.
+  document.addEventListener("mousemove", (e) => {
+    const el = e.target.closest(".js-hover-thumb");
+    if (!el) return;
+
+    if (currentEl === el) return; // already hovering same thumb
+
+    // entered a new thumb
+    clearTimer();
+    currentEl = el;
+
+    timer = setTimeout(() => {
+      if (currentEl === el) show(el);
+    }, DELAY);
+  });
 
   document.addEventListener("mouseover", (e) => {
     const el = e.target.closest(".js-hover-thumb");
     if (!el) return;
 
-    show(el);
-
-    const onMove = () => positionNextTo(el);
-    el.addEventListener("mousemove", onMove);
-
-    el.addEventListener("mouseleave", () => {
-      el.removeEventListener("mousemove", onMove);
-      hide();
-    }, { once: true });
+    // keep preview positioned while visible
+    const { preview } = getEls();
+    if (preview && preview.classList.contains("show") && currentEl === el) {
+      place(preview, el);
+    }
   });
 
-  // safety: hide on scroll/resize
-  window.addEventListener("scroll", hide, true);
-  window.addEventListener("resize", hide);
+  document.addEventListener("mouseout", (e) => {
+    // leaving thumb area entirely
+    const leftThumb = e.target.closest(".js-hover-thumb");
+    if (!leftThumb) return;
+
+    const to = e.relatedTarget;
+    if (to && to.closest && to.closest(".js-hover-thumb") === leftThumb) return;
+
+    clearTimer();
+    currentEl = null;
+    hide();
+  });
+
+  window.addEventListener("scroll", () => {
+    clearTimer();
+    currentEl = null;
+    hide();
+  }, true);
+
+  window.addEventListener("resize", () => {
+    clearTimer();
+    currentEl = null;
+    hide();
+  });
 })();
 </script>
 
+
+
+<div id="hoverPreview" class="hover-preview-fixed" aria-hidden="true">
+  <img id="hoverPreviewImg" alt="">
+  <div class="hover-content">
+    <strong id="hoverPreviewTitle"></strong>
+    <p id="hoverPreviewDesc"></p>
+  </div>
+</div>
 </body>
 </html>
 

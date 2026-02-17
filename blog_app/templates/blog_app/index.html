@@ -53,7 +53,7 @@
                         <p class="author">Author: {{ post.author }}</p>
                     </div>
                 </div>
-                <a href="{% url 'post_detail' post.slug %}" class="post-link">
+                <a href="{% url 'blog:post_detail' post.slug %}" class="post-link">
                     <h2 class="card-title">{{ post.title }}</h2> 
                 </a>
                 <hr>
@@ -64,8 +64,8 @@
                 {% endif %}
                 {% if user.is_authenticated %}
                     {% if user == post.author or user.is_staff %}
-                    <a href="{% url 'update_post' post.pk %}">Edit</a>
-                    <a href="{% url 'delete_post' post.id %}">Delete</a>
+                    <a href="{% url 'blog:update_post' post.pk %}">Edit</a>
+                    <a href="{% url 'blog:delete_post' post.id %}">Delete</a>
                     {% endif %}
                 {% endif %}
             </div>

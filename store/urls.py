@@ -19,4 +19,6 @@ urlpatterns = [
     path("cart/inc/<int:product_id>/", views.cart_inc, name="cart_inc"),
     path("cart/dec/<int:product_id>/", views.cart_dec, name="cart_dec"),
     path("product/<int:product_id>/", views.product_detail, name="product_detail"),
+    path("stripe/webhook/", views.stripe_webhook, name="stripe_webhook"),
+
 ]

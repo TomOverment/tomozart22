@@ -51,7 +51,7 @@ class AddPostView(generic.CreateView):
         form.save()
         messages.add_message(self.request, messages.SUCCESS,
                              'Post created successfully!')
-        return redirect('home')
+        return redirect('blog:home')
 
 
 def post_detail(request, slug):
@@ -92,7 +92,8 @@ class UpdatePost(generic.UpdateView):
     model = Post
     form_class = UpdateForm
     template_name = "blog_app/editposts.html"
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy("blog:home")
+
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -108,7 +109,7 @@ def delete_post(request, post_id):
     if request.method == 'POST':
         post.delete()
         messages.success(request, 'Post deleted successfully!')
-        return redirect('home')
+        return redirect('blog:home')
     return render(request, 'blog_app/post_confirm_delete.html', {'post': post})
 
 

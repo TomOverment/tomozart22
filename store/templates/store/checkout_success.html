@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Payment Successful{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+    <h1 class="mb-3">Payment Successful 🎉</h1>
+    <p>Your order has been received.</p>
+    <a href="{% url 'store:shop' %}" class="btn btn-dark mt-3">
+        Continue Shopping
+    </a>
+</div>
+{% endblock %}

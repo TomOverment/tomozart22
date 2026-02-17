@@ -15,10 +15,10 @@
                 </a>
                 {% endif %}
                 <div class="card-body">
-                    <h2 class="card-title"><a href="{% url 'update_post' post.pk %}" class="post-link">{{ post.title }}</a></h2>
+                    <h2 class="card-title"><a href="{% url 'blog:update_post' post.pk %}" class="post-link">{{ post.title }}</a></h2>
                     <p class="card-text">{{ post.content|safe }}</p>
-                    <a href="{% url 'update_post' post.pk %}">Edit</a>
-                    <a href="{% url 'delete_post' post.id %}">Delete</a>
+                    <a href="{% url 'blog:update_post' post.pk %}">Edit</a>
+                    <a href="{% url 'blog:delete_post' post.id %}">Delete</a>
                 </div>
             </div>
         </div>
@@ -38,11 +38,11 @@
                 </a>
                 {% endif %}
                 <div class="card-body">
-                    <h2 class="card-title"><a href="{% url 'post_detail' post.slug %}" class="post-link">{{ post.title }}</a></h2>
+                    <h2 class="card-title"><a href="{% url 'blog:post_detail' post.slug %}" class="post-link">{{ post.title }}</a></h2>
                     <p class="card-text">{{ post.content|safe }}</p>
-                    <a href="{% url 'post_detail' post.slug %}">View</a>
-                    <a href="{% url 'update_post' post.pk %}">Edit</a>
-                    <a href="{% url 'delete_post' post.id %}">Delete</a>
+                    <a href="{% url 'blog:post_detail' post.slug %}">View</a>
+                    <a href="{% url 'blog:update_post' post.pk %}">Edit</a>
+                    <a href="{% url 'blog:delete_post' post.id %}">Delete</a>
                 </div>
             </div>
         </div>
