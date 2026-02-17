@@ -11,6 +11,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from .models import Artwork
 from django.utils.text import slugify
 from django.urls import reverse_lazy
+from store.models import Product
 
 
 class PostList(generic.ListView):
@@ -129,5 +130,18 @@ def register(request):
     else:
         form = CustomSignupForm()
     return render(request, 'registration/signup.html', {'form': form})
+
+class PostList(generic.ListView):
+    queryset = Post.objects.filter(status=1).order_by("-created_on")
+    template_name = "blog_app/index.html"
+    paginate_by = 6
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["products"] = (
+            Product.objects.filter(is_active=True)
+            .order_by("-id")[:12]   # ✅ Product doesn't have created_on, so use -id
+        )
+        return context
 
 

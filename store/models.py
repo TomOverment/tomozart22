@@ -45,6 +45,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="products")
     image = models.ImageField(upload_to="products/")
     description = models.TextField(max_length=500, default="", blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -52,7 +53,6 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
 
 # -----------------------------
 # ORDERS / CHECKOUT

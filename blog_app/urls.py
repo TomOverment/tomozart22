@@ -18,9 +18,6 @@ urlpatterns = [
     path("addpost/", views.AddPostView.as_view(), name="add_post"),
     path("post/edit/<int:pk>/", views.UpdatePost.as_view(), name="update_post"),
 
-    # ✅ Rename this so it doesn't clash (or delete if unused)
-    path("postdetail/<int:pk>/", views.PostDetail.as_view(), name="post_detail_pk"),
-
     path("post/<int:post_id>/delete/", delete_post, name="delete_post"),
 ]
 
