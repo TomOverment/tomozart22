@@ -22,6 +22,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
+    <!-- Your CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 <style>
@@ -64,7 +65,8 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
     gap: .55rem;
 }
 
-.navbar .dropdown-item:hover {
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item:focus {
     background-color: rgba(255,255,255,.08);
     color: #fff;
 }
@@ -79,6 +81,55 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
     text-align: center;
     opacity: .9;
 }
+
+/* -----------------------------
+   HOVER PREVIEW (Cart thumbnails)
+----------------------------- */
+.hover-preview-fixed{
+  position: fixed;
+  display: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .18s ease, transform .18s ease;
+  z-index: 3000; /* above navbar & everything */
+  width: 320px;
+  max-width: 70vw;
+  background: rgba(10,10,10,.92);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0,0,0,.45);
+}
+
+.hover-preview-fixed.show{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hover-preview-fixed img{
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  display: block;
+}
+
+.hover-preview-fixed .hover-content{
+  padding: .75rem .85rem;
+  color: #fff;
+}
+
+.hover-preview-fixed strong{
+  display: block;
+  font-weight: 700;
+  margin-bottom: .25rem;
+}
+
+.hover-preview-fixed p{
+  margin: 0;
+  color: rgba(255,255,255,.8);
+  font-size: .9rem;
+  line-height: 1.25rem;
+}
 </style>
 </head>
 
@@ -91,7 +142,7 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
 
     <!-- Brand -->
     <a class="navbar-brand" href="{{ home_url }}">
-        <img src="{% static 'images/logo.png' %}" height="25">
+        <img src="{% static 'images/logo.png' %}" height="25" alt="logo">
     </a>
 
     <!-- Right Controls -->
@@ -113,7 +164,9 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
         <!-- Desktop Dropdown -->
         <div class="dropdown d-none d-md-block">
             <button class="btn btn-outline-light btn-sm dropdown-toggle"
-                    data-bs-toggle="dropdown">
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    aria-label="Menu">
                 <i class="fa-solid fa-bars"></i>
             </button>
 
@@ -179,7 +232,10 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
         <button class="navbar-toggler d-md-none"
                 type="button"
                 data-bs-toggle="collapse"
-                data-bs-target="#navbarMain">
+                data-bs-target="#navbarMain"
+                aria-controls="navbarMain"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
@@ -225,17 +281,17 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
     <div>
         <p class="mb-1">Made by Thomas A Overment</p>
         <div>
-            <a href="#" class="text-white me-3">
+            <a href="#" class="text-white me-3" aria-label="Instagram">
                 <i class="fa-brands fa-instagram-square"></i>
             </a>
-            <a href="#" class="text-white">
+            <a href="#" class="text-white" aria-label="LinkedIn">
                 <i class="fa-brands fa-linkedin"></i>
             </a>
         </div>
     </div>
 
     <!-- Back To Top -->
-    <button id="backToTop" class="btn btn-outline-light btn-sm d-none">
+    <button id="backToTop" class="btn btn-outline-light btn-sm d-none" type="button" aria-label="Back to top">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
@@ -246,20 +302,128 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+/* Back to top */
 const backBtn = document.getElementById("backToTop");
 
 window.addEventListener("scroll", () => {
-  if (window.scrollY > 300) {
-    backBtn.classList.remove("d-none");
-  } else {
-    backBtn.classList.add("d-none");
-  }
+  if (window.scrollY > 300) backBtn.classList.remove("d-none");
+  else backBtn.classList.add("d-none");
 });
 
 backBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
+
+<script>
+/* Hover preview (used by .js-hover-thumb thumbnails) */
+(() => {
+  const GAP = 12;
+  const DELAY = 500;
+
+  let timer = null;
+  let currentEl = null;
+
+  function getEls() {
+    return {
+      preview: document.getElementById("hoverPreview"),
+      img: document.getElementById("hoverPreviewImg"),
+      title: document.getElementById("hoverPreviewTitle"),
+      desc: document.getElementById("hoverPreviewDesc"),
+    };
+  }
+
+  function clearTimer() {
+    if (timer) { clearTimeout(timer); timer = null; }
+  }
+
+  function place(preview, el) {
+    const r = el.getBoundingClientRect();
+    preview.style.display = "block";
+
+    const pr = preview.getBoundingClientRect();
+    let left = r.right + GAP;
+    let top = r.top;
+
+    if (left + pr.width > window.innerWidth - 10) left = r.left - pr.width - GAP;
+    if (top + pr.height > window.innerHeight - 10) top = window.innerHeight - pr.height - 10;
+    if (top < 10) top = 10;
+
+    preview.style.left = `${left}px`;
+    preview.style.top = `${top}px`;
+  }
+
+  function show(el) {
+    const { preview, img, title, desc } = getEls();
+    if (!preview || !img || !title || !desc) return;
+
+    img.src = el.dataset.previewImg || "";
+    img.alt = el.dataset.previewTitle || "";
+    title.textContent = el.dataset.previewTitle || "";
+    desc.textContent = el.dataset.previewDesc || "";
+
+    place(preview, el);
+    requestAnimationFrame(() => preview.classList.add("show"));
+  }
+
+  function hide() {
+    const { preview } = getEls();
+    if (!preview) return;
+
+    preview.classList.remove("show");
+    setTimeout(() => {
+      if (!currentEl) preview.style.display = "none";
+    }, 180);
+  }
+
+  document.addEventListener("mousemove", (e) => {
+    const el = e.target.closest(".js-hover-thumb");
+    if (!el) return;
+    if (currentEl === el) return;
+
+    clearTimer();
+    currentEl = el;
+
+    timer = setTimeout(() => {
+      if (currentEl === el) show(el);
+    }, DELAY);
+  });
+
+  document.addEventListener("mouseover", (e) => {
+    const el = e.target.closest(".js-hover-thumb");
+    if (!el) return;
+
+    const { preview } = getEls();
+    if (preview && preview.classList.contains("show") && currentEl === el) {
+      place(preview, el);
+    }
+  });
+
+  document.addEventListener("mouseout", (e) => {
+    const leftThumb = e.target.closest(".js-hover-thumb");
+    if (!leftThumb) return;
+
+    const to = e.relatedTarget;
+    if (to && to.closest && to.closest(".js-hover-thumb") === leftThumb) return;
+
+    clearTimer();
+    currentEl = null;
+    hide();
+  });
+
+  window.addEventListener("scroll", () => { clearTimer(); currentEl = null; hide(); }, true);
+  window.addEventListener("resize", () => { clearTimer(); currentEl = null; hide(); });
+})();
+</script>
+
+<!-- Hover preview element -->
+<div id="hoverPreview" class="hover-preview-fixed" aria-hidden="true">
+  <img id="hoverPreviewImg" alt="">
+  <div class="hover-content">
+    <strong id="hoverPreviewTitle"></strong>
+    <p id="hoverPreviewDesc"></p>
+  </div>
+</div>
 
 </body>
 </html>
