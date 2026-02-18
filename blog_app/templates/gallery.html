@@ -4,67 +4,109 @@
 {% block content %}
 
 <style>
-  .gallery-card {
-    border-radius: 0;            /* removed rounded corners */
-    overflow: hidden;
-    transition: transform .25s ease, box-shadow .25s ease;
+  /* -----------------------------
+     Masonry Layout
+  ----------------------------- */
+  .masonry {
+    column-count: 1;
+    column-gap: 1.75rem;
   }
 
-  .gallery-card:hover {
+  @media (min-width: 576px) { .masonry { column-count: 2; } }
+  @media (min-width: 992px) { .masonry { column-count: 3; } }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 2rem;
+  }
+
+  /* -----------------------------
+     Tile Styling
+  ----------------------------- */
+  .gallery-tile {
+    border-radius: 0;
+    overflow: hidden;
+    transition: transform .25s ease, box-shadow .25s ease;
+    background: transparent;
+  }
+
+  .gallery-tile:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.18);
   }
 
   .gallery-img {
-    height: 320px;
-    object-fit: cover;
+    width: 100%;
+    height: auto;   /* full image, no cropping */
+    display: block;
   }
 
-  .gallery-card .card-body {
-    background-color: #f8f9fa;
-    border-top: 1px solid rgba(0,0,0,.08);
+  /* -----------------------------
+     Caption / Typography
+     (Aligned with Shop styling)
+  ----------------------------- */
+  .gallery-caption {
+    padding-top: .75rem;
+    text-align: center;
   }
+
+  .gallery-caption h5 {
+    font-weight: 600;
+    margin-bottom: .35rem;
+  }
+
+  .gallery-caption p {
+    font-size: .9rem;
+    margin-bottom: 0;
+  }
+
 </style>
 
 
-<div class="container-fluid mt-4">
+<div class="container py-5">
 
-  <div class="row">
-    <div class="col text-center mb-4">
-      <h1 class="title">Art Gallery</h1>
-      <p class="text-muted">
-        Explore the collection of artworks by Tomo. Click on the images for a larger view.
-      </p>
-      <hr>
-    </div>
+  <!-- Page Heading -->
+  <div class="text-center mb-5">
+    <h2 class="mb-2">Art Gallery</h2>
+    <p class="text-muted mb-0">
+      Explore the collection of artworks by Tomo. Click an image to view full size.
+    </p>
+    <hr class="mt-4">
   </div>
 
-  <!-- Gallery Grid -->
-  <div class="row">
+
+  <!-- Masonry Grid -->
+  <div class="masonry">
     {% for artwork in artworks %}
-      <div class="col-md-4 mb-4">
+      <div class="masonry-item">
 
-        <div class="card gallery-card shadow-sm">
+        <a href="{{ artwork.artwork_image.url }}"
+           target="_blank"
+           class="text-decoration-none text-dark">
 
-          <a href="{{ artwork.artwork_image.url }}" target="_blank">
+          <div class="gallery-tile">
             <img src="{{ artwork.artwork_image.url }}"
-                 class="card-img-top gallery-img"
+                 class="gallery-img"
                  alt="{{ artwork.title }}">
-          </a>
-
-          <div class="card-body text-center">
-            <h5 class="card-title mb-2">{{ artwork.title }}</h5>
-            <p class="card-text text-muted">
-              {{ artwork.description }}
-            </p>
           </div>
 
-        </div>
+        </a>
+
+        {% if artwork.title or artwork.description %}
+          <div class="gallery-caption">
+            {% if artwork.title %}
+              <h5>{{ artwork.title }}</h5>
+            {% endif %}
+            {% if artwork.description %}
+              <p class="text-muted">{{ artwork.description }}</p>
+            {% endif %}
+          </div>
+        {% endif %}
 
       </div>
     {% empty %}
-      <div class="col text-center">
-        <p>No artworks available yet.</p>
+      <div class="alert alert-secondary text-center">
+        No artworks available yet.
       </div>
     {% endfor %}
   </div>

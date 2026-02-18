@@ -13,8 +13,6 @@
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
@@ -22,311 +20,246 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet" crossorigin="anonymous">
+          rel="stylesheet">
 
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <style>
-        html, body { height: 100%; margin: 0; }
-        body { display: flex; flex-direction: column; }
-        main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
-        .flex-fill { flex: 1 1 auto; }
-        .footer { background-color: black; color: white; text-align: center; padding: 10px; }
+<style>
+html, body { height: 100%; margin: 0; }
+body { display: flex; flex-direction: column; font-family: 'Lato', sans-serif; }
+main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
+.flex-fill { flex: 1 1 auto; }
 
-        /* Optional: make toggler a bit cleaner */
-        .navbar-toggler { border: 0; }
-        .navbar-toggler:focus { box-shadow: none; }
-    </style>
+/* Footer */
+.footer {
+    background-color: #000;
+    color: #fff;
+    padding: 20px 0;
+}
+
+/* Back to Top */
+#backToTop {
+    transition: opacity .3s ease;
+}
+
+/* -----------------------------
+   DARK DROPDOWN STYLE
+----------------------------- */
+.navbar .dropdown-menu {
+    background-color: #0b0b0b;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+    padding: .4rem;
+    box-shadow: 0 12px 30px rgba(0,0,0,.45);
+    min-width: 220px;
+}
+
+.navbar .dropdown-item {
+    color: rgba(255,255,255,.9);
+    border-radius: 8px;
+    padding: .55rem .75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: rgba(255,255,255,.08);
+    color: #fff;
+}
+
+.navbar .dropdown-divider {
+    border-top: 1px solid rgba(255,255,255,.12);
+    margin: .35rem 0;
+}
+
+.navbar .dropdown-item i {
+    width: 1.1rem;
+    text-align: center;
+    opacity: .9;
+}
+</style>
 </head>
 
 <body class="d-flex flex-column h-100">
 
 {% with ns=request.resolver_match.namespace rn=request.resolver_match.url_name %}
-<!-- Navigation -->
-<nav class="navbar navbar-expand-md navbar-dark bg-black">
-    <div class="container-fluid">
 
-        <!-- Brand -->
-        <a class="navbar-brand" href="{{ home_url }}">
-            <img src="{% static 'images/logo.png' %}" alt="logo" height="25">
+<nav class="navbar navbar-expand-md navbar-dark bg-black">
+<div class="container-fluid">
+
+    <!-- Brand -->
+    <a class="navbar-brand" href="{{ home_url }}">
+        <img src="{% static 'images/logo.png' %}" height="25">
+    </a>
+
+    <!-- Right Controls -->
+    <div class="d-flex align-items-center gap-2 ms-auto order-md-2">
+
+        <!-- Global Cart -->
+        <a class="btn btn-outline-light btn-sm position-relative"
+           href="{% url 'store:cart' %}">
+            <i class="fa-solid fa-cart-shopping me-1"></i>
+            View Cart
+
+            {% if cart_count > 0 %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+                {{ cart_count }}
+            </span>
+            {% endif %}
         </a>
 
-        <!-- Right-side controls (always visible) -->
-        <div class="d-flex align-items-center gap-2 ms-auto order-md-2">
-
-            <!-- GLOBAL View Cart button + counter (always visible) -->
-            <a class="btn btn-outline-light btn-sm position-relative"
-               href="{% url 'store:cart' %}">
-                <i class="fa-solid fa-cart-shopping me-1"></i>
-                View Cart
-
-                {% if cart_count > 0 %}
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
-                        {{ cart_count }}
-                    </span>
-                {% endif %}
-            </a>
-
-            <!-- Desktop-only burger dropdown (always visible on md+) -->
-            <div class="dropdown d-none d-md-block">
-                <button class="btn btn-outline-light btn-sm dropdown-toggle"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        aria-label="Menu">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-
-                <ul class="dropdown-menu dropdown-menu-end">
-                    {% if user.is_authenticated %}
-                        <li>
-                            <a class="dropdown-item" href="{% url 'blog:profile' %}">Profile</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'blog:add_post' %}">Add Post</a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item" href="{{ logout_url }}">Logout</a>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a class="dropdown-item" href="{{ login_url }}">Login</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ signup_url }}">Register</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-
-            <!-- Mobile burger toggler (only visible < md) -->
-            <button class="navbar-toggler d-md-none"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarMain"
-                    aria-controls="navbarMain"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+        <!-- Desktop Dropdown -->
+        <div class="dropdown d-none d-md-block">
+            <button class="btn btn-outline-light btn-sm dropdown-toggle"
+                    data-bs-toggle="dropdown">
+                <i class="fa-solid fa-bars"></i>
             </button>
 
-        </div>
+            <ul class="dropdown-menu dropdown-menu-end">
 
-        <!-- Collapsible main nav (mobile: everything; desktop: core links only) -->
-        <div class="collapse navbar-collapse order-md-1" id="navbarMain">
-
-            <!-- LEFT NAV -->
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-
-                <li class="nav-item">
-                    <a class="nav-link {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
-                       href="{{ home_url }}">
-                        Home
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
-                       href="{% url 'blog:gallery' %}">
-                        Gallery
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
-                       href="{% url 'store:shop' %}">
-                        Shop
-                    </a>
-                </li>
-
-                <!-- Mobile: include Cart link in menu too -->
-                <li class="nav-item d-md-none">
-                    <a class="nav-link {% if ns == 'store' and rn == 'cart' %}active{% endif %}"
-                       href="{% url 'store:cart' %}">
-                        Cart
-                        {% if cart_count > 0 %}
-                            <span class="badge rounded-pill bg-dark ms-1">{{ cart_count }}</span>
-                        {% endif %}
-                    </a>
-                </li>
-
-                <!-- Mobile-only auth links (desktop uses dropdown burger) -->
                 {% if user.is_authenticated %}
-                    <li class="nav-item d-md-none">
-                        <a class="nav-link {% if ns == 'blog' and rn == 'profile' %}active{% endif %}"
-                           href="{% url 'blog:profile' %}">
-                            Profile
-                        </a>
-                    </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'blog:profile' %}">
+                        <i class="fa-solid fa-user"></i> Profile
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'blog:add_post' %}">
+                        <i class="fa-solid fa-pen-to-square"></i> Add Post
+                    </a>
+                </li>
 
-                    <li class="nav-item d-md-none">
-                        <a class="nav-link {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
-                           href="{% url 'blog:add_post' %}">
-                            Add Post
-                        </a>
-                    </li>
+                <li><hr class="dropdown-divider"></li>
 
-                    <li class="nav-item d-md-none">
-                        <a class="nav-link" href="{{ logout_url }}">Logout</a>
-                    </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'blog:gallery' %}">
+                        <i class="fa-regular fa-images"></i> Gallery
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'store:shop' %}">
+                        <i class="fa-solid fa-store"></i> Shop
+                    </a>
+                </li>
+
+                <li><hr class="dropdown-divider"></li>
+
+                <li>
+                    <a class="dropdown-item" href="{{ logout_url }}">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </a>
+                </li>
+
                 {% else %}
-                    <li class="nav-item d-md-none">
-                        <a class="nav-link {% if rn == 'account_login' %}active{% endif %}"
-                           href="{{ login_url }}">
-                            Login
-                        </a>
-                    </li>
+                <li>
+                    <a class="dropdown-item" href="{{ login_url }}">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{{ signup_url }}">
+                        <i class="fa-solid fa-user-plus"></i> Register
+                    </a>
+                </li>
 
-                    <li class="nav-item d-md-none">
-                        <a class="nav-link {% if rn == 'account_signup' %}active{% endif %}"
-                           href="{{ signup_url }}">
-                            Register
-                        </a>
-                    </li>
+                <li><hr class="dropdown-divider"></li>
+
+                <li>
+                    <a class="dropdown-item" href="{% url 'store:shop' %}">
+                        <i class="fa-solid fa-store"></i> Shop
+                    </a>
+                </li>
                 {% endif %}
-
             </ul>
-
         </div>
+
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler d-md-none"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
+
+    <!-- Mobile Nav -->
+    <div class="collapse navbar-collapse order-md-1" id="navbarMain">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+            <li class="nav-item">
+                <a class="nav-link {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
+                   href="{{ home_url }}">Home</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
+                   href="{% url 'blog:gallery' %}">Gallery</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
+                   href="{% url 'store:shop' %}">Shop</a>
+            </li>
+
+        </ul>
+    </div>
+
+</div>
 </nav>
+
 {% endwith %}
 
 <!-- Main -->
 <main class="flex-fill">
-    <div class="container py-3">
-        {% block content %}{% endblock %}
-    </div>
+<div class="container py-4">
+{% block content %}{% endblock %}
+</div>
 </main>
 
 <!-- Footer -->
 <footer class="footer mt-auto">
-    <div class="container">
+<div class="container d-flex justify-content-between align-items-center">
+
+    <div>
         <p class="mb-1">Made by Thomas A Overment</p>
         <div>
-            <a href="https://instagram.com" target="_blank" class="text-white me-3">
+            <a href="#" class="text-white me-3">
                 <i class="fa-brands fa-instagram-square"></i>
             </a>
-            <a href="https://www.linkedin.com/in/thomas-overment/" target="_blank" class="text-white">
+            <a href="#" class="text-white">
                 <i class="fa-brands fa-linkedin"></i>
             </a>
         </div>
     </div>
+
+    <!-- Back To Top -->
+    <button id="backToTop" class="btn btn-outline-light btn-sm d-none">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+</div>
 </footer>
 
 <!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-(() => {
-  const GAP = 12;
-  const DELAY = 500;
+const backBtn = document.getElementById("backToTop");
 
-  let timer = null;
-  let currentEl = null;
-
-  function getEls() {
-    return {
-      preview: document.getElementById("hoverPreview"),
-      img: document.getElementById("hoverPreviewImg"),
-      title: document.getElementById("hoverPreviewTitle"),
-      desc: document.getElementById("hoverPreviewDesc"),
-    };
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 300) {
+    backBtn.classList.remove("d-none");
+  } else {
+    backBtn.classList.add("d-none");
   }
+});
 
-  function clearTimer() {
-    if (timer) { clearTimeout(timer); timer = null; }
-  }
-
-  function place(preview, el) {
-    const r = el.getBoundingClientRect();
-    preview.style.display = "block";
-
-    const pr = preview.getBoundingClientRect();
-    let left = r.right + GAP;
-    let top = r.top;
-
-    if (left + pr.width > window.innerWidth - 10) left = r.left - pr.width - GAP;
-    if (top + pr.height > window.innerHeight - 10) top = window.innerHeight - pr.height - 10;
-    if (top < 10) top = 10;
-
-    preview.style.left = `${left}px`;
-    preview.style.top = `${top}px`;
-  }
-
-  function show(el) {
-    const { preview, img, title, desc } = getEls();
-    if (!preview || !img || !title || !desc) return;
-
-    img.src = el.dataset.previewImg || "";
-    img.alt = el.dataset.previewTitle || "";
-    title.textContent = el.dataset.previewTitle || "";
-    desc.textContent = el.dataset.previewDesc || "";
-
-    place(preview, el);
-    requestAnimationFrame(() => preview.classList.add("show"));
-  }
-
-  function hide() {
-    const { preview } = getEls();
-    if (!preview) return;
-
-    preview.classList.remove("show");
-    setTimeout(() => {
-      if (!currentEl) preview.style.display = "none";
-    }, 180);
-  }
-
-  document.addEventListener("mousemove", (e) => {
-    const el = e.target.closest(".js-hover-thumb");
-    if (!el) return;
-    if (currentEl === el) return;
-
-    clearTimer();
-    currentEl = el;
-
-    timer = setTimeout(() => {
-      if (currentEl === el) show(el);
-    }, DELAY);
-  });
-
-  document.addEventListener("mouseover", (e) => {
-    const el = e.target.closest(".js-hover-thumb");
-    if (!el) return;
-
-    const { preview } = getEls();
-    if (preview && preview.classList.contains("show") && currentEl === el) {
-      place(preview, el);
-    }
-  });
-
-  document.addEventListener("mouseout", (e) => {
-    const leftThumb = e.target.closest(".js-hover-thumb");
-    if (!leftThumb) return;
-
-    const to = e.relatedTarget;
-    if (to && to.closest && to.closest(".js-hover-thumb") === leftThumb) return;
-
-    clearTimer();
-    currentEl = null;
-    hide();
-  });
-
-  window.addEventListener("scroll", () => { clearTimer(); currentEl = null; hide(); }, true);
-  window.addEventListener("resize", () => { clearTimer(); currentEl = null; hide(); });
-})();
+backBtn.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 </script>
-
-<div id="hoverPreview" class="hover-preview-fixed" aria-hidden="true">
-  <img id="hoverPreviewImg" alt="">
-  <div class="hover-content">
-    <strong id="hoverPreviewTitle"></strong>
-    <p id="hoverPreviewDesc"></p>
-  </div>
-</div>
 
 </body>
 </html>
