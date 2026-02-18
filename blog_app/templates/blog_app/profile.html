@@ -1,65 +1,127 @@
 {% extends "base.html" %}
 {% block title %}Profile{% endblock %}
 {% block content %}
-<div class="container-fluid">
-    <h2>Logged in as: {{ request.user.username }}</h2>
-    <hr>
-    <h1>Draft Posts</h1>
-    <div class="row">
-        {% for post in drafts %}
-        <div class="col-md-4">
-            <div class="card mb-4">
-                {% if post.post_image %}
-                <a href="{{ post.post_image.url }}" target="_blank">
-                    <img src="{{ post.post_image.url }}" class="card-img-top" alt="Post image">
-                </a>
-                {% endif %}
-                <div class="card-body">
-                    <h2 class="card-title"><a href="{% url 'blog:update_post' post.pk %}" class="post-link">{{ post.title }}</a></h2>
-                    <p class="card-text">{{ post.content|safe }}</p>
-                    <a href="{% url 'blog:update_post' post.pk %}">Edit</a>
-                    <a href="{% url 'blog:delete_post' post.id %}">Delete</a>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p>No draft posts available.</p>
-        {% endfor %}
-    </div>
-    <hr>
-    <h1>Published Posts</h1>
-    <div class="row">
-        {% for post in published %}
-        <div class="col-md-4">
-            <div class="card mb-4">
-                {% if post.post_image %}
-                <a href="{{ post.post_image.url }}" target="_blank">
-                    <img src="{{ post.post_image.url }}" class="card-img-top" alt="Post image">
-                </a>
-                {% endif %}
-                <div class="card-body">
-                    <h2 class="card-title"><a href="{% url 'blog:post_detail' post.slug %}" class="post-link">{{ post.title }}</a></h2>
-                    <p class="card-text">{{ post.content|safe }}</p>
-                    <a href="{% url 'blog:post_detail' post.slug %}">View</a>
-                    <a href="{% url 'blog:update_post' post.pk %}">Edit</a>
-                    <a href="{% url 'blog:delete_post' post.id %}">Delete</a>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p>No published posts available.</p>
-        {% endfor %}
-    </div>
 
+<div class="container-fluid">
+
+  <div class="text-center my-4">
+    <h2 class="mb-1">Logged in as: {{ request.user.username }}</h2>
+    <hr>
+  </div>
+
+  <!-- ===================== -->
+  <!-- DRAFT POSTS -->
+  <!-- ===================== -->
+  <h1 class="mb-3">Draft Posts</h1>
+
+  <div class="row">
+    {% for post in drafts %}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+
+          {% if post.post_image %}
+            <a href="{{ post.post_image.url }}" target="_blank">
+              <img src="{{ post.post_image.url }}" class="card-img-top" alt="Post image">
+            </a>
+          {% endif %}
+
+          <div class="card-body">
+
+            <h2 class="card-title h5">
+              <a href="{% url 'blog:update_post' post.pk %}" class="text-decoration-none text-dark">
+                {{ post.title }}
+              </a>
+            </h2>
+
+            <p class="card-text">{{ post.content|safe }}</p>
+
+            <!-- Buttons: match Featured Product style -->
+            <div class="text-center mt-3">
+              <a href="{% url 'blog:update_post' post.pk %}" class="btn btn-sm btn-outline-dark me-2">
+                Edit
+              </a>
+              <a href="{% url 'blog:delete_post' post.id %}" class="btn btn-sm btn-outline-dark">
+                Delete
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No draft posts available.</p>
+    {% endfor %}
+  </div>
+
+  <hr class="my-4">
+
+  <!-- ===================== -->
+  <!-- PUBLISHED POSTS -->
+  <!-- ===================== -->
+  <h1 class="mb-3">Published Posts</h1>
+
+  <div class="row">
+    {% for post in published %}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+
+          {% if post.post_image %}
+            <a href="{{ post.post_image.url }}" target="_blank">
+              <img src="{{ post.post_image.url }}" class="card-img-top" alt="Post image">
+            </a>
+          {% endif %}
+
+          <div class="card-body">
+
+            <h2 class="card-title h5">
+              <a href="{% url 'blog:post_detail' post.slug %}" class="text-decoration-none text-dark">
+                {{ post.title }}
+              </a>
+            </h2>
+
+            <p class="card-text">{{ post.content|safe }}</p>
+
+            <!-- Buttons: match Featured Product style -->
+            <div class="text-center mt-3">
+              <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-sm btn-outline-dark me-2">
+                View
+              </a>
+              <a href="{% url 'blog:update_post' post.pk %}" class="btn btn-sm btn-outline-dark me-2">
+                Edit
+              </a>
+              <a href="{% url 'blog:delete_post' post.id %}" class="btn btn-sm btn-outline-dark">
+                Delete
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No published posts available.</p>
+    {% endfor %}
+  </div>
+
+  <hr class="my-4">
+
+  <!-- ===================== -->
+  <!-- AUTH BUTTON -->
+  <!-- ===================== -->
+  <div class="text-center mb-4">
     {% if user.is_authenticated %}
-    <form action="{% url 'account_logout' %}" method="post" style="display:inline;">
+      <form action="{% url 'account_logout' %}" method="post" style="display:inline;">
         {% csrf_token %}
-        <button type="submit" class="btn btn-success btn-login-register">Logout</button>
-    </form>
+        <button type="submit" class="btn btn-sm btn-outline-dark">
+          Logout
+        </button>
+      </form>
     {% else %}
-    <form action="{% url 'account_login' %}" method="get" style="display:inline;">
-        <button type="submit" class="btn btn-success btn-login-register">Login/Register</button>
-    </form>
+      <a href="{% url 'account_login' %}" class="btn btn-sm btn-outline-dark">
+        Login / Register
+      </a>
     {% endif %}
+  </div>
+
 </div>
+
 {% endblock %}

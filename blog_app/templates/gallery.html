@@ -1,32 +1,74 @@
 {% extends "base.html" %}
-{% block title %} Gallery {% endblock %}
+{% block title %}Gallery{% endblock %}
+
 {% block content %}
 
+<style>
+  .gallery-card {
+    border-radius: 0;            /* removed rounded corners */
+    overflow: hidden;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col col-title text-center">
-            <h1 class="text-center title">Art Gallery</h1>
-            <p class="display-6">Explore the collection of artworks by Tomo. Click on the images for a larger view.</p>
-            <hr>
-        </div>
-    </div>
+  .gallery-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
 
-    <!-- Art Gallery -->
-    <div class="row">
-        {% for artwork in artworks %}
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <a href="{{ artwork.artwork_image.url }}" target="_blank">
-                    <img src="{{ artwork.artwork_image.url }}" class="card-img-top img-fluid" alt="{{ artwork.title }}">
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title">{{ artwork.title }}</h5>
-                    <p class="card-text">{{ artwork.description }}</p>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+  .gallery-img {
+    height: 320px;
+    object-fit: cover;
+  }
+
+  .gallery-card .card-body {
+    background-color: #f8f9fa;
+    border-top: 1px solid rgba(0,0,0,.08);
+  }
+</style>
+
+
+<div class="container-fluid mt-4">
+
+  <div class="row">
+    <div class="col text-center mb-4">
+      <h1 class="title">Art Gallery</h1>
+      <p class="text-muted">
+        Explore the collection of artworks by Tomo. Click on the images for a larger view.
+      </p>
+      <hr>
     </div>
+  </div>
+
+  <!-- Gallery Grid -->
+  <div class="row">
+    {% for artwork in artworks %}
+      <div class="col-md-4 mb-4">
+
+        <div class="card gallery-card shadow-sm">
+
+          <a href="{{ artwork.artwork_image.url }}" target="_blank">
+            <img src="{{ artwork.artwork_image.url }}"
+                 class="card-img-top gallery-img"
+                 alt="{{ artwork.title }}">
+          </a>
+
+          <div class="card-body text-center">
+            <h5 class="card-title mb-2">{{ artwork.title }}</h5>
+            <p class="card-text text-muted">
+              {{ artwork.description }}
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    {% empty %}
+      <div class="col text-center">
+        <p>No artworks available yet.</p>
+      </div>
+    {% endfor %}
+  </div>
+
 </div>
+
 {% endblock %}

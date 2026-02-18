@@ -1,32 +1,49 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %} {{ post.title }} {% endblock %}
+
 {% block content %}
 
-<h1>{{ post.title }}</h1>
-{{ post.body}}
-<h1>Edit Posts!</h1>
-<div class="form-group"></div>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class= "btn btn-success">Post</button>
-    <a href="{% url 'blog:delete_post' post.id %}">Delete</a>
-    <a href="{% url 'blog:home' %}" class="btn btn-success">Back</a>
-</form>
+<div class="container mt-4">
 
+  <div class="row justify-content-center">
+    <div class="col-md-8">
 
+      <h2 class="mb-4 text-center">Edit Post</h2>
 
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
+        <div class="card shadow-sm">
+          <div class="card-body">
+            {{ form.as_p }}
+          </div>
+        </div>
 
+        <!-- Buttons styled SAME as Featured Product buttons -->
+        <div class="text-center mt-4">
+          <button type="submit"
+                  class="btn btn-sm btn-outline-dark me-2">
+            Save
+          </button>
 
+          <a href="{% url 'blog:delete_post' post.id %}"
+             class="btn btn-sm btn-outline-dark me-2">
+            Delete
+          </a>
 
+          <a href="{% url 'blog:home' %}"
+             class="btn btn-sm btn-outline-dark">
+            Back
+          </a>
+        </div>
 
+      </form>
 
+    </div>
+  </div>
 
-
-
-
-
-
+</div>
 
 {% endblock %}
