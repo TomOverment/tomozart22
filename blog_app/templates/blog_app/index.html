@@ -16,7 +16,6 @@
     );
   }
 
-  /* Keep cards unchanged */
   .product-card{
     height: 100%;
     border-radius: 20px;
@@ -32,72 +31,101 @@
     display: block;
   }
 
-  /* Match card text area to site base background */
   .product-card .card-body{
-    background-color: #f8f9fa;   /* Bootstrap light background */
+    background-color: #f8f9fa;
     border-top: 1px solid rgba(0,0,0,.08);
   }
 
   .product-carousel-wrap h3{
     color: #ffffff;
   }
+
+  /* -----------------------------
+     POSTS (Refined Layout)
+  ----------------------------- */
+
+  .post-author-tag{
+    display: inline-block;
+    background: #2f7d7a;
+    color: #fff;
+    font-size: .75rem;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: .75rem;
+    text-transform: uppercase;
+  }
+
+  .post-title{
+    font-weight: 300;
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+    padding-bottom: .5rem;
+  }
+
+  .post-image-wrapper{
+    overflow: hidden;
+  }
+
+  .post-image{
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    transition: transform .3s ease;
+    display: block;
+  }
+
+  .post-image:hover{
+    transform: scale(1.02);
+  }
+
+  .post-description{
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #333;
+    margin-top: 1rem;
+  }
 </style>
 
 
-<div class="container py-5">
+<!-- ========================= -->
+<!-- HERO INTRO -->
+<!-- ========================= -->
 
-  <div class="text-center mb-4">
-    <h2 class="mb-3">
-      Welcome {% if user.is_authenticated %}{{ user.username }}{% endif %},
-      to Thomas A Overment's (AKA Tomo's) Art Gallery
-    </h2>
+<div class="text-center py-5">
 
-    <p class="text-muted">
-      I am Tomo, and I am thrilled to share my world of art with you.
-      Here you will find a collection of my work, ranging from vibrant
-      spray paintings to mixed media canvas pieces.
+    <h1 class="fw-light mb-3">
+        Welcome {% if user.is_authenticated %}{{ user.username }},{% endif %}
+        to <strong>Tom Overment’s</strong> Art Gallery
+    </h1>
+
+    <p class="lead text-muted mx-auto" style="max-width: 850px;">
+        Explore original artworks, limited edition prints, and featured pieces.
+        From vibrant spray painting to mixed media canvases, each work reflects
+        Tomo’s evolving creative journey.
     </p>
 
-    <hr class="mt-4">
-  </div>
+    {% if not user.is_authenticated %}
+        <p class="text-muted small mt-4" style="letter-spacing: .3px;">
+            Guests are welcome to explore freely.
+            Creating an account allows you to manage purchases and stay connected with new releases.
+        </p>
+    {% endif %}
+
+    <hr class="my-4">
+
+    <p class="text-muted small mb-0">
+        Scroll down to discover our <strong>Featured Products</strong>.
+    </p>
 
 </div>
 
 
-{% if user.is_authenticated %}
-  <div class="row">
-    <div class="col text-center">
-      <div class="alert alert-success" role="alert">
-        Welcome {{ user.username }}.
-      </div>
-    </div>
-  </div>
-  <br>
-{% else %}
-  <div class="row">
-    <div class="col text-center">
-      <div class="alert alert-warning" role="alert">
-        You are not logged in. Please log in or register to enjoy full access to the gallery and additional features.
-      </div>
-    </div>
-  </div>
-  <br>
-{% endif %}
-
-{% if messages %}
-  <div class="messages">
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-      </div>
-    {% endfor %}
-  </div>
-  <br>
-{% endif %}
-
 <!-- ========================= -->
-<!-- PRODUCT CAROUSEL (3 per slide) -->
+<!-- PRODUCT CAROUSEL -->
 <!-- ========================= -->
+
 {% if products %}
 <div class="container my-4">
   <div class="product-carousel-wrap">
@@ -107,8 +135,7 @@
          class="carousel slide"
          data-bs-ride="carousel"
          data-bs-interval="3500"
-         data-bs-pause="hover"
-         data-bs-touch="true">
+         data-bs-pause="hover">
 
       <div class="carousel-inner">
 
@@ -121,14 +148,9 @@
                 <div class="col-12 col-md-4">
                   <div class="card product-card h-100 shadow-sm">
 
-                    <!-- Clicking image goes to product detail -->
-                    <a href="{% url 'store:product_detail' product.id %}" class="text-decoration-none">
+                    <a href="{% url 'store:product_detail' product.id %}">
                       {% if product.image %}
                         <img src="{{ product.image.url }}"
-                             class="card-img-top product-card-img"
-                             alt="{{ product.name }}">
-                      {% else %}
-                        <img src="https://dummyimage.com/600x400/dee2e6/6c757d.jpg"
                              class="card-img-top product-card-img"
                              alt="{{ product.name }}">
                       {% endif %}
@@ -139,7 +161,8 @@
                       {% if product.price %}
                         <p class="card-text mb-2">£{{ product.price }}</p>
                       {% endif %}
-                      <a href="{% url 'store:product_detail' product.id %}" class="btn btn-sm btn-outline-dark">
+                      <a href="{% url 'store:product_detail' product.id %}"
+                         class="btn btn-sm btn-outline-dark">
                         View
                       </a>
                     </div>
@@ -154,14 +177,18 @@
 
       </div>
 
-      <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
+      <button class="carousel-control-prev"
+              type="button"
+              data-bs-target="#productCarousel"
+              data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
       </button>
 
-      <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
+      <button class="carousel-control-next"
+              type="button"
+              data-bs-target="#productCarousel"
+              data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
       </button>
 
     </div>
@@ -171,59 +198,64 @@
 
 <hr>
 
+
 <!-- ========================= -->
 <!-- BLOG POSTS -->
 <!-- ========================= -->
-<div class="row">
-  {% for post in object_list %}
-    <div class="col-md-4">
-      <div class="card mb-4">
-        <div class="card-body">
-          <div class="image-container">
-            <div class="image-flash">
-              <p class="author">Author: {{ post.author }}</p>
-            </div>
+
+<div class="container my-5">
+  <div class="row">
+
+    {% for post in object_list %}
+      <div class="col-12 col-md-6 mb-5">
+
+        <div class="post-author-tag">
+          AUTHOR: {{ post.author|upper }}
+        </div>
+
+        <a href="{% url 'blog:post_detail' post.slug %}"
+           class="text-decoration-none text-dark">
+          <h2 class="post-title">{{ post.title }}</h2>
+        </a>
+
+        {% if post.post_image %}
+          <div class="post-image-wrapper mb-3">
+            <a href="{% url 'blog:post_detail' post.slug %}">
+              <img src="{{ post.post_image.url }}"
+                   alt="{{ post.title }}"
+                   class="img-fluid post-image">
+            </a>
           </div>
+        {% endif %}
 
-          <a href="{% url 'blog:post_detail' post.slug %}" class="post-link">
-            <h2 class="card-title">{{ post.title }}</h2>
-          </a>
+        <div class="post-description">
+          {{ post.content|safe }}
+        </div>
 
-          <hr>
+        {% if post.can_edit %}
+          <div class="mt-3">
+            <a href="{% url 'blog:update_post' post.pk %}"
+               class="btn btn-sm btn-outline-dark me-2">
+              Edit
+            </a>
 
-          <p class="card-text text-muted h6">{{ post.created_on }}</p>
-          <p class="card-text">{{ post.content|safe }}</p>
+            <a href="{% url 'blog:delete_post' post.id %}"
+               class="btn btn-sm btn-outline-dark">
+              Delete
+            </a>
+          </div>
+        {% endif %}
 
-          {% if post.post_image %}
-            <img src="{{ post.post_image.url }}" class="img-fluid" alt="{{ post.title }}">
-          {% endif %}
-
-          <!-- Centered buttons: SAME style as Featured Product buttons -->
-          {% if user.is_authenticated %}
-            {% if user == post.author or user.is_staff %}
-              <div class="text-center mt-3">
-                <a href="{% url 'blog:update_post' post.pk %}"
-                   class="btn btn-sm btn-outline-dark me-2">
-                  Edit
-                </a>
-
-                <a href="{% url 'blog:delete_post' post.id %}"
-                   class="btn btn-sm btn-outline-dark">
-                  Delete
-                </a>
-              </div>
-            {% endif %}
-          {% endif %}
-
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-secondary text-center">
+          No posts yet.
         </div>
       </div>
-    </div>
+    {% endfor %}
 
-    {% if forloop.counter|divisibleby:3 %}
-      </div>
-      <div class="row">
-    {% endif %}
-  {% endfor %}
+  </div>
 </div>
 
 {% endblock %}

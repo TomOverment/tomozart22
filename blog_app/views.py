@@ -12,12 +12,26 @@ from .models import Artwork
 from django.utils.text import slugify
 from django.urls import reverse_lazy
 from store.models import Product
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
 
-class PostList(generic.ListView):
-    queryset = Post.objects.filter(status=1).order_by('-created_on')
+
+class PostList(ListView):
+    model = Post
     template_name = "blog_app/index.html"
-    paginate_by = 6
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user = self.request.user
+
+        for post in queryset:
+            post.can_edit = (
+                user.is_authenticated and
+                (user == post.author or user.is_staff)
+            )
+
+        return queryset
+
 
 
 def profile(request):
@@ -131,17 +145,32 @@ def register(request):
         form = CustomSignupForm()
     return render(request, 'registration/signup.html', {'form': form})
 
-class PostList(generic.ListView):
-    queryset = Post.objects.filter(status=1).order_by("-created_on")
+class PostList(ListView):
+    model = Post
     template_name = "blog_app/index.html"
-    paginate_by = 6
+    context_object_name = "object_list"
+    ordering = ["-created_on"]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user = self.request.user
+
+        for post in queryset:
+            post.can_edit = (
+                user.is_authenticated and
+                (user == post.author or user.is_staff)
+            )
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["products"] = (
-            Product.objects.filter(is_active=True)
-            .order_by("-id")[:12]   # ✅ Product doesn't have created_on, so use -id
-        )
+
+        # ✅ Add products for carousel
+        context["products"] = Product.objects.filter(is_active=True)[:9]
+
         return context
+
+
 
 

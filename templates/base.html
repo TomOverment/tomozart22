@@ -44,6 +44,17 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
 }
 
 /* -----------------------------
+   GLOBAL FLASH MESSAGES (Step 1)
+   - shown once on the page you land on after redirect
+----------------------------- */
+.flash-wrap{
+  margin-bottom: 1rem;
+}
+.flash-msg{
+  margin-bottom: .75rem;
+}
+
+/* -----------------------------
    DARK DROPDOWN STYLE
 ----------------------------- */
 .navbar .dropdown-menu {
@@ -91,7 +102,7 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
   opacity: 0;
   transform: translateY(4px);
   transition: opacity .18s ease, transform .18s ease;
-  z-index: 3000; /* above navbar & everything */
+  z-index: 3000;
   width: 320px;
   max-width: 70vw;
   background: rgba(10,10,10,.92);
@@ -130,6 +141,52 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
   font-size: .9rem;
   line-height: 1.25rem;
 }
+
+/* -----------------------------
+   POST STYLING
+----------------------------- */
+
+.post-author-tag{
+  display: inline-block;
+  background: #2f7d7a;
+  color: #fff;
+  font-size: .75rem;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: .75rem;
+}
+
+.post-title{
+  font-weight: 300;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0,0,0,.15);
+  padding-bottom: .5rem;
+}
+
+.post-image-wrapper{
+  overflow: hidden;
+}
+
+.post-image{
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  transition: transform .3s ease;
+}
+
+.post-image:hover{
+  transform: scale(1.02);
+}
+
+.post-description{
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #333;
+  margin-top: 1rem;
+}
+
 </style>
 </head>
 
@@ -171,7 +228,6 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
             </button>
 
             <ul class="dropdown-menu dropdown-menu-end">
-
                 {% if user.is_authenticated %}
                 <li>
                     <a class="dropdown-item" href="{% url 'blog:profile' %}">
@@ -241,37 +297,107 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
     </div>
 
     <!-- Mobile Nav -->
-    <div class="collapse navbar-collapse order-md-1" id="navbarMain">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+ <!-- Mobile Nav (Full Menu) -->
+<!-- Mobile Nav (Styled like desktop dropdown) -->
+<div class="collapse navbar-collapse order-md-1" id="navbarMain">
+  <ul class="navbar-nav me-auto mb-2 mb-md-0">
 
-            <li class="nav-item">
-                <a class="nav-link {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
-                   href="{{ home_url }}">Home</a>
-            </li>
+    <!-- Core Pages -->
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center gap-2
+         {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
+         href="{{ home_url }}">
+        <i class="fa-solid fa-house"></i> Home
+      </a>
+    </li>
 
-            <li class="nav-item">
-                <a class="nav-link {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
-                   href="{% url 'blog:gallery' %}">Gallery</a>
-            </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center gap-2
+         {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
+         href="{% url 'blog:gallery' %}">
+        <i class="fa-regular fa-images"></i> Gallery
+      </a>
+    </li>
 
-            <li class="nav-item">
-                <a class="nav-link {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
-                   href="{% url 'store:shop' %}">Shop</a>
-            </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center gap-2
+         {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
+         href="{% url 'store:shop' %}">
+        <i class="fa-solid fa-store"></i> Shop
+      </a>
+    </li>
 
-        </ul>
-    </div>
+    <hr class="text-secondary my-2">
 
+    {% if user.is_authenticated %}
+
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2"
+           href="{% url 'blog:profile' %}">
+          <i class="fa-solid fa-user"></i> Profile
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2"
+           href="{% url 'blog:add_post' %}">
+          <i class="fa-solid fa-pen-to-square"></i> Add Post
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2"
+           href="{{ logout_url }}">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </li>
+
+    {% else %}
+
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2"
+           href="{{ login_url }}">
+          <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2"
+           href="{{ signup_url }}">
+          <i class="fa-solid fa-user-plus"></i> Register
+        </a>
+      </li>
+
+    {% endif %}
+
+  </ul>
 </div>
+
+
 </nav>
 
 {% endwith %}
 
 <!-- Main -->
 <main class="flex-fill">
-<div class="container py-4">
-{% block content %}{% endblock %}
-</div>
+  <div class="container py-4">
+
+    {# ✅ STEP 1: GLOBAL DJANGO MESSAGES (ONLY here) #}
+    {% if messages %}
+      <div class="flash-wrap" aria-live="polite" aria-atomic="true">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show flash-msg"
+               role="alert"
+               data-autohide="4500">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </div>
 </main>
 
 <!-- Footer -->
@@ -413,6 +539,26 @@ backBtn.addEventListener("click", () => {
 
   window.addEventListener("scroll", () => { clearTimer(); currentEl = null; hide(); }, true);
   window.addEventListener("resize", () => { clearTimer(); currentEl = null; hide(); });
+})();
+</script>
+
+<script>
+/* Auto-hide alerts (prevents duplicates by marking processed nodes) */
+(() => {
+  document.querySelectorAll(".flash-msg").forEach((el) => {
+    if (el.dataset.autohideInit === "1") return;  // ✅ prevents double init
+    el.dataset.autohideInit = "1";
+
+    const delay = parseInt(el.dataset.autohide || "4500", 10);
+    window.setTimeout(() => {
+      if (window.bootstrap && bootstrap.Alert) {
+        const alert = bootstrap.Alert.getOrCreateInstance(el);
+        alert.close();
+      } else {
+        el.remove();
+      }
+    }, delay);
+  });
 })();
 </script>
 

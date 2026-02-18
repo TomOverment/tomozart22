@@ -2,124 +2,159 @@
 {% block title %}Profile{% endblock %}
 {% block content %}
 
-<div class="container-fluid">
+<div class="container my-5">
 
-  <div class="text-center my-4">
-    <h2 class="mb-1">Logged in as: {{ request.user.username }}</h2>
-    <hr>
+  <!-- HEADER -->
+  <div class="text-center mb-5">
+    <h2 class="fw-light mb-2">
+      Creator Dashboard
+    </h2>
+    <p class="text-muted mb-0">
+      Logged in as <strong>{{ request.user.username }}</strong>
+    </p>
+    <hr class="mt-4">
   </div>
+
 
   <!-- ===================== -->
   <!-- DRAFT POSTS -->
   <!-- ===================== -->
-  <h1 class="mb-3">Draft Posts</h1>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-light mb-0">Draft Posts</h3>
+    <span class="badge bg-secondary">
+      {{ drafts|length }}
+    </span>
+  </div>
 
-  <div class="row">
+  <div class="row g-4 mb-5">
     {% for post in drafts %}
-      <div class="col-md-4">
-        <div class="card mb-4 shadow-sm">
+      <div class="col-12 col-md-6 col-lg-4">
 
-          {% if post.post_image %}
-            <a href="{{ post.post_image.url }}" target="_blank">
-              <img src="{{ post.post_image.url }}" class="card-img-top" alt="Post image">
-            </a>
+        <div class="card h-100 shadow-sm border-0">
+
+          {% if post.post_image and post.post_image != "placeholder" %}
+            <img src="{{ post.post_image.url }}"
+                 class="card-img-top"
+                 alt="{{ post.title }}">
+          {% else %}
+            <div class="text-muted small p-3">
+              No image uploaded for this draft.
+            </div>
           {% endif %}
 
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
 
-            <h2 class="card-title h5">
-              <a href="{% url 'blog:update_post' post.pk %}" class="text-decoration-none text-dark">
-                {{ post.title }}
-              </a>
-            </h2>
+            <h5 class="card-title mb-2">
+              {{ post.title }}
+            </h5>
 
-            <p class="card-text">{{ post.content|safe }}</p>
+            <div class="card-text text-muted small mb-3">
+              {{ post.content|truncatewords:20|safe }}
+            </div>
 
-            <!-- Buttons: match Featured Product style -->
-            <div class="text-center mt-3">
-              <a href="{% url 'blog:update_post' post.pk %}" class="btn btn-sm btn-outline-dark me-2">
+            <div class="mt-auto text-center">
+              <a href="{% url 'blog:update_post' post.pk %}"
+                 class="btn btn-sm btn-outline-dark me-2">
                 Edit
               </a>
-              <a href="{% url 'blog:delete_post' post.id %}" class="btn btn-sm btn-outline-dark">
+              <a href="{% url 'blog:delete_post' post.id %}"
+                 class="btn btn-sm btn-outline-dark">
                 Delete
               </a>
             </div>
 
           </div>
         </div>
+
       </div>
     {% empty %}
-      <p>No draft posts available.</p>
+      <div class="col-12">
+        <div class="alert alert-light border text-center">
+          No draft posts available.
+        </div>
+      </div>
     {% endfor %}
   </div>
 
-  <hr class="my-4">
 
   <!-- ===================== -->
   <!-- PUBLISHED POSTS -->
   <!-- ===================== -->
-  <h1 class="mb-3">Published Posts</h1>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-light mb-0">Published Posts</h3>
+    <span class="badge bg-dark">
+      {{ published|length }}
+    </span>
+  </div>
 
-  <div class="row">
+  <div class="row g-4 mb-5">
     {% for post in published %}
-      <div class="col-md-4">
-        <div class="card mb-4 shadow-sm">
+      <div class="col-12 col-md-6 col-lg-4">
 
-          {% if post.post_image %}
-            <a href="{{ post.post_image.url }}" target="_blank">
-              <img src="{{ post.post_image.url }}" class="card-img-top" alt="Post image">
-            </a>
+        <div class="card h-100 shadow-sm border-0">
+
+          {% if post.post_image and post.post_image != "placeholder" %}
+            <img src="{{ post.post_image.url }}"
+                 class="card-img-top"
+                 alt="{{ post.title }}">
+          {% else %}
+            <div class="text-muted small p-3">
+              No image uploaded for this post.
+            </div>
           {% endif %}
 
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
 
-            <h2 class="card-title h5">
-              <a href="{% url 'blog:post_detail' post.slug %}" class="text-decoration-none text-dark">
+            <h5 class="card-title mb-2">
+              <a href="{% url 'blog:post_detail' post.slug %}"
+                 class="text-decoration-none text-dark">
                 {{ post.title }}
               </a>
-            </h2>
+            </h5>
 
-            <p class="card-text">{{ post.content|safe }}</p>
+            <div class="card-text text-muted small mb-3">
+              {{ post.content|truncatewords:20|safe }}
+            </div>
 
-            <!-- Buttons: match Featured Product style -->
-            <div class="text-center mt-3">
-              <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-sm btn-outline-dark me-2">
+            <div class="mt-auto text-center">
+              <a href="{% url 'blog:post_detail' post.slug %}"
+                 class="btn btn-sm btn-outline-dark me-2">
                 View
               </a>
-              <a href="{% url 'blog:update_post' post.pk %}" class="btn btn-sm btn-outline-dark me-2">
+              <a href="{% url 'blog:update_post' post.pk %}"
+                 class="btn btn-sm btn-outline-dark me-2">
                 Edit
               </a>
-              <a href="{% url 'blog:delete_post' post.id %}" class="btn btn-sm btn-outline-dark">
+              <a href="{% url 'blog:delete_post' post.id %}"
+                 class="btn btn-sm btn-outline-dark">
                 Delete
               </a>
             </div>
 
           </div>
         </div>
+
       </div>
     {% empty %}
-      <p>No published posts available.</p>
+      <div class="col-12">
+        <div class="alert alert-light border text-center">
+          No published posts available.
+        </div>
+      </div>
     {% endfor %}
   </div>
 
-  <hr class="my-4">
 
   <!-- ===================== -->
   <!-- AUTH BUTTON -->
   <!-- ===================== -->
-  <div class="text-center mb-4">
-    {% if user.is_authenticated %}
-      <form action="{% url 'account_logout' %}" method="post" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-sm btn-outline-dark">
-          Logout
-        </button>
-      </form>
-    {% else %}
-      <a href="{% url 'account_login' %}" class="btn btn-sm btn-outline-dark">
-        Login / Register
-      </a>
-    {% endif %}
+  <div class="text-center">
+    <form action="{% url 'account_logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-dark btn-sm">
+        Logout
+      </button>
+    </form>
   </div>
 
 </div>
