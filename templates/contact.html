@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+
+      <h2 class="mb-4 text-center">Contact Me</h2>
+
+      {# Non-field errors (rare, but useful) #}
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <form method="POST" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.name.id_for_label }}">Name</label>
+          {{ form.name }}
+          {% if form.name.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.name.errors|striptags }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.email.id_for_label }}">Email</label>
+          {{ form.email }}
+          {% if form.email.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.email.errors|striptags }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.subject.id_for_label }}">Subject</label>
+          {{ form.subject }}
+          {% if form.subject.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.subject.errors|striptags }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.message.id_for_label }}">Message</label>
+          {{ form.message }}
+          {% if form.message.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.message.errors|striptags }}
+            </div>
+          {% endif %}
+          <div class="form-text">Please don’t include sensitive info (addresses, passwords, etc.).</div>
+        </div>
+
+        <button type="submit" class="btn btn-dark w-100">
+          <i class="fa-solid fa-paper-plane me-2"></i> Send Message
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -96,20 +96,20 @@
 <div class="text-center py-5">
 
     <h1 class="fw-light mb-3">
-        Welcome {% if user.is_authenticated %}{{ user.username }},{% endif %}
-        to <strong>Tom Overment’s</strong> Art Gallery
+        This my {% if user.is_authenticated %}{{ user.username }},{% endif %}
+        is Tom O’s Art Gallery!
     </h1>
 
     <p class="lead text-muted mx-auto" style="max-width: 850px;">
-        Explore original artworks, limited edition prints, and featured pieces.
-        From vibrant spray painting to mixed media canvases, each work reflects
-        Tomo’s evolving creative journey.
+        Buy or enjoy original artworks, like a ledge, or experience it for free, Limited edition Giclée prints, and creative pieces, 
+        vibrant spray painting to mixed media canvases, Backwords engineered concept's essentialy stepping one step back in unrealised progress and walls, walls, walls!?  
     </p>
 
     {% if not user.is_authenticated %}
         <p class="text-muted small mt-4" style="letter-spacing: .3px;">
-            Guests are welcome to explore freely.
-            Creating an account allows you to manage purchases and stay connected with new releases.
+            Guests are welcome to explore freelyish to a piont.
+            Creating an account allows you to manage purchases, 
+            become a patron of cba mailing list and i'd probably give
         </p>
     {% endif %}
 

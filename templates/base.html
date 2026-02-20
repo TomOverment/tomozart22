@@ -145,7 +145,6 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
 /* -----------------------------
    POST STYLING
 ----------------------------- */
-
 .post-author-tag{
   display: inline-block;
   background: #2f7d7a;
@@ -186,7 +185,6 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
   color: #333;
   margin-top: 1rem;
 }
-
 </style>
 </head>
 
@@ -195,186 +193,186 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
 {% with ns=request.resolver_match.namespace rn=request.resolver_match.url_name %}
 
 <nav class="navbar navbar-expand-md navbar-dark bg-black">
-<div class="container-fluid">
+  <div class="container-fluid">
 
     <!-- Brand -->
     <a class="navbar-brand" href="{{ home_url }}">
-        <img src="{% static 'images/logo.png' %}" height="25" alt="logo">
+      <img src="{% static 'images/logo.png' %}" height="25" alt="logo">
     </a>
+
+    <!-- DESKTOP NAV (md+ only): Home / Gallery / Shop -->
+   
 
     <!-- Right Controls -->
     <div class="d-flex align-items-center gap-2 ms-auto order-md-2">
 
-        <!-- Global Cart -->
-        <a class="btn btn-outline-light btn-sm position-relative"
-           href="{% url 'store:cart' %}">
-            <i class="fa-solid fa-cart-shopping me-1"></i>
-            View Cart
+      <!-- Global Cart -->
+      <a class="btn btn-outline-light btn-sm position-relative"
+         href="{% url 'store:cart' %}">
+        <i class="fa-solid fa-cart-shopping me-1"></i>
+        View Cart
+        {% if cart_count > 0 %}
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+            {{ cart_count }}
+          </span>
+        {% endif %}
+      </a>
 
-            {% if cart_count > 0 %}
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
-                {{ cart_count }}
-            </span>
-            {% endif %}
-        </a>
-
-        <!-- Desktop Dropdown -->
-        <div class="dropdown d-none d-md-block">
-            <button class="btn btn-outline-light btn-sm dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    aria-label="Menu">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-
-            <ul class="dropdown-menu dropdown-menu-end">
-                {% if user.is_authenticated %}
-                <li>
-                    <a class="dropdown-item" href="{% url 'blog:profile' %}">
-                        <i class="fa-solid fa-user"></i> Profile
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="{% url 'blog:add_post' %}">
-                        <i class="fa-solid fa-pen-to-square"></i> Add Post
-                    </a>
-                </li>
-
-                <li><hr class="dropdown-divider"></li>
-
-                <li>
-                    <a class="dropdown-item" href="{% url 'blog:gallery' %}">
-                        <i class="fa-regular fa-images"></i> Gallery
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="{% url 'store:shop' %}">
-                        <i class="fa-solid fa-store"></i> Shop
-                    </a>
-                </li>
-
-                <li><hr class="dropdown-divider"></li>
-
-                <li>
-                    <a class="dropdown-item" href="{{ logout_url }}">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout
-                    </a>
-                </li>
-
-                {% else %}
-                <li>
-                    <a class="dropdown-item" href="{{ login_url }}">
-                        <i class="fa-solid fa-right-to-bracket"></i> Login
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="{{ signup_url }}">
-                        <i class="fa-solid fa-user-plus"></i> Register
-                    </a>
-                </li>
-
-                <li><hr class="dropdown-divider"></li>
-
-                <li>
-                    <a class="dropdown-item" href="{% url 'store:shop' %}">
-                        <i class="fa-solid fa-store"></i> Shop
-                    </a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-
-        <!-- Mobile Toggler -->
-        <button class="navbar-toggler d-md-none"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarMain"
-                aria-controls="navbarMain"
+      <!-- Desktop Dropdown (md+ only) -->
+      <div class="dropdown d-none d-md-block">
+        <button class="btn btn-outline-light btn-sm dropdown-toggle"
+                data-bs-toggle="dropdown"
                 aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+                aria-label="Menu">
+          <i class="fa-solid fa-bars"></i>
         </button>
+
+        <ul class="dropdown-menu dropdown-menu-end">
+          {% if user.is_authenticated %}
+            <li>
+              <a class="dropdown-item" href="{% url 'blog:profile' %}">
+                <i class="fa-solid fa-user"></i> Profile
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'blog:add_post' %}">
+                <i class="fa-solid fa-pen-to-square"></i> Add Post
+              </a>
+            </li>
+
+
+            <li>
+              <a class="dropdown-item" href="{% url 'blog:gallery' %}">
+                <i class="fa-regular fa-images"></i> Gallery
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'store:shop' %}">
+                <i class="fa-solid fa-store"></i> Shop
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'blog:contact' %}">
+                <i class="fa-solid fa-envelope"></i> Contact
+              </a>
+            </li>
+
+
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+              <a class="dropdown-item" href="{{ logout_url }}">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+              </a>
+            </li>
+          {% else %}
+            <li>
+              <a class="dropdown-item" href="{{ login_url }}">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ signup_url }}">
+                <i class="fa-solid fa-user-plus"></i> Register
+              </a>
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+              <a class="dropdown-item" href="{% url 'store:shop' %}">
+                <i class="fa-solid fa-store"></i> Shop
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <!-- Mobile Toggler (sm only) -->
+      <button class="navbar-toggler d-md-none"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarMain"
+              aria-controls="navbarMain"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
     </div>
 
-    <!-- Mobile Nav -->
- <!-- Mobile Nav (Full Menu) -->
-<!-- Mobile Nav (Styled like desktop dropdown) -->
-<div class="collapse navbar-collapse order-md-1" id="navbarMain">
-  <ul class="navbar-nav me-auto mb-2 mb-md-0">
+    <!-- MOBILE NAV (sm only): FULL LIST -->
+    <div class="collapse navbar-collapse order-md-1 d-md-none" id="navbarMain">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
 
-    <!-- Core Pages -->
-    <li class="nav-item">
-      <a class="nav-link d-flex align-items-center gap-2
-         {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
-         href="{{ home_url }}">
-        <i class="fa-solid fa-house"></i> Home
-      </a>
-    </li>
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
+             href="{{ home_url }}">
+            <i class="fa-solid fa-house"></i> Home
+          </a>
+        </li>
 
-    <li class="nav-item">
-      <a class="nav-link d-flex align-items-center gap-2
-         {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
-         href="{% url 'blog:gallery' %}">
-        <i class="fa-regular fa-images"></i> Gallery
-      </a>
-    </li>
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
+             href="{% url 'blog:gallery' %}">
+            <i class="fa-regular fa-images"></i> Gallery
+          </a>
+        </li>
 
-    <li class="nav-item">
-      <a class="nav-link d-flex align-items-center gap-2
-         {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
-         href="{% url 'store:shop' %}">
-        <i class="fa-solid fa-store"></i> Shop
-      </a>
-    </li>
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
+             href="{% url 'store:shop' %}">
+            <i class="fa-solid fa-store"></i> Shop
+          </a>
+        </li>
 
-    <hr class="text-secondary my-2">
+        <hr class="text-secondary my-2">
 
-    {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" href="{% url 'blog:profile' %}">
+              <i class="fa-solid fa-user"></i> Profile
+            </a>
+          </li>
 
-      <li class="nav-item">
-        <a class="nav-link d-flex align-items-center gap-2"
-           href="{% url 'blog:profile' %}">
-          <i class="fa-solid fa-user"></i> Profile
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link d-flex align-items-center gap-2"
-           href="{% url 'blog:add_post' %}">
-          <i class="fa-solid fa-pen-to-square"></i> Add Post
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link d-flex align-items-center gap-2"
-           href="{{ logout_url }}">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
-        </a>
-      </li>
-
-    {% else %}
-
-      <li class="nav-item">
-        <a class="nav-link d-flex align-items-center gap-2"
-           href="{{ login_url }}">
-          <i class="fa-solid fa-right-to-bracket"></i> Login
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link d-flex align-items-center gap-2"
-           href="{{ signup_url }}">
-          <i class="fa-solid fa-user-plus"></i> Register
-        </a>
-      </li>
-
-    {% endif %}
-
-  </ul>
-</div>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" href="{% url 'blog:add_post' %}">
+              <i class="fa-solid fa-pen-to-square"></i> Add Post
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
+                href="{% url 'blog:contact' %}">
+                <i class="fa-solid fa-envelope"></i> Contact
+            </a>
+            </li>
 
 
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" href="{{ logout_url }}">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" href="{{ login_url }}">
+              <i class="fa-solid fa-right-to-bracket"></i> Login
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" href="{{ signup_url }}">
+              <i class="fa-solid fa-user-plus"></i> Register
+            </a>
+          </li>
+        {% endif %}
+
+      </ul>
+    </div>
+
+  </div>
 </nav>
+
+
 
 {% endwith %}
 
@@ -405,7 +403,7 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
 <div class="container d-flex justify-content-between align-items-center">
 
     <div>
-        <p class="mb-1">Made by Thomas A Overment</p>
+        <p class="mb-1">Tomozart</p>
         <div>
             <a href="#" class="text-white me-3" aria-label="Instagram">
                 <i class="fa-brands fa-instagram-square"></i>
