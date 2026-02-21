@@ -1,6 +1,7 @@
 from django import forms
 from .models import Post, Comment
 from django.utils.text import slugify
+from allauth.account.forms import SignupForm, LoginForm
 
 
 class PostForm(forms.ModelForm):
@@ -71,3 +72,23 @@ class ContactForm(forms.Form):
             "placeholder": "Your Message"
         })
     )
+
+
+class BootstrapLoginForm(LoginForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            css = field.widget.attrs.get("class", "")
+            if name in ("login", "password"):
+                field.widget.attrs["class"] = (css + " form-control").strip()
+            if name == "remember":
+                field.widget.attrs["class"] = (css + " form-check-input").strip()
+
+
+class BootstrapSignupForm(SignupForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            css = field.widget.attrs.get("class", "")
+            if name in ("email", "username", "password1", "password2"):
+                field.widget.attrs["class"] = (css + " form-control").strip()

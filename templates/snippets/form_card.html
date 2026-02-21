@@ -1,0 +1,52 @@
+{# templates/snippets/form_card.html #}
+<div class="form-page">
+  <div class="form-card">
+    {% if title %}<h1 class="form-title">{{ title }}</h1>{% endif %}
+    {% if subtitle %}<p class="form-subtitle">{{ subtitle }}</p>{% endif %}
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger mb-3">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <form method="{{ method|default:'post' }}" {% if form_action %}action="{{ form_action }}"{% endif %} class="mt-3">
+      {% csrf_token %}
+
+      {% for field in form %}
+        <div class="mb-3">
+          <label class="form-label" for="{{ field.id_for_label }}">
+            {{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}
+          </label>
+
+          {{ field }}
+
+          {% if field.help_text %}
+            <div class="form-text">{{ field.help_text|safe }}</div>
+          {% endif %}
+
+          {% for error in field.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+
+      {% if extra_html %}
+        {{ extra_html|safe }}
+      {% endif %}
+
+      <button class="btn btn-dark w-100 form-submit" type="submit">
+        {% if button_icon %}
+          <i class="{{ button_icon }} me-2"></i>
+        {% endif %}
+        {{ button_text|default:"Submit" }}
+      </button>
+    </form>
+
+    {% if footer_html %}
+      <div class="form-footer mt-3">
+        {{ footer_html|safe }}
+      </div>
+    {% endif %}
+  </div>
+</div>

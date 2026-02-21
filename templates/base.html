@@ -7,191 +7,147 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 <head>
-    <title>{% block title %}{% endblock %}</title>
+  <title>{% block title %}{% endblock %}</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/0dd9085fc3.js" crossorigin="anonymous"></script>
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/0dd9085fc3.js" crossorigin="anonymous"></script>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Your CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-<style>
-html, body { height: 100%; margin: 0; }
-body { display: flex; flex-direction: column; font-family: 'Lato', sans-serif; }
-main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
-.flex-fill { flex: 1 1 auto; }
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { display: flex; flex-direction: column; font-family: 'Lato', sans-serif; }
+    main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
+    .flex-fill { flex: 1 1 auto; }
 
-/* Footer */
-.footer {
-    background-color: #000;
-    color: #fff;
-    padding: 20px 0;
-}
+    /* Footer */
+    .footer { background-color: #000; color: #fff; padding: 20px 0; }
 
-/* Back to Top */
-#backToTop {
-    transition: opacity .3s ease;
-}
+    /* Back to Top */
+    #backToTop { transition: opacity .3s ease; }
 
-/* -----------------------------
-   GLOBAL FLASH MESSAGES (Step 1)
-   - shown once on the page you land on after redirect
------------------------------ */
-.flash-wrap{
-  margin-bottom: 1rem;
-}
-.flash-msg{
-  margin-bottom: .75rem;
-}
+    /* Flash messages */
+    .flash-wrap{ margin-bottom: 1rem; }
+    .flash-msg{ margin-bottom: .75rem; }
 
-/* -----------------------------
-   DARK DROPDOWN STYLE
------------------------------ */
-.navbar .dropdown-menu {
-    background-color: #0b0b0b;
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 10px;
-    padding: .4rem;
-    box-shadow: 0 12px 30px rgba(0,0,0,.45);
-    min-width: 220px;
-}
+    /* Dark dropdown */
+    .navbar .dropdown-menu {
+      background-color: #0b0b0b;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      padding: .4rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,.45);
+      min-width: 220px;
+    }
 
-.navbar .dropdown-item {
-    color: rgba(255,255,255,.9);
-    border-radius: 8px;
-    padding: .55rem .75rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: .55rem;
-}
+    .navbar .dropdown-item {
+      color: rgba(255,255,255,.9);
+      border-radius: 8px;
+      padding: .55rem .75rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+    }
 
-.navbar .dropdown-item:hover,
-.navbar .dropdown-item:focus {
-    background-color: rgba(255,255,255,.08);
-    color: #fff;
-}
+    .navbar .dropdown-item:hover,
+    .navbar .dropdown-item:focus {
+      background-color: rgba(255,255,255,.08);
+      color: #fff;
+    }
 
-.navbar .dropdown-divider {
-    border-top: 1px solid rgba(255,255,255,.12);
-    margin: .35rem 0;
-}
+    .navbar .dropdown-divider {
+      border-top: 1px solid rgba(255,255,255,.12);
+      margin: .35rem 0;
+    }
 
-.navbar .dropdown-item i {
-    width: 1.1rem;
-    text-align: center;
-    opacity: .9;
-}
+    .navbar .dropdown-item i {
+      width: 1.1rem;
+      text-align: center;
+      opacity: .9;
+    }
 
-/* -----------------------------
-   HOVER PREVIEW (Cart thumbnails)
------------------------------ */
-.hover-preview-fixed{
-  position: fixed;
-  display: none;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity .18s ease, transform .18s ease;
-  z-index: 3000;
-  width: 320px;
-  max-width: 70vw;
-  background: rgba(10,10,10,.92);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0,0,0,.45);
-}
+    /* Hover preview (Cart thumbnails) */
+    .hover-preview-fixed{
+      position: fixed;
+      display: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .18s ease, transform .18s ease;
+      z-index: 3000;
+      width: 320px;
+      max-width: 70vw;
+      background: rgba(10,10,10,.92);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,.45);
+    }
 
-.hover-preview-fixed.show{
-  opacity: 1;
-  transform: translateY(0);
-}
+    .hover-preview-fixed.show{ opacity: 1; transform: translateY(0); }
 
-.hover-preview-fixed img{
-  width: 100%;
-  height: 190px;
-  object-fit: cover;
-  display: block;
-}
+    .hover-preview-fixed img{
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+    }
 
-.hover-preview-fixed .hover-content{
-  padding: .75rem .85rem;
-  color: #fff;
-}
+    .hover-preview-fixed .hover-content{ padding: .75rem .85rem; color: #fff; }
+    .hover-preview-fixed strong{ display: block; font-weight: 700; margin-bottom: .25rem; }
+    .hover-preview-fixed p{ margin: 0; color: rgba(255,255,255,.8); font-size: .9rem; line-height: 1.25rem; }
 
-.hover-preview-fixed strong{
-  display: block;
-  font-weight: 700;
-  margin-bottom: .25rem;
-}
+    /* Post styling */
+    .post-author-tag{
+      display: inline-block;
+      background: #2f7d7a;
+      color: #fff;
+      font-size: .75rem;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: .75rem;
+    }
 
-.hover-preview-fixed p{
-  margin: 0;
-  color: rgba(255,255,255,.8);
-  font-size: .9rem;
-  line-height: 1.25rem;
-}
+    .post-title{
+      font-weight: 300;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(0,0,0,.15);
+      padding-bottom: .5rem;
+    }
 
-/* -----------------------------
-   POST STYLING
------------------------------ */
-.post-author-tag{
-  display: inline-block;
-  background: #2f7d7a;
-  color: #fff;
-  font-size: .75rem;
-  letter-spacing: 1px;
-  padding: 4px 10px;
-  border-radius: 4px;
-  margin-bottom: .75rem;
-}
+    .post-image-wrapper{ overflow: hidden; }
+    .post-image{
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      transition: transform .3s ease;
+    }
+    .post-image:hover{ transform: scale(1.02); }
 
-.post-title{
-  font-weight: 300;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(0,0,0,.15);
-  padding-bottom: .5rem;
-}
-
-.post-image-wrapper{
-  overflow: hidden;
-}
-
-.post-image{
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-  transition: transform .3s ease;
-}
-
-.post-image:hover{
-  transform: scale(1.02);
-}
-
-.post-description{
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #333;
-  margin-top: 1rem;
-}
-</style>
+    .post-description{
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #333;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 
 <body class="d-flex flex-column h-100">
 
 {% with ns=request.resolver_match.namespace rn=request.resolver_match.url_name %}
-
 <nav class="navbar navbar-expand-md navbar-dark bg-black">
   <div class="container-fluid">
 
@@ -200,15 +156,11 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
       <img src="{% static 'images/logo.png' %}" height="25" alt="logo">
     </a>
 
-    <!-- DESKTOP NAV (md+ only): Home / Gallery / Shop -->
-   
-
     <!-- Right Controls -->
     <div class="d-flex align-items-center gap-2 ms-auto order-md-2">
 
       <!-- Global Cart -->
-      <a class="btn btn-outline-light btn-sm position-relative"
-         href="{% url 'store:cart' %}">
+      <a class="btn btn-outline-light btn-sm position-relative" href="{% url 'store:cart' %}">
         <i class="fa-solid fa-cart-shopping me-1"></i>
         View Cart
         {% if cart_count > 0 %}
@@ -221,6 +173,7 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
       <!-- Desktop Dropdown (md+ only) -->
       <div class="dropdown d-none d-md-block">
         <button class="btn btn-outline-light btn-sm dropdown-toggle"
+                type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 aria-label="Menu">
@@ -229,34 +182,41 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
 
         <ul class="dropdown-menu dropdown-menu-end">
           {% if user.is_authenticated %}
+
             <li>
-              <a class="dropdown-item" href="{% url 'blog:profile' %}">
+              <a class="dropdown-item {% if ns == 'blog' and rn == 'profile' %}active{% endif %}"
+                 href="{% url 'blog:profile' %}">
                 <i class="fa-solid fa-user"></i> Profile
               </a>
             </li>
+
             <li>
-              <a class="dropdown-item" href="{% url 'blog:add_post' %}">
+              <a class="dropdown-item {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
+                 href="{% url 'blog:add_post' %}">
                 <i class="fa-solid fa-pen-to-square"></i> Add Post
               </a>
             </li>
 
-
             <li>
-              <a class="dropdown-item" href="{% url 'blog:gallery' %}">
+              <a class="dropdown-item {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
+                 href="{% url 'blog:gallery' %}">
                 <i class="fa-regular fa-images"></i> Gallery
               </a>
             </li>
+
             <li>
-              <a class="dropdown-item" href="{% url 'store:shop' %}">
+              <a class="dropdown-item {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
+                 href="{% url 'store:shop' %}">
                 <i class="fa-solid fa-store"></i> Shop
               </a>
             </li>
+
             <li>
-              <a class="dropdown-item" href="{% url 'blog:contact' %}">
+              <a class="dropdown-item {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
+                 href="{% url 'blog:contact' %}">
                 <i class="fa-solid fa-envelope"></i> Contact
               </a>
             </li>
-
 
             <li><hr class="dropdown-divider"></li>
 
@@ -265,25 +225,53 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
                 <i class="fa-solid fa-right-from-bracket"></i> Logout
               </a>
             </li>
+
           {% else %}
+
             <li>
-              <a class="dropdown-item" href="{{ login_url }}">
-                <i class="fa-solid fa-right-to-bracket"></i> Login
+              <a class="dropdown-item {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
+                 href="{{ home_url }}">
+                <i class="fa-solid fa-house"></i> Home
               </a>
             </li>
+
             <li>
-              <a class="dropdown-item" href="{{ signup_url }}">
-                <i class="fa-solid fa-user-plus"></i> Register
+              <a class="dropdown-item {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
+                 href="{% url 'blog:gallery' %}">
+                <i class="fa-regular fa-images"></i> Gallery
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
+                 href="{% url 'store:shop' %}">
+                <i class="fa-solid fa-store"></i> Shop
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
+                 href="{% url 'blog:contact' %}">
+                <i class="fa-solid fa-envelope"></i> Contact
               </a>
             </li>
 
             <li><hr class="dropdown-divider"></li>
 
             <li>
-              <a class="dropdown-item" href="{% url 'store:shop' %}">
-                <i class="fa-solid fa-store"></i> Shop
+              <a class="dropdown-item {% if ns == 'account' and rn == 'login' %}active{% endif %}"
+                 href="{{ login_url }}">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
               </a>
             </li>
+
+            <li>
+              <a class="dropdown-item {% if ns == 'account' and rn == 'signup' %}active{% endif %}"
+                 href="{{ signup_url }}">
+                <i class="fa-solid fa-user-plus"></i> Register
+              </a>
+            </li>
+
           {% endif %}
         </ul>
       </div>
@@ -325,45 +313,55 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
           </a>
         </li>
 
+        <!-- Contact is ALWAYS present on logged out + logged in mobile -->
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
+             href="{% url 'blog:contact' %}">
+            <i class="fa-solid fa-envelope"></i> Contact
+          </a>
+        </li>
+
         <hr class="text-secondary my-2">
 
         {% if user.is_authenticated %}
+
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2" href="{% url 'blog:profile' %}">
+            <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'profile' %}active{% endif %}"
+               href="{% url 'blog:profile' %}">
               <i class="fa-solid fa-user"></i> Profile
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2" href="{% url 'blog:add_post' %}">
+            <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
+               href="{% url 'blog:add_post' %}">
               <i class="fa-solid fa-pen-to-square"></i> Add Post
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
-                href="{% url 'blog:contact' %}">
-                <i class="fa-solid fa-envelope"></i> Contact
-            </a>
-            </li>
-
 
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2" href="{{ logout_url }}">
+            <a class="nav-link d-flex align-items-center gap-2"
+               href="{{ logout_url }}">
               <i class="fa-solid fa-right-from-bracket"></i> Logout
             </a>
           </li>
+
         {% else %}
+
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2" href="{{ login_url }}">
+            <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'account' and rn == 'login' %}active{% endif %}"
+               href="{{ login_url }}">
               <i class="fa-solid fa-right-to-bracket"></i> Login
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2" href="{{ signup_url }}">
+            <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'account' and rn == 'signup' %}active{% endif %}"
+               href="{{ signup_url }}">
               <i class="fa-solid fa-user-plus"></i> Register
             </a>
           </li>
+
         {% endif %}
 
       </ul>
@@ -371,16 +369,13 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
 
   </div>
 </nav>
-
-
-
 {% endwith %}
 
 <!-- Main -->
 <main class="flex-fill">
   <div class="container py-4">
 
-    {# ✅ STEP 1: GLOBAL DJANGO MESSAGES (ONLY here) #}
+    {# Global Django messages #}
     {% if messages %}
       <div class="flash-wrap" aria-live="polite" aria-atomic="true">
         {% for message in messages %}
@@ -400,164 +395,162 @@ main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
 
 <!-- Footer -->
 <footer class="footer mt-auto">
-<div class="container d-flex justify-content-between align-items-center">
-
+  <div class="container d-flex justify-content-between align-items-center">
     <div>
-        <p class="mb-1">Tomozart</p>
-        <div>
-            <a href="#" class="text-white me-3" aria-label="Instagram">
-                <i class="fa-brands fa-instagram-square"></i>
-            </a>
-            <a href="#" class="text-white" aria-label="LinkedIn">
-                <i class="fa-brands fa-linkedin"></i>
-            </a>
-        </div>
+      <p class="mb-1">Tomozart</p>
+      <div>
+        <a href="#" class="text-white me-3" aria-label="Instagram">
+          <i class="fa-brands fa-instagram-square"></i>
+        </a>
+        <a href="#" class="text-white" aria-label="LinkedIn">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+      </div>
     </div>
 
     <!-- Back To Top -->
     <button id="backToTop" class="btn btn-outline-light btn-sm d-none" type="button" aria-label="Back to top">
-        <i class="fa-solid fa-arrow-up"></i>
+      <i class="fa-solid fa-arrow-up"></i>
     </button>
-
-</div>
+  </div>
 </footer>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-/* Back to top */
-const backBtn = document.getElementById("backToTop");
+  /* Back to top */
+  const backBtn = document.getElementById("backToTop");
 
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 300) backBtn.classList.remove("d-none");
-  else backBtn.classList.add("d-none");
-});
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) backBtn.classList.remove("d-none");
+    else backBtn.classList.add("d-none");
+  });
 
-backBtn.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
+  backBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 </script>
 
 <script>
-/* Hover preview (used by .js-hover-thumb thumbnails) */
-(() => {
-  const GAP = 12;
-  const DELAY = 500;
+  /* Hover preview (used by .js-hover-thumb thumbnails) */
+  (() => {
+    const GAP = 12;
+    const DELAY = 500;
 
-  let timer = null;
-  let currentEl = null;
+    let timer = null;
+    let currentEl = null;
 
-  function getEls() {
-    return {
-      preview: document.getElementById("hoverPreview"),
-      img: document.getElementById("hoverPreviewImg"),
-      title: document.getElementById("hoverPreviewTitle"),
-      desc: document.getElementById("hoverPreviewDesc"),
-    };
-  }
-
-  function clearTimer() {
-    if (timer) { clearTimeout(timer); timer = null; }
-  }
-
-  function place(preview, el) {
-    const r = el.getBoundingClientRect();
-    preview.style.display = "block";
-
-    const pr = preview.getBoundingClientRect();
-    let left = r.right + GAP;
-    let top = r.top;
-
-    if (left + pr.width > window.innerWidth - 10) left = r.left - pr.width - GAP;
-    if (top + pr.height > window.innerHeight - 10) top = window.innerHeight - pr.height - 10;
-    if (top < 10) top = 10;
-
-    preview.style.left = `${left}px`;
-    preview.style.top = `${top}px`;
-  }
-
-  function show(el) {
-    const { preview, img, title, desc } = getEls();
-    if (!preview || !img || !title || !desc) return;
-
-    img.src = el.dataset.previewImg || "";
-    img.alt = el.dataset.previewTitle || "";
-    title.textContent = el.dataset.previewTitle || "";
-    desc.textContent = el.dataset.previewDesc || "";
-
-    place(preview, el);
-    requestAnimationFrame(() => preview.classList.add("show"));
-  }
-
-  function hide() {
-    const { preview } = getEls();
-    if (!preview) return;
-
-    preview.classList.remove("show");
-    setTimeout(() => {
-      if (!currentEl) preview.style.display = "none";
-    }, 180);
-  }
-
-  document.addEventListener("mousemove", (e) => {
-    const el = e.target.closest(".js-hover-thumb");
-    if (!el) return;
-    if (currentEl === el) return;
-
-    clearTimer();
-    currentEl = el;
-
-    timer = setTimeout(() => {
-      if (currentEl === el) show(el);
-    }, DELAY);
-  });
-
-  document.addEventListener("mouseover", (e) => {
-    const el = e.target.closest(".js-hover-thumb");
-    if (!el) return;
-
-    const { preview } = getEls();
-    if (preview && preview.classList.contains("show") && currentEl === el) {
-      place(preview, el);
+    function getEls() {
+      return {
+        preview: document.getElementById("hoverPreview"),
+        img: document.getElementById("hoverPreviewImg"),
+        title: document.getElementById("hoverPreviewTitle"),
+        desc: document.getElementById("hoverPreviewDesc"),
+      };
     }
-  });
 
-  document.addEventListener("mouseout", (e) => {
-    const leftThumb = e.target.closest(".js-hover-thumb");
-    if (!leftThumb) return;
+    function clearTimer() {
+      if (timer) { clearTimeout(timer); timer = null; }
+    }
 
-    const to = e.relatedTarget;
-    if (to && to.closest && to.closest(".js-hover-thumb") === leftThumb) return;
+    function place(preview, el) {
+      const r = el.getBoundingClientRect();
+      preview.style.display = "block";
 
-    clearTimer();
-    currentEl = null;
-    hide();
-  });
+      const pr = preview.getBoundingClientRect();
+      let left = r.right + GAP;
+      let top = r.top;
 
-  window.addEventListener("scroll", () => { clearTimer(); currentEl = null; hide(); }, true);
-  window.addEventListener("resize", () => { clearTimer(); currentEl = null; hide(); });
-})();
+      if (left + pr.width > window.innerWidth - 10) left = r.left - pr.width - GAP;
+      if (top + pr.height > window.innerHeight - 10) top = window.innerHeight - pr.height - 10;
+      if (top < 10) top = 10;
+
+      preview.style.left = `${left}px`;
+      preview.style.top = `${top}px`;
+    }
+
+    function show(el) {
+      const { preview, img, title, desc } = getEls();
+      if (!preview || !img || !title || !desc) return;
+
+      img.src = el.dataset.previewImg || "";
+      img.alt = el.dataset.previewTitle || "";
+      title.textContent = el.dataset.previewTitle || "";
+      desc.textContent = el.dataset.previewDesc || "";
+
+      place(preview, el);
+      requestAnimationFrame(() => preview.classList.add("show"));
+    }
+
+    function hide() {
+      const { preview } = getEls();
+      if (!preview) return;
+
+      preview.classList.remove("show");
+      setTimeout(() => {
+        if (!currentEl) preview.style.display = "none";
+      }, 180);
+    }
+
+    document.addEventListener("mousemove", (e) => {
+      const el = e.target.closest(".js-hover-thumb");
+      if (!el) return;
+      if (currentEl === el) return;
+
+      clearTimer();
+      currentEl = el;
+
+      timer = setTimeout(() => {
+        if (currentEl === el) show(el);
+      }, DELAY);
+    });
+
+    document.addEventListener("mouseover", (e) => {
+      const el = e.target.closest(".js-hover-thumb");
+      if (!el) return;
+
+      const { preview } = getEls();
+      if (preview && preview.classList.contains("show") && currentEl === el) {
+        place(preview, el);
+      }
+    });
+
+    document.addEventListener("mouseout", (e) => {
+      const leftThumb = e.target.closest(".js-hover-thumb");
+      if (!leftThumb) return;
+
+      const to = e.relatedTarget;
+      if (to && to.closest && to.closest(".js-hover-thumb") === leftThumb) return;
+
+      clearTimer();
+      currentEl = null;
+      hide();
+    });
+
+    window.addEventListener("scroll", () => { clearTimer(); currentEl = null; hide(); }, true);
+    window.addEventListener("resize", () => { clearTimer(); currentEl = null; hide(); });
+  })();
 </script>
 
 <script>
-/* Auto-hide alerts (prevents duplicates by marking processed nodes) */
-(() => {
-  document.querySelectorAll(".flash-msg").forEach((el) => {
-    if (el.dataset.autohideInit === "1") return;  // ✅ prevents double init
-    el.dataset.autohideInit = "1";
+  /* Auto-hide alerts (prevents duplicates by marking processed nodes) */
+  (() => {
+    document.querySelectorAll(".flash-msg").forEach((el) => {
+      if (el.dataset.autohideInit === "1") return;
+      el.dataset.autohideInit = "1";
 
-    const delay = parseInt(el.dataset.autohide || "4500", 10);
-    window.setTimeout(() => {
-      if (window.bootstrap && bootstrap.Alert) {
-        const alert = bootstrap.Alert.getOrCreateInstance(el);
-        alert.close();
-      } else {
-        el.remove();
-      }
-    }, delay);
-  });
-})();
+      const delay = parseInt(el.dataset.autohide || "4500", 10);
+      window.setTimeout(() => {
+        if (window.bootstrap && bootstrap.Alert) {
+          const alert = bootstrap.Alert.getOrCreateInstance(el);
+          alert.close();
+        } else {
+          el.remove();
+        }
+      }, delay);
+    });
+  })();
 </script>
 
 <!-- Hover preview element -->

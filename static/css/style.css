@@ -6,7 +6,6 @@
     font-family: Lato, sans-serif;
     font-size: 1.4rem;
     font-weight: 700;
-    color: #4A4A4F;
 }
 
 .red-o { color: #E84610; }
@@ -15,6 +14,83 @@
 .light-bg { background-color: #fff; }
 .dark-bg { background-color: #4A4A4F; }
 .main-bg { background-color: #F9FAFC; }
+
+
+/* =========================
+   NAVBAR LINK SYSTEM
+   ========================= */
+
+/* Base link colour on black navbar */
+.navbar.bg-black .navbar-nav .nav-link {
+  color: rgba(255,255,255,.75) !important;
+  transition: color .2s ease;
+}
+
+/* Hover */
+.navbar.bg-black .navbar-nav .nav-link:hover,
+.navbar.bg-black .navbar-nav .nav-link:focus {
+  color: #fff !important;
+}
+
+/* Active link */
+.navbar.bg-black .navbar-nav .nav-link.active,
+.navbar.bg-black .navbar-nav .nav-link[aria-current="page"] {
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* Icons default */
+.navbar .nav-link i {
+  opacity: .75;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+/* Icon hover brighten */
+.navbar .nav-link:hover i {
+  opacity: 1;
+}
+
+/* Icon active brighten */
+.navbar .nav-link.active i,
+.navbar .nav-link[aria-current="page"] i {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+
+/* =========================
+   Dropdown Styling
+   ========================= */
+
+.navbar .dropdown-item {
+  color: rgba(255,255,255,.9);
+  border-radius: 8px;
+  transition: all .2s ease;
+}
+
+.navbar .dropdown-item:hover {
+  background-color: rgba(255,255,255,.08);
+  color: #fff;
+}
+
+/* Active dropdown item */
+.navbar .dropdown-item.active {
+  background-color: rgba(255,255,255,.12);
+  color: #fff;
+}
+
+/* Brighten dropdown icon */
+.navbar .dropdown-item i {
+  opacity: .8;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.navbar .dropdown-item:hover i,
+.navbar .dropdown-item.active i {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
 
 /* =========================
    Cards & Layout
@@ -47,6 +123,7 @@
     margin: 4px;
     text-transform: uppercase;
 }
+
 
 /* =========================
    Masthead
@@ -84,6 +161,7 @@
     z-index: 100;
 }
 
+
 /* =========================
    Posts & Links
    ========================= */
@@ -107,6 +185,7 @@
     margin-left: 5%;
     color: lightgray;
 }
+
 
 /* =========================
    Buttons
@@ -153,6 +232,7 @@
     border: none;
 }
 
+
 /* =========================
    Cart Styling
    ========================= */
@@ -167,19 +247,7 @@
 }
 
 .cart-thumb:hover {
-    transform: scale(1.05);
-}
-
-.cart-thumb{
-  width:60px;
-  height:60px;
-  object-fit:cover;
-  border-radius:8px;
-  cursor:pointer;
-  transition: transform 0.2s ease;
-}
-.cart-thumb:hover{
-  transform: scale(1.06);
+    transform: scale(1.06);
 }
 
 .hover-preview-fixed{
@@ -192,14 +260,136 @@
   z-index: 99999;
   box-shadow: 0 10px 25px rgba(0,0,0,0.18);
 }
+
 .hover-preview-fixed img{
   width:100%;
   border-radius:8px;
   margin-bottom:10px;
 }
+
 .hover-preview-fixed p{
   font-size:13px;
   margin:0;
   color:#555;
 }
 
+
+/* =========================
+   Login Card Shadow
+   ========================= */
+
+.login-card-shadow{
+  box-shadow: 10px 10px 24px rgba(0,0,0,.28);
+}
+
+
+/* =========================
+   TOMOZART AUTH INPUT STYLE
+   ========================= */
+
+/* Blue tinted inputs inside auth cards */
+
+.login-card-shadow input,
+.login-card-shadow select,
+.login-card-shadow textarea {
+
+  background-color: #eef4ff;
+  border: 1px solid #c9d9ff;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.06);
+  border-radius: .375rem;
+  padding: .5rem .75rem;
+  width: 100%;
+  transition: all .2s ease;
+}
+
+.login-card-shadow input:focus,
+.login-card-shadow select:focus,
+.login-card-shadow textarea:focus {
+
+  background-color: #ffffff;
+  border-color: #2f7d7a;
+  box-shadow: 0 0 0 .2rem rgba(47,125,122,.15);
+  outline: none;
+}
+
+/* ---------- FORM CARD (global, reusable) ---------- */
+.form-page{
+  min-height: calc(100vh - 120px); /* adjust if your navbar/footer differ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.form-card{
+  width: 100%;
+  max-width: 640px;
+  padding: 2.25rem 2.25rem 1.75rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.28);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+  backdrop-filter: blur(6px);
+}
+
+.form-title{
+  text-align: center;
+  font-weight: 400;
+  font-size: 2rem;
+  margin: 0 0 .25rem;
+}
+
+.form-subtitle{
+  text-align: center;
+  margin: 0 0 1.25rem;
+  color: rgba(0,0,0,0.55);
+}
+
+/* labels */
+.form-card .form-label{
+  font-weight: 600;
+  color: rgba(0,0,0,0.75);
+  margin-bottom: .35rem;
+}
+
+/* inputs without needing form-control classes */
+.form-card input,
+.form-card select,
+.form-card textarea{
+  width: 100%;
+  display: block;
+  padding: .75rem 1rem;
+  border-radius: 6px;
+  background: rgba(248,249,250,0.95);
+  border: 1px solid rgba(0,0,0,0.12);
+  outline: none;
+}
+
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus{
+  border-color: rgba(0,0,0,0.35);
+  box-shadow: 0 0 0 .2rem rgba(0,0,0,0.10);
+}
+
+.form-card .form-text{
+  color: rgba(0,0,0,0.55);
+}
+
+/* errors */
+.form-card .invalid-feedback{
+  font-size: .9rem;
+}
+
+/* submit button like your screenshot */
+.form-card .form-submit{
+  padding: .85rem 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+/* optional bottom links */
+.form-card .form-footer{
+  text-align: center;
+  font-size: .95rem;
+}
