@@ -12,8 +12,13 @@
     column-gap: 1.75rem;
   }
 
-  @media (min-width: 576px) { .masonry { column-count: 2; } }
-  @media (min-width: 992px) { .masonry { column-count: 3; } }
+  @media (min-width: 576px) {
+    .masonry { column-count: 2; }
+  }
+
+  @media (min-width: 992px) {
+    .masonry { column-count: 3; }
+  }
 
   .masonry-item {
     break-inside: avoid;
@@ -24,7 +29,6 @@
      Tile Styling
   ----------------------------- */
   .gallery-tile {
-    border-radius: 0;
     overflow: hidden;
     transition: transform .25s ease, box-shadow .25s ease;
     background: transparent;
@@ -37,13 +41,25 @@
 
   .gallery-img {
     width: 100%;
-    height: auto;   /* full image, no cropping */
+    height: auto;
     display: block;
   }
 
+  /* Remove link styling */
+  .gallery-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .gallery-link:hover,
+  .gallery-link:focus {
+    text-decoration: none;
+    color: inherit;
+  }
+
   /* -----------------------------
-     Caption / Typography
-     (Aligned with Shop styling)
+     Caption
   ----------------------------- */
   .gallery-caption {
     padding-top: .75rem;
@@ -59,9 +75,7 @@
     font-size: .9rem;
     margin-bottom: 0;
   }
-
 </style>
-
 
 <div class="container py-5">
 
@@ -69,20 +83,20 @@
   <div class="text-center mb-5">
     <h2 class="mb-2">Art Gallery</h2>
     <p class="text-muted mb-0">
-      Explore the collection of artworks by Tomo. Click an image to view full size.
+      Explore the collection of artworks by Tomo. Click an image to view it in a full page.
     </p>
     <hr class="mt-4">
   </div>
-
 
   <!-- Masonry Grid -->
   <div class="masonry">
     {% for artwork in artworks %}
       <div class="masonry-item">
 
-        <a href="{{ artwork.artwork_image.url }}"
-           target="_blank"
-           class="text-decoration-none text-dark">
+        <!-- Correct anchor tag -->
+        <a href="{% url 'blog:gallery_full' artwork.id %}"
+           class="gallery-link"
+           aria-label="View {{ artwork.title }}">
 
           <div class="gallery-tile">
             <img src="{{ artwork.artwork_image.url }}"

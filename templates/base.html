@@ -159,16 +159,20 @@
     <!-- Right Controls -->
     <div class="d-flex align-items-center gap-2 ms-auto order-md-2">
 
-      <!-- Global Cart -->
-      <a class="btn btn-outline-light btn-sm position-relative" href="{% url 'store:cart' %}">
-        <i class="fa-solid fa-cart-shopping me-1"></i>
-        View Cart
-        {% if cart_count > 0 %}
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
-            {{ cart_count }}
-          </span>
-        {% endif %}
-      </a>
+<!-- Global Cart -->
+<a class="btn btn-outline-light btn-sm position-relative nav-cart-btn"
+   href="{% url 'store:cart' %}">
+
+  <i class="fa-solid fa-cart-shopping me-1"></i>
+  <span>View Cart</span>
+
+  {% if cart_count > 0 %}
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-badge">
+      {{ cart_count }}
+    </span>
+  {% endif %}
+
+</a>
 
       <!-- Desktop Dropdown (md+ only) -->
       <div class="dropdown d-none d-md-block">
@@ -323,30 +327,32 @@
 
         <hr class="text-secondary my-2">
 
-        {% if user.is_authenticated %}
+{% if user.is_authenticated %}
 
-          <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'profile' %}active{% endif %}"
-               href="{% url 'blog:profile' %}">
-              <i class="fa-solid fa-user"></i> Profile
-            </a>
-          </li>
+<li class="nav-item">
+  <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'profile' %}active{% endif %}"
+     href="{% url 'blog:profile' %}">
+    <i class="fa-solid fa-user"></i> Profile
+  </a>
+</li>
 
-          <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
-               href="{% url 'blog:add_post' %}">
-              <i class="fa-solid fa-pen-to-square"></i> Add Post
-            </a>
-          </li>
+<li class="nav-item">
+  <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
+     href="{% url 'blog:add_post' %}">
+    <i class="fa-solid fa-pen-to-square"></i> Add Post
+  </a>
+</li>
 
-          <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2"
-               href="{{ logout_url }}">
-              <i class="fa-solid fa-right-from-bracket"></i> Logout
-            </a>
-          </li>
+<li><hr class="text-secondary my-2"></li>
 
-        {% else %}
+<li class="nav-item">
+  <a class="nav-link d-flex align-items-center gap-2"
+     href="{{ logout_url }}">
+    <i class="fa-solid fa-right-from-bracket"></i> Logout
+  </a>
+</li>
+
+{% else %}
 
           <li class="nav-item">
             <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'account' and rn == 'login' %}active{% endif %}"
