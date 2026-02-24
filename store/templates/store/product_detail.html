@@ -2,16 +2,27 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-
-  <a href="{% url 'store:shop' %}" class="btn btn-outline-dark mb-3">
-    ← Back to Shop
-  </a>
+<div class="container py-2">
+  <div class="mb-4">
+    {% if request.GET.next == "cart" %}
+      <a href="{% url 'store:cart' %}" class="btn btn-outline-dark">
+        ← Back to Cart
+      </a>
+    {% else %}
+      <a href="{% url 'store:shop' %}" class="btn btn-outline-dark">
+        ← Back to Shop
+      </a>
+    {% endif %}
+  </div>
 
   <div class="row g-4">
     <div class="col-md-6">
       {% if product.image %}
-        <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ product.name }}">
+        <img
+          src="{{ product.image.url }}"
+          class="img-fluid rounded shadow-sm"
+          alt="{{ product.name }}"
+        />
       {% endif %}
     </div>
 
@@ -36,6 +47,5 @@
       </form>
     </div>
   </div>
-
 </div>
 {% endblock %}

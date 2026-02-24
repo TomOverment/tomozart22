@@ -1,69 +1,65 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} TOMOZART {% endblock %}
+{% block title %}TOMOZART{% endblock %}
 
 {% block content %}
-
 
 
 
 <!-- ========================= -->
 <!-- HERO INTRO -->
 <!-- ========================= -->
-
-<div class="text-center py-5">
+<div class="container py-5">
+  <div class="text-center hero-wrap">
 
     <h1 class="fw-light mb-3">
-        This my {% if user.is_authenticated %}{{ user.username }},{% endif %}
-        is Tom O’s Art Gallery!
+      This my {% if user.is_authenticated %}{{ user.username }},{% endif %}
+      is Tom O’s Art Gallery!
     </h1>
 
     <p class="lead text-muted mx-auto" style="max-width: 850px;">
-        Buy or enjoy original artworks, like a ledge, or experience it for free, Limited edition Giclée prints, and creative pieces,
-        vibrant spray painting to mixed media canvases, Backwords engineered concept's essentialy stepping one step back in unrealised progress and walls, walls, walls!?
+      Buy or enjoy original artworks, like a ledge, or experience it for free, Limited edition Giclée prints, and creative pieces,
+      vibrant spray painting to mixed media canvases, Backwords engineered concept's essentialy stepping one step back in unrealised progress and walls, walls, walls!?
     </p>
 
     {% if not user.is_authenticated %}
-        <p class="text-muted small mt-4" style="letter-spacing: .3px;">
-            Guests are welcome to explore freelyish to a piont.
-            Creating an account allows you to manage purchases,
-            become a patron of cba mailing list and i'd probably give
-        </p>
+      <p class="text-muted small mt-4" style="letter-spacing: .3px;">
+        Guests are welcome to explore freelyish to a piont.
+        Creating an account allows you to manage purchases,
+        become a patron of cba mailing list and i'd probably give
+      </p>
     {% endif %}
 
     <hr class="my-4">
 
     <p class="text-muted small mb-0">
-        Scroll down to discover our <strong>Featured Products</strong>.
+      Scroll down to discover our <strong>Featured Products</strong>.
     </p>
 
+  </div>
 </div>
 
-
 <!-- ========================= -->
-<!-- PRODUCT CAROUSEL -->
+<!-- PRODUCT CAROUSEL (MOBILE: 1 / DESKTOP: 3) -->
 <!-- ========================= -->
 
 {% if products %}
-<div class="container my-4">
-  <div class="product-carousel-wrap">
-    <h3 class="text-center mb-3">Featured Products</h3>
+  <div class="container my-4">
+    <div class="product-carousel-wrap">
+      <h3 class="text-center mb-3">Featured Products</h3>
 
-    <div id="productCarousel"
-         class="carousel slide"
-         data-bs-ride="carousel"
-         data-bs-interval="3000"
-         data-bs-pause="hover">
+      <!-- MOBILE (1 item per slide) -->
+      <div class="d-block d-md-none">
+        <div id="productCarouselMobile"
+             class="carousel slide"
+             data-bs-ride="carousel"
+             data-bs-interval="3000"
+             data-bs-pause="hover">
 
-      <div class="carousel-inner">
-
-        {% for product in products %}
-          {% if forloop.counter0|divisibleby:3 %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-              <div class="row g-3 justify-content-center">
-          {% endif %}
-
-                <div class="col-12 col-md-4">
+          <div class="carousel-inner">
+            {% for product in products %}
+              <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <div class="px-3">
                   <div class="card product-card h-100 shadow-sm">
 
                     <a href="{% url 'store:product_detail' product.id %}">
@@ -84,38 +80,103 @@
                         View
                       </a>
                     </div>
+
                   </div>
                 </div>
-
-          {% if forloop.counter0|add:1|divisibleby:3 or forloop.last %}
               </div>
-            </div>
-          {% endif %}
-        {% endfor %}
+            {% endfor %}
+          </div>
 
+          <button class="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#productCarouselMobile"
+                  data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+
+          <button class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#productCarouselMobile"
+                  data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+
+        </div>
       </div>
 
-      <button class="carousel-control-prev"
-              type="button"
-              data-bs-target="#productCarousel"
-              data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
+      <!-- DESKTOP (3 items per slide - your existing logic) -->
+      <div class="d-none d-md-block">
+        <div id="productCarouselDesktop"
+             class="carousel slide"
+             data-bs-ride="carousel"
+             data-bs-interval="3000"
+             data-bs-pause="hover">
 
-      <button class="carousel-control-next"
-              type="button"
-              data-bs-target="#productCarousel"
-              data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
+          <div class="carousel-inner">
+            {% for product in products %}
+              {% if forloop.counter0|divisibleby:3 %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <div class="row g-3 justify-content-center">
+              {% endif %}
+
+                    <div class="col-12 col-md-4">
+                      <div class="card product-card h-100 shadow-sm">
+
+                        <a href="{% url 'store:product_detail' product.id %}">
+                          {% if product.image %}
+                            <img src="{{ product.image.url }}"
+                                 class="card-img-top product-card-img"
+                                 alt="{{ product.name }}">
+                          {% endif %}
+                        </a>
+
+                        <div class="card-body text-center">
+                          <h6 class="card-title mb-1">{{ product.name }}</h6>
+                          {% if product.price %}
+                            <p class="card-text mb-2">£{{ product.price }}</p>
+                          {% endif %}
+                          <a href="{% url 'store:product_detail' product.id %}"
+                             class="btn btn-sm btn-outline-dark">
+                            View
+                          </a>
+                        </div>
+
+                      </div>
+                    </div>
+
+              {% if forloop.counter0|add:1|divisibleby:3 or forloop.last %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <button class="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#productCarouselDesktop"
+                  data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+
+          <button class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#productCarouselDesktop"
+                  data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+
+        </div>
+      </div>
 
     </div>
   </div>
-</div>
 {% endif %}
 
 <hr>
-
 
 <!-- ========================= -->
 <!-- BLOG POSTS -->
@@ -126,8 +187,7 @@
 
     {% for post in object_list %}
       <div class="col-12 col-md-6 mb-5">
-
-        <div class="post-card p-4 h-100">
+        <div class="post-card p-4 h-100 d-flex flex-column">
 
           <div class="post-header">
             <a href="{% url 'blog:post_detail' post.slug %}"
@@ -136,7 +196,7 @@
             </a>
 
             <span class="post-author">
-              AUTHOR: {{ post.author|upper }}
+              Posted by: {{ post.author|upper }}
             </span>
           </div>
 
@@ -156,22 +216,21 @@
 
           {% if post.can_edit %}
             <div class="mt-4">
-            <a href="{% url 'blog:update_post' post.pk %}"
-            class="btn btn-sm btn-dark me-2">
-            Edit
-            </a>
+              <a href="{% url 'blog:update_post' post.pk %}"
+                 class="btn btn-sm btn-dark me-2">
+                Edit
+              </a>
 
-<a href="{% url 'blog:delete_post' post.id %}"
-   class="btn btn-sm btn-dark">
-  Delete
-</a>
+              <a href="{% url 'blog:delete_post' post.id %}"
+                 class="btn btn-sm btn-dark">
+                Delete
               </a>
             </div>
           {% endif %}
 
         </div>
-
       </div>
+
     {% empty %}
       <div class="col-12">
         <div class="alert alert-secondary text-center">

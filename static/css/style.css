@@ -1,479 +1,227 @@
-/* =========================
-   Global Typography & Theme
-   ========================= */
+/* =========================================================
+   TOMOZART — CLEAN MASTER STYLESHEET
+   Cards lighten to #f9fafcb7 on hover
+   ========================================================= */
 
-.navbar {
-    font-family: Lato, sans-serif;
-    font-size: 1.4rem;
-    font-weight: 700;
+
+/* =========================================================
+   THEME VARIABLES (ONLY DEFINE ONCE)
+   ========================================================= */
+
+:root{
+  /* Brand */
+  --tomo-accent:   #2f7d7a;
+  --tomo-accent-2: #188181;
+  --tomo-warm:     #E84610;
+
+  /* Backgrounds */
+  --bg-main: #F9FAFC;
+  --bg-dark: #4A4A4F;
+
+  /* ✅ Card behaviour
+     Default = darker
+     Hover   = lighter (your requested colour)
+  */
+  --card-base:  #B0B3B9;      /* default */
+  --card-hover: #f9fafcb7;    /* hover */
+
+  /* Text */
+  --text-dark:  #222;
+  --text-muted: rgba(0,0,0,0.62);
 }
 
-.red-o { color: #E84610; }
-.thin { font-weight: 300; }
 
-.light-bg { background-color: #fff; }
-.dark-bg { background-color: #4A4A4F; }
-.main-bg { background-color: #F9FAFC; }
+/* =========================================================
+   GLOBAL BASE
+   ========================================================= */
 
-
-/* =========================
-   NAVBAR LINK SYSTEM
-   ========================= */
-
-/* Base link colour on black navbar */
-.navbar.bg-black .navbar-nav .nav-link {
-  color: rgba(255,255,255,.75) !important;
-  transition: color .2s ease;
+body{
+  background: var(--bg-main);
+  color: var(--text-dark);
+  font-family: Lato, sans-serif;
 }
 
-/* Hover */
+.red-o{ color: var(--tomo-warm); }
+.thin{ font-weight: 300; }
+.light-bg{ background-color: #fff; }
+.dark-bg{ background-color: var(--bg-dark); }
+.main-bg{ background-color: var(--bg-main); }
+
+
+/* =========================================================
+   NAVBAR SYSTEM
+   ========================================================= */
+
+/* =========================================================
+   NAVBAR LINK SYSTEM (Half-bright hover)
+   ========================================================= */
+
+.navbar.bg-black .navbar-nav .nav-link{
+  color: rgba(255,255,255,.65) !important; /* slightly dimmer base */
+  transition: color .2s ease, opacity .2s ease;
+}
+
+/* 👇 HALF BRIGHT hover (not full white) */
 .navbar.bg-black .navbar-nav .nav-link:hover,
-.navbar.bg-black .navbar-nav .nav-link:focus {
-  color: #fff !important;
+.navbar.bg-black .navbar-nav .nav-link:focus{
+  color: rgba(255,255,255,.85) !important; /* halfway bright */
 }
 
-/* Active link */
+/* Active stays full bright */
 .navbar.bg-black .navbar-nav .nav-link.active,
-.navbar.bg-black .navbar-nav .nav-link[aria-current="page"] {
-  color: #fff !important;
+.navbar.bg-black .navbar-nav .nav-link[aria-current="page"]{
+  color: #ffffff !important;
   font-weight: 700;
 }
 
-/* Icons default */
-.navbar .nav-link i {
-  opacity: .75;
-  transition: opacity .2s ease, transform .2s ease;
-}
 
-/* Icon hover brighten */
-.navbar .nav-link:hover i {
-  opacity: 1;
-}
 
-/* Icon active brighten */
-.navbar .nav-link.active i,
-.navbar .nav-link[aria-current="page"] i {
-  opacity: 1;
-  transform: scale(1.05);
-}
 
-
-/* =========================
-   Dropdown Styling
-   ========================= */
-
-.navbar .dropdown-item {
-  color: rgba(255,255,255,.9);
-  border-radius: 8px;
-  transition: all .2s ease;
-}
-
-.navbar .dropdown-item:hover {
-  background-color: rgba(255,255,255,.08);
-  color: #fff;
-}
-
-/* Active dropdown item */
-.navbar .dropdown-item.active {
-  background-color: rgba(255,255,255,.12);
-  color: #fff;
-}
-
-/* Brighten dropdown icon */
-.navbar .dropdown-item i {
-  opacity: .8;
-  transition: opacity .2s ease, transform .2s ease;
-}
-
-.navbar .dropdown-item:hover i,
-.navbar .dropdown-item.active i {
-  opacity: 1;
-  transform: scale(1.05);
-}
-
-
-/* =========================
-   Cards & Layout
-   ========================= */
-
-.card {
-    border: none;
-    background-color: transparent;
-}
-
-.image-container {
-    position: relative;
-}
-
-.image-flash {
-    position: absolute;
-    bottom: 5%;
-    min-width: 30%;
-    left: -2px;
-    background-color: #188181;
-}
-
-.scale {
-    width: 100%;
-    height: auto;
-}
-
-.author {
-    color: white;
-    margin: 4px;
-    text-transform: uppercase;
-}
-
-
-/* =========================
-   Masthead
-   ========================= */
-
-.masthead {
-    margin-top: 10px;
-    overflow: hidden;
-    position: relative;
-    display: inline-block;
-    height: 33vh;
-    width: 100%;
-}
-
-.masthead-text {
-    background-color: #445261;
-    color: white;
-    position: relative;
-}
-
-.masthead-image {
-    position: relative;
-    overflow: hidden;
-}
-
-.masthead-image:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 90%;
-    height: 100%;
-    width: 150%;
-    background: #445261;
-    transform: skew(15deg);
-    z-index: 100;
-}
-
-
-/* =========================
-   Posts & Links
-   ========================= */
-
-.post-link {
-    text-decoration: none;
-    color: #445261;
-}
-
-.post-link:hover,
-.page-link {
-    color: #E84610;
-}
-
-.post-title {
-    margin-top: 10%;
-    margin-left: 5%;
-}
-
-.post-subtitle {
-    margin-left: 5%;
-    color: lightgray;
-}
-
-
-/* =========================
-   Buttons
-   ========================= */
-
-.btn-signup,
-.btn-edit {
-    background-color: #188181;
-    color: #fff;
-}
-
-.btn-signup:hover,
-.btn-signup:active {
-    background-color: #fff;
-    color: #188181;
-}
-
-.link {
-    color: #188181;
-    text-decoration: none;
-}
-
-.link:hover,
-.link:active {
-    color: #445261;
-    text-decoration: underline;
-}
-
-.btn-like {
-    color: #E84610;
-    border: none;
-    background: transparent;
-}
-
-.btn-delete {
-    color: #fff;
-    background: #E84610;
-}
-
-.btn-like:hover,
-.btn-like:active {
-    color: #E84610;
-    background: transparent;
-    border: none;
-}
-
-
-/* =========================
-   Cart Styling
-   ========================= */
-
-.cart-thumb {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.cart-thumb:hover {
-    transform: scale(1.06);
-}
-
-.hover-preview-fixed{
-  position: fixed;
-  width: 280px;
-  background:#fff;
-  border-radius:12px;
-  padding:12px;
-  display:none;
-  z-index: 99999;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.18);
-}
-
-.hover-preview-fixed img{
-  width:100%;
-  border-radius:8px;
-  margin-bottom:10px;
-}
-
-.hover-preview-fixed p{
-  font-size:13px;
-  margin:0;
-  color:#555;
-}
-
-
-/* =========================
-   Login Card Shadow
-   ========================= */
-
-.login-card-shadow{
-  box-shadow: 10px 10px 24px rgba(0,0,0,.28);
-}
-
-
-/* =========================
-   TOMOZART AUTH INPUT STYLE
-   ========================= */
-
-/* Blue tinted inputs inside auth cards */
-
-.login-card-shadow input,
-.login-card-shadow select,
-.login-card-shadow textarea {
-
-  background-color: #eef4ff;
-  border: 1px solid #c9d9ff;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,.06);
-  border-radius: .375rem;
-  padding: .5rem .75rem;
-  width: 100%;
-  transition: all .2s ease;
-}
-
-.login-card-shadow input:focus,
-.login-card-shadow select:focus,
-.login-card-shadow textarea:focus {
-
-  background-color: #ffffff;
-  border-color: #2f7d7a;
-  box-shadow: 0 0 0 .2rem rgba(47,125,122,.15);
-  outline: none;
-}
-
-/* ---------- FORM CARD (global, reusable) ---------- */
-.form-page{
-  min-height: calc(100vh - 120px); /* adjust if your navbar/footer differ */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 1rem;
-}
-
-.form-card{
-  width: 100%;
-  max-width: 640px;
-  padding: 2.25rem 2.25rem 1.75rem;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.28);
-  border: 1px solid rgba(0,0,0,0.08);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.22);
-  backdrop-filter: blur(6px);
-}
-
-.form-title{
-  text-align: center;
-  font-weight: 400;
-  font-size: 2rem;
-  margin: 0 0 .25rem;
-}
-
-.form-subtitle{
-  text-align: center;
-  margin: 0 0 1.25rem;
-  color: rgba(0,0,0,0.55);
-}
-
-/* labels */
-.form-card .form-label{
-  font-weight: 600;
-  color: rgba(0,0,0,0.75);
-  margin-bottom: .35rem;
-}
-
-/* inputs without needing form-control classes */
-.form-card input,
-.form-card select,
-.form-card textarea{
-  width: 100%;
-  display: block;
-  padding: .75rem 1rem;
-  border-radius: 6px;
-  background: rgba(248,249,250,0.95);
-  border: 1px solid rgba(0,0,0,0.12);
-  outline: none;
-}
-
-.form-card input:focus,
-.form-card select:focus,
-.form-card textarea:focus{
-  border-color: rgba(0,0,0,0.35);
-  box-shadow: 0 0 0 .2rem rgba(0,0,0,0.10);
-}
-
-.form-card .form-text{
-  color: rgba(0,0,0,0.55);
-}
-
-/* errors */
-.form-card .invalid-feedback{
-  font-size: .9rem;
-}
-
-/* submit button like your screenshot */
-.form-card .form-submit{
-  padding: .85rem 1rem;
-  border-radius: 6px;
-  font-weight: 700;
-}
-
-/* optional bottom links */
-.form-card .form-footer{
-  text-align: center;
-  font-size: .95rem;
-}
-
-/* ===============================
-   Cart Badge – Red Glow
-================================ */
-
-.cart-badge{
-  background-color: #e10600;   /* strong red */
-  color: #fff;
-  font-size: 0.7rem;
-  padding: 4px 7px;
-  border-radius: 50%;
-
-  /* Red glow effect */
-  box-shadow:
-    0 0 6px rgba(225, 6, 0, 0.9),
-    0 0 14px rgba(225, 6, 0, 0.7);
-
-  transition: transform .2s ease, box-shadow .2s ease;
-}
-
-/* Slight hover intensity */
-.nav-cart-btn:hover .cart-badge{
-  transform: scale(1.1);
-  box-shadow:
-    0 0 10px rgba(225, 6, 0, 1),
-    0 0 20px rgba(225, 6, 0, 0.9);
-}
-
-/* ================================
-   POST CARD SYSTEM
-================================ */
+/* =========================================================
+   POST CARD SYSTEM (INDEX + PROFILE)
+   Darker default → lighter hover
+   ========================================================= */
 
 .post-card{
-  background: #A6A9AF;
+  background: var(--card-base);
   border-radius: 16px;
-  box-shadow: 28px 28px 70px rgba(0,0,0,0.35),
-              8px 8px 25px rgba(0,0,0,0.20);
-  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+  box-shadow: 20px 20px 55px rgba(0,0,0,0.28),
+              6px 6px 18px rgba(0,0,0,0.16);
+  transition: transform .2s ease,
+              box-shadow .2s ease,
+              background-color .2s ease;
 }
 
 .post-card:hover{
   transform: translateY(-3px);
-  background: #B0B3B9;
-  box-shadow: 32px 32px 85px rgba(0,0,0,0.45),
-              10px 10px 30px rgba(0,0,0,0.25);
+  background: var(--card-hover); /* LIGHTENS to #f9fafcb7 */
+  box-shadow: 28px 28px 70px rgba(0,0,0,0.35),
+              8px 8px 25px rgba(0,0,0,0.20);
 }
 
-.post-image-wrapper{
-  overflow: hidden;
+
+/* Post Header (no underline area) */
+
+.post-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: .5rem;
+  border-bottom: none; /* removes header divider */
 }
+
+.post-header a{
+  text-decoration: none !important; /* removes link underline */
+}
+
+
+/* Card Title (NO underline on cards) */
+
+.post-title{
+  font-weight: 300;
+  font-size: 2rem;
+  margin: 0;
+  line-height: 1.15;
+}
+
+
+/* Author */
+
+.post-author{
+  font-size: .75rem;
+  text-transform: uppercase;
+  color: #000;
+}
+
+
+/* Mobile layout */
+
+@media (max-width: 576px){
+  .post-header{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
+/* Image */
+
+.post-image-wrapper{ overflow: hidden; }
 
 .post-image{
   width: 100%;
+  height: auto;
   border-radius: 6px;
   transition: transform .3s ease;
+  display: block;
 }
 
-.post-image:hover{
+.post-card:hover .post-image{
   transform: scale(1.02);
 }
 
-/* =========================
-   Product carousel + cards
-   ========================= */
+
+/* Description */
+
+.post-description{
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #333;
+  margin-top: 1rem;
+}
+
+
+/* =========================================================
+   POST DETAIL PAGE (Underline ONLY here)
+   ========================================================= */
+
+.post-detail-title{
+  font-weight: 300;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0,0,0,.15);
+  padding-bottom: .5rem;
+}
+
+.post-author-tag{
+  display: inline-block;
+  background: var(--tomo-accent);
+  color: #fff;
+  font-size: .75rem;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: .75rem;
+}
+
+
+/* =========================================================
+   PRODUCT CAROUSEL
+   ========================================================= */
+
 .product-carousel-wrap{
   border: 2px solid rgba(0,0,0,.35);
   border-radius: 16px;
   padding: 20px;
   background: linear-gradient(
-      180deg,
-      rgba(60,60,60,0.95),
-      rgba(45,45,45,0.95)
+    180deg,
+    rgba(60,60,60,0.95),
+    rgba(45,45,45,0.95)
   );
 }
 
+.product-carousel-wrap h3{ color: #ffffff; }
+
 .product-card{
-  height: 100%;
   border-radius: 20px;
   overflow: hidden;
   transition: transform .25s ease, box-shadow .25s ease;
-  background-color: transparent;
+}
+
+.product-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.25);
 }
 
 .product-card-img{
@@ -488,103 +236,209 @@
   border-top: 1px solid rgba(0,0,0,.08);
 }
 
-.product-carousel-wrap h3{
-  color: #ffffff;
+
+/* =========================================================
+   CART BADGE
+   ========================================================= */
+
+.cart-badge{
+  background-color: #e10600;
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 4px 7px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 6px rgba(225, 6, 0, 0.9),
+    0 0 14px rgba(225, 6, 0, 0.7);
+  transition: transform .2s ease, box-shadow .2s ease;
 }
 
-/* =========================
-   Posts – reusable header + card
-   ========================= */
-.post-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: .75rem;
-  padding-bottom: .5rem;
-  border-bottom: 1px solid rgba(0,0,0,.15);
+.nav-cart-btn:hover .cart-badge{
+  transform: scale(1.1);
 }
 
-.post-title{
-  font-weight: 300;
-  font-size: 2rem;
-  margin: 0;
-  line-height: 1.15;
-}
+/* =========================================================
+   HOVER PREVIEW POPUP
+   Single definition only
+   ========================================================= */
 
-.post-author{
-  display: inline-block;
-  background: transparent;
-  color: #2f7d7a;
-  font-size: .75rem;
-  letter-spacing: 1px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  text-transform: uppercase;
-  white-space: nowrap;
-  border: 1px solid #2f7d7a;
-}
+.hover-preview-fixed{
+  position: fixed;
+  z-index: 9999;
+  display: none;
 
-@media (max-width: 576px){
-  .post-header{
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
+  width: 320px;
+  max-width: 90vw;
 
-.post-image-wrapper{
+  /* Black card */
+  background: rgba(0,0,0,0.95);
+
+  /* ✅ Rounded corners */
+  border-radius: 20px;
   overflow: hidden;
+
+  /* Depth */
+  box-shadow: 0 18px 45px rgba(0,0,0,.5);
+
+  /* Animation base state */
+  opacity: 0;
+  transform: translateY(12px) scale(.96);
+  transition: 
+    opacity .3s ease,
+    transform .35s cubic-bezier(.16,1,.3,1);
 }
 
-.post-image{
+/* Visible state (JS adds .show) */
+.hover-preview-fixed.show{
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Image */
+.hover-preview-fixed img{
+  width: 90%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  margin: 16px auto 0;
+  border-radius: 14px;
+}
+
+/* Content */
+.hover-preview-fixed .hover-content{
+  padding: 16px;
+  color: #fff;
+}
+
+.hover-preview-fixed strong{
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.hover-preview-fixed p{
+  margin: 0;
+  color: rgba(255,255,255,.8);
+  font-size: .85rem;
+  line-height: 1.3rem;
+}
+
+.form-card{
   width: 100%;
-  height: auto;
-  border-radius: 6px;
-  transition: transform .3s ease;
+  max-width: 640px;
+  padding: 2.5rem 2.5rem 2rem;
+  border-radius: 14px;
+
+  /* Soft grey glass */
+  background: rgba(210, 214, 222, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  /* Soft edge highlight */
+  border: 1px solid rgba(255,255,255,0.35);
+
+  /* Directional depth (bottom-right heavy) */
+  box-shadow:
+      30px 30px 60px rgba(0,0,0,0.28),
+      8px 8px 18px rgba(0,0,0,0.18),
+      -6px -6px 18px rgba(255,255,255,0.25);
+}
+
+/* Full page centering */
+.auth-wrapper{
+  min-height: calc(100vh - 140px); /* adjust if navbar/footer height differs */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.form-card input{
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.2);
+  margin-top: 6px;
+  margin-bottom: 18px;
+  box-sizing: border-box;
+}
+
+.form-card label{
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.form-card h1,
+.form-card h2 {
+  text-align: center;
+}
+
+/* ==============================
+   PREVIEW MODAL IMAGE FIX
+   ============================== */
+
+.preview-modal img{
+  width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 12px;
   display: block;
 }
 
-.post-image:hover{
-  transform: scale(1.02);
+
+/* ==============================
+   CART / THUMBNAIL IMAGE SIZE
+   ============================== */
+
+.cart-thumb{
+  width: 80px;          /* adjust as needed */
+  height: 80px;         /* keeps it square */
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
 }
 
-.post-description{
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #333;
-  margin-top: 1rem;
-}
+/* =========================
+   Global Elevated Card System
+   ========================= */
 
-/* Card styling used on index + profile */
-.post-card{
-  background: #A6A9AF;
-  border-radius: 16px;
-  box-shadow: 28px 28px 70px rgba(0,0,0,0.35),
-              8px 8px 25px rgba(0,0,0,0.20);
-  transition: transform .2s ease,
-              box-shadow .2s ease,
-              background-color .2s ease;
-}
-
-.post-card:hover{
-  transform: translateY(-3px);
-  background: #B0B3B9;
-  box-shadow: 32px 32px 85px rgba(0,0,0,0.45),
-              10px 10px 30px rgba(0,0,0,0.25);
-}
-
-/* Optional: only keep if still used anywhere */
-.btn-solid{
-  background-color: #2f7d7a;
-  color: #fff;
+.card-elevated {
+  position: relative;
   border: none;
-  padding: 6px 16px;
-  border-radius: 6px;
-  transition: all .2s ease;
+  border-radius: 16px;
+  background: #fff;
+
+  transition:
+    transform 0.35s cubic-bezier(.22,.61,.36,1),
+    box-shadow 0.35s cubic-bezier(.22,.61,.36,1),
+    background-color 0.35s ease;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.06),
+    0 1px 2px rgba(0,0,0,0.04);
 }
 
-.btn-solid:hover{
-  background-color: #256663;
-  color: #fff;
-  transform: translateY(-1px);
+/* Subtle Lift Effect */
+.card-elevated:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.10),
+    0 8px 16px rgba(0,0,0,0.06);
 }
+
+/* Very subtle lightening overlay */
+.card-elevated::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255,255,255,0);
+  transition: background 0.35s ease;
+  pointer-events: none;
+}
+
+.card-elevated:hover::after {
+  background: rgba(255,255,255,0.04);
+}
+

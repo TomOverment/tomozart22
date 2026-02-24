@@ -11,6 +11,7 @@ urlpatterns = [
     path("profile/", views.profile, name="profile"),
     path("about/", views.about, name="about"),
     path("gallery/", views.gallery, name="gallery"),
+    path("bio/", views.bio, name="bio"),
 
     # ✅ Detail page by slug (keep this as post_detail)
     path("post/<slug:slug>/", views.post_detail, name="post_detail"),

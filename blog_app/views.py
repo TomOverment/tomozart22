@@ -256,3 +256,23 @@ def contact_view(request):
         "blog_app/contact.html",
         {"form": form}
     )
+
+def bio(request):
+    context = {
+        'name': 'Thomas Overment',
+        'bio': """
+        Thomas Overment, known as Tomozart, is a multi-disciplinary artist blending digital media, 
+        music, and visual art. With a focus on immersive experiences, Thomas combines AI-assisted techniques 
+        with traditional artistic methods to explore modern creativity.
+        """,
+        'social_links': {
+            'instagram': 'https://instagram.com/tomozart',
+            'twitter': 'https://twitter.com/tomozart',
+            'website': 'https://tomozart.com'
+        }
+    }
+    return render(
+        request,
+        "blog_app/bio.html", 
+        {"context": context}
+    )

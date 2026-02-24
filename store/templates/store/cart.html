@@ -47,7 +47,7 @@
                     {% endif %}
 
                     {# Optional: “View details” opens new tab so cart page stays #}
-                    <a href="{% url 'store:product_detail' i.product.id %}"
+                    <a href="{% url 'store:product_detail' i.product.id %}?next=cart"
                        target="_blank" rel="noopener"
                        class="small text-decoration-none">
                       View details
