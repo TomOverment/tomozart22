@@ -94,17 +94,17 @@
       <div class="masonry-item">
 
         <!-- Correct anchor tag -->
-        <a href="{% url 'blog:gallery_full' artwork.id %}"
-           class="gallery-link"
-           aria-label="View {{ artwork.title }}">
+        <a href="{% url 'blog:artwork_detail' artwork.id %}"
+   class="gallery-link"
+   aria-label="View {{ artwork.title }}">
 
-          <div class="gallery-tile">
-            <img src="{{ artwork.artwork_image.url }}"
-                 class="gallery-img"
-                 alt="{{ artwork.title }}">
-          </div>
+  <div class="gallery-tile">
+    <img src="{{ artwork.artwork_image.url }}"
+         class="gallery-img"
+         alt="{{ artwork.title }}">
+  </div>
 
-        </a>
+</a>
 
         {% if artwork.title or artwork.description %}
           <div class="gallery-caption">

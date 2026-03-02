@@ -21,6 +21,7 @@ urlpatterns = [
 
     path("post/<int:post_id>/delete/", delete_post, name="delete_post"),
     path("contact/", views.contact_view, name="contact"),
+    path("artwork/<int:pk>/", views.artwork_detail, name="artwork_detail"),
     path("gallery/full/<int:pk>/", views.gallery_full, name="gallery_full"),
 ]
 

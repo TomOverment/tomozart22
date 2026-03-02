@@ -206,8 +206,15 @@ def gallery_full(request, pk):
         "blog_app/gallery_full.html",
         {"artwork": artwork}
     )
+# =============================
+# ARTWORK DETAIL
+# =============================
 
-
+def artwork_detail(request, pk):
+    artwork = get_object_or_404(Artwork, pk=pk)
+    return render(request, "blog_app/artwork_detail.html", {
+        "artwork": artwork
+    })
 # =============================
 # CONTACT
 # =============================

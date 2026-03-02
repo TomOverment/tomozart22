@@ -77,6 +77,26 @@
       opacity: .9;
     }
 
+    /* Floating Back To Top */
+
+.back-to-top {
+  position: fixed;
+  right: 25px;
+  bottom: 30px;
+  z-index: 1050;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 18px rgba(0,0,0,.25);
+  transition: transform .25s ease, opacity .25s ease;
+}
+
+.back-to-top:hover {
+  transform: translateY(-4px);
+}
   </style>
 </head>
 
@@ -353,27 +373,44 @@
   </div>
 </main>
 
-<!-- Footer -->
-<footer class="footer mt-auto">
-  <div class="container d-flex justify-content-between align-items-center">
-    <div>
-      <p class="mb-1">Tomozart</p>
+
+  <!-- Footer -->
+<footer class="footer mt-auto py-4">
+  <div class="container position-relative">
+
+    <div class="d-flex align-items-center">
+
+      <!-- LEFT: Contact -->
       <div>
+        <a href="{% url 'blog:contact' %}" class="text-white text-decoration-none">
+          Contact Us
+        </a>
+      </div>
+
+      <!-- CENTER: Social Icons -->
+      <div class="position-absolute start-50 translate-middle-x">
         <a href="#" class="text-white me-3" aria-label="Instagram">
-          <i class="fa-brands fa-instagram-square"></i>
+          <i class="fa-brands fa-instagram"></i>
         </a>
         <a href="#" class="text-white" aria-label="LinkedIn">
           <i class="fa-brands fa-linkedin"></i>
         </a>
       </div>
+
     </div>
 
-    <!-- Back To Top -->
-    <button id="backToTop" class="btn btn-outline-light btn-sm d-none" type="button" aria-label="Back to top">
-      <i class="fa-solid fa-arrow-up"></i>
-    </button>
   </div>
 </footer>
+
+<!-- Back To Top -->
+<button id="backToTop"
+        class="btn btn-dark btn-sm back-to-top d-none"
+        type="button"
+        aria-label="Back to top">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -521,6 +558,28 @@
     <p id="hoverPreviewDesc"></p>
   </div>
 </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const trigger = document.querySelector(".fullscreen-trigger");
+  const overlay = document.getElementById("fullscreenOverlay");
+
+  if (trigger && overlay) {
+
+    trigger.addEventListener("click", function() {
+      overlay.classList.add("active");
+    });
+
+    overlay.addEventListener("click", function() {
+      overlay.classList.remove("active");
+    });
+
+  }
+
+});
+</script>
 
 </body>
 </html>
