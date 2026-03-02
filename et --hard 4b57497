@@ -1,0 +1,30 @@
+[33m30fd5f0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33m30fd5f0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{1}: reset: moving to HEAD
+[33m30fd5f0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{2}: checkout: moving from main to main
+[33m30fd5f0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{3}: reset: moving to HEAD~1
+[33m65dc369[m HEAD@{4}: reset: moving to HEAD~1
+[33m4b57497[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{5}: commit: cleaned css and streamlined site
+[33m65dc369[m HEAD@{6}: commit: added gallery view and clean up
+[33m30fd5f0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{7}: commit: forms styled
+[33ma339ff7[m HEAD@{8}: commit: contact page added
+[33m347c9c6[m HEAD@{9}: commit: dynamic nav fix and profile/draft improvements
+[33md9f3c6d[m HEAD@{10}: commit: base.html fix
+[33mc7811dc[m HEAD@{11}: commit: back to top button in nav and dropdown style
+[33m569113b[m HEAD@{12}: commit: Changed Nav and shop.html
+[33m99a7a11[m HEAD@{13}: commit: added styles and improved layout/ux
+[33m2fc93a2[m HEAD@{14}: commit: debugging
+[33meb85f4c[m HEAD@{15}: commit: "stripe sandbox
+[33m4b5da4c[m HEAD@{16}: commit: stripe sanbox working with pages and paths corrected
+[33m6dc0535[m HEAD@{17}: commit: added product detail and improved cart
+[33m5aba99c[m HEAD@{18}: commit: changed cart and shop apps to one and base logic
+[33maeb6fb4[m HEAD@{19}: commit (merge): Merge branch 'main' of https://github.com/TomOverment/tomozart22
+[33m7c6df7a[m HEAD@{20}: commit: shop and cart added
+[33mcc75aeb[m HEAD@{21}: reset: moving to HEAD~
+[33mdeefa36[m HEAD@{22}: commit: shop and cart added
+[33mcc75aeb[m HEAD@{23}: commit: store andded to admin
+[33ma3f4b35[m HEAD@{24}: commit: store models made and migratted
+[33m3519396[m HEAD@{25}: commit: added new ecommerce app
+[33m5499a31[m HEAD@{26}: commit: Add django-jazzmin to requirements
+[33mf3f6be0[m HEAD@{27}: commit: installed jazzmin moved venv
+[33mebf63aa[m HEAD@{28}: commit: added linkedin and new shop page
+[33m6944d91[m HEAD@{29}: commit: cleaned up
