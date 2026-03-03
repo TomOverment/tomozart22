@@ -3,6 +3,8 @@
 
 {% block content %}
 <div class="container py-2">
+
+  <!-- Back Button -->
   <div class="mb-4">
     {% if request.GET.next == "cart" %}
       <a href="{% url 'store:cart' %}" class="btn btn-outline-dark">
@@ -16,16 +18,21 @@
   </div>
 
   <div class="row g-4">
+
+    <!-- IMAGE COLUMN -->
     <div class="col-md-6">
       {% if product.image %}
-        <img
-          src="{{ product.image.url }}"
-          class="img-fluid rounded shadow-sm"
-          alt="{{ product.name }}"
-        />
+        <div class="image-hover-wrapper">
+          <img
+            src="{{ product.image.url }}"
+            class="img-fluid rounded floating-image fullscreen-trigger"
+            alt="{{ product.name }}"
+          />
+        </div>
       {% endif %}
     </div>
 
+    <!-- DETAILS COLUMN -->
     <div class="col-md-6">
       <h1 class="mb-2">{{ product.name }}</h1>
 
@@ -46,6 +53,41 @@
         <button class="btn btn-dark">Add to cart</button>
       </form>
     </div>
+
   </div>
 </div>
+
+<!-- Fullscreen Overlay -->
+<div id="fullscreenOverlay" class="fullscreen-overlay">
+  <img id="fullscreenImage" src="" alt="">
+</div>
+
+<!-- Fullscreen Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const triggers = document.querySelectorAll(".fullscreen-trigger");
+  const overlay = document.getElementById("fullscreenOverlay");
+  const fullscreenImage = document.getElementById("fullscreenImage");
+
+  triggers.forEach(img => {
+    img.addEventListener("click", function () {
+      fullscreenImage.src = this.src;
+      overlay.classList.add("active");
+    });
+  });
+
+  overlay.addEventListener("click", function () {
+    overlay.classList.remove("active");
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      overlay.classList.remove("active");
+    }
+  });
+
+});
+</script>
+
 {% endblock %}

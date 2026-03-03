@@ -143,28 +143,14 @@
           {% if user.is_authenticated %}
 
             <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'profile' %}active{% endif %}"
-                 href="{% url 'blog:profile' %}">
-                <i class="fa-solid fa-user"></i> Profile
+              <a class="dropdown-item {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
+                 href="{% url 'blog:home' %}">
+                <i class="fa-solid fa-home"></i> Home
               </a>
             </li>
 
             <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'bio' %}active{% endif %}"
-                 href="{% url 'blog:bio' %}">
-                <i class="fa-solid fa-user"></i> Bio
-              </a>
-            </li>
-
-            <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
-                 href="{% url 'blog:add_post' %}">
-                <i class="fa-solid fa-pen-to-square"></i> Add Post
-              </a>
-            </li>
-
-            <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
+              <a class="dropdown-item {% if ns == 'gallery' and rn == 'gallery' %}active{% endif %}"
                  href="{% url 'blog:gallery' %}">
                 <i class="fa-regular fa-images"></i> Gallery
               </a>
@@ -174,6 +160,27 @@
               <a class="dropdown-item {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
                  href="{% url 'store:shop' %}">
                 <i class="fa-solid fa-store"></i> Shop
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item {% if ns == 'blog' and rn == 'bio' %}active{% endif %}"
+                 href="{% url 'blog:bio' %}">
+                <i class="fa-solid fa-info-circle"></i> Bio
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item {% if ns == 'blog' and rn == 'profile' %}active{% endif %}"
+                 href="{% url 'blog:profile' %}">
+                <i class="fa-solid fa-user"></i> Profile
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
+                 href="{% url 'blog:add_post' %}">
+                <i class="fa-solid fa-pen-to-square"></i> Post
               </a>
             </li>
 
@@ -216,7 +223,7 @@
             <li>
               <a class="dropdown-item {% if ns == 'blog' and rn == 'bio' %}active{% endif %}"
                  href="{% url 'blog:bio' %}">
-                <i class="fa-solid fa-user"></i> Bio
+                <i class="fa-solid fa-info-circle"></i> Bio
               </a>
             </li>
 
@@ -287,11 +294,10 @@
         <li class="nav-item">
           <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'bio' %}active{% endif %}"
              href="{% url 'blog:bio' %}">
-            <i class="fa-solid fa-store"></i> Bio
+            <i class="fa-solid fa-info-circle"></i> Bio
           </a>
         </li>
 
-        <!-- Contact is ALWAYS present on logged out + logged in mobile -->
         <li class="nav-item">
           <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
              href="{% url 'blog:contact' %}">
@@ -313,7 +319,7 @@
 <li class="nav-item">
   <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
      href="{% url 'blog:add_post' %}">
-    <i class="fa-solid fa-pen-to-square"></i> Add Post
+    <i class="fa-solid fa-pen-to-square"></i> Post
   </a>
 </li>
 
@@ -392,7 +398,7 @@
         <a href="#" class="text-white me-3" aria-label="Instagram">
           <i class="fa-brands fa-instagram"></i>
         </a>
-        <a href="#" class="text-white" aria-label="LinkedIn">
+        <a href="https://www.linkedin.com/in/thomas-overment/" class="text-white" aria-label="LinkedIn">
           <i class="fa-brands fa-linkedin"></i>
         </a>
       </div>

@@ -23,11 +23,24 @@
         <!-- IMAGE (Dominant ≈ 66%) -->
         <div class="col-lg-8 text-center">
           <div class="image-hover-wrapper">
-            <img
-              src="{{ artwork.artwork_image.url }}"
-              class="img-fluid rounded floating-image fullscreen-trigger"
-              alt="{{ artwork.title }}"
-            />
+            <div class="floating-image">
+              <div class="floating-image:hover">
+              <img
+                src="{{ artwork.artwork_image.url }}"
+                class="img-fluid rounded fullscreen-trigger"
+                alt="{{ artwork.title }}"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- DESCRIPTION (Secondary ≈ 33%) -->
+        <div class="col-lg-4">
+          <div class="artwork-description">{{ artwork.description|safe }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
           </div>
         </div>
 

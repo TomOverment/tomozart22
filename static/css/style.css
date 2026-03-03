@@ -649,20 +649,63 @@ body {
    Lift + Shadow Hover
 ----------------------------- */
 
+
+/* =========================================
+   Artwork Lift + Zoom Effect
+   ========================================= */
+
 .image-hover-wrapper {
   display: inline-block;
-  overflow: hidden;
+  perspective: 1000px;
 }
 
 .floating-image {
-  transition: transform .35s ease, box-shadow .35s ease;
-  cursor: zoom-in;
+  transition:
+    transform 0.4s cubic-bezier(.2,.8,.2,1),
+    box-shadow 0.4s cubic-bezier(.2,.8,.2,1);
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.18);
+
+  will-change: transform;
 }
 
-.floating-image:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 45px rgba(0,0,0,.25);
+.image-hover-wrapper:hover .floating-image {
+  transform: translateY(-12px) scale(1.04);
+
+  box-shadow:
+    0 25px 45px rgba(0,0,0,0.30),
+    0 10px 20px rgba(0,0,0,0.18);
 }
+
+/* =========================================
+   Artwork Lift + Subtle Zoom Effect
+   ========================================= */
+
+.image-hover-wrapper {
+  display: inline-block;
+}
+
+.floating-image {
+  transition:
+    transform 0.35s cubic-bezier(.25,.8,.25,1),
+    box-shadow 0.35s cubic-bezier(.25,.8,.25,1);
+
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.15);
+
+  will-change: transform;
+}
+
+/* Hover State */
+.image-hover-wrapper:hover .floating-image {
+  transform: translateY(-10px) scale(1.04);
+
+  box-shadow:
+    0 22px 40px rgba(0, 0, 0, 0.28),
+    0 8px 16px rgba(0, 0, 0, 0.18);
+}
+
 
 /* -----------------------------
    Fullscreen Overlay
@@ -692,6 +735,7 @@ body {
   opacity: 3;
   visibility: visible;
 }
+
 /* =========================================================
    END
    ========================================================= */
