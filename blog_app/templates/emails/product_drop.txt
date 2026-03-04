@@ -1,0 +1,12 @@
+{{ product.name }}
+
+Price: £{{ product.price }}
+
+{% if product.description %}
+{{ product.description }}
+{% endif %}
+
+View product:
+{{ product_url }}
+
+You’re receiving this because you subscribed to TomozArt shop updates.

@@ -292,8 +292,11 @@ def bio(request):
     )
 
 # =============================
-# MAILING LIST SIGNUP
+# MAILING LIST
 # =============================
+
+def newsletter(request):
+    return render(request, "blog_app/newsletter.html")
 
 @require_POST
 def mailing_list_signup(request):

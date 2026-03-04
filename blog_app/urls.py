@@ -25,6 +25,7 @@ urlpatterns = [
     path("gallery/full/<int:pk>/", views.gallery_full, name="gallery_full"),
 
     path("newsletter/signup/", views.mailing_list_signup, name="newsletter_signup"),
+    path("newsletter/", views.newsletter, name="newsletter"),
 ]
 
 

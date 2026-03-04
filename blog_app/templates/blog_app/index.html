@@ -13,20 +13,29 @@
   <div class="text-center hero-wrap">
 
     <h1 class="fw-light mb-3">
-      This my {% if user.is_authenticated %}{{ user.username }},{% endif %}
-      is Tom O’s Art Gallery!
+      This is {% if user.is_authenticated %}{{ user.username }}’s {% endif %}
+      Tom O’s Art Gallery
     </h1>
 
     <p class="lead text-muted mx-auto" style="max-width: 850px;">
-      Buy or enjoy original artworks, like a ledge, or experience it for free, Limited edition Giclée prints, and creative pieces,
-      vibrant spray painting to mixed media canvases, Backwords engineered concept's essentialy stepping one step back in unrealised progress and walls, walls, walls!?
+      Explore original artworks, limited edition Giclée prints and experimental
+      creative pieces. From vibrant spray painting to mixed-media canvases,
+      TomozArt explores ideas built from the walls of everyday life.
+    </p>
+
+    <!-- Newsletter sentence -->
+    <p class="mx-auto mt-3" style="max-width:750px;">
+      New work is released periodically.  
+      <a href="{% url 'blog:newsletter' %}" class="fw-semibold text-decoration-none">
+        Join the TomozArt mailing list
+      </a>
+      to hear first when new artwork and limited edition prints become available.
     </p>
 
     {% if not user.is_authenticated %}
-      <p class="text-muted small mt-4" style="letter-spacing: .3px;">
-        Guests are welcome to explore freelyish to a piont.
-        Creating an account allows you to manage purchases,
-        become a patron of cba mailing list and i'd probably give
+      <p class="text-muted small mt-4" style="letter-spacing:.3px;">
+        Guests are welcome to explore freely. Creating an account lets you manage
+        purchases, save favourites and join the TomozArt mailing list for updates.
       </p>
     {% endif %}
 
@@ -38,7 +47,6 @@
 
   </div>
 </div>
-
 <!-- ========================= -->
 <!-- PRODUCT CAROUSEL (MOBILE: 1 / DESKTOP: 3) -->
 <!-- ========================= -->
