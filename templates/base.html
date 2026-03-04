@@ -4,588 +4,723 @@
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="h-100">
-<head>
-  <title>{% block title %}{% endblock %}</title>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{% static 'images/favicon.png' %}"
+    />
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/0dd9085fc3.js" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0dd9085fc3.js"
+      crossorigin="anonymous"
+    ></script>
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-  <!-- Your CSS -->
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
-  <style>
-    html, body { height: 100%; margin: 0; }
-    body { display: flex; flex-direction: column; font-family: 'Lato', sans-serif; }
-    main { background: linear-gradient(to bottom, #9FA6B2, #e9ecef) no-repeat; }
-    .flex-fill { flex: 1 1 auto; }
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        font-family: "Lato", sans-serif;
+      }
+      main {
+        background: linear-gradient(to bottom, #9fa6b2, #e9ecef) no-repeat;
+      }
+      .flex-fill {
+        flex: 1 1 auto;
+      }
 
-    /* Footer */
-    .footer { background-color: #000; color: #fff; padding: 20px 0; }
+      /* Footer */
+      .footer {
+        background-color: #000;
+        color: #fff;
+        padding: 14px 0; /* shorter */
+        font-size: 0.9rem;
+      }
 
-    /* Back to Top */
-    #backToTop { transition: opacity .3s ease; }
+      /* Back to Top */
+      #backToTop {
+        transition: opacity 0.3s ease;
+      }
 
-    /* Flash messages */
-    .flash-wrap{ margin-bottom: 1rem; }
-    .flash-msg{ margin-bottom: .75rem; }
+      /* Flash messages */
+      .flash-wrap {
+        margin-bottom: 1rem;
+      }
+      .flash-msg {
+        margin-bottom: 0.75rem;
+      }
 
-    /* Dark dropdown */
-    .navbar .dropdown-menu {
-      background-color: #0b0b0b;
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 10px;
-      padding: .4rem;
-      box-shadow: 0 12px 30px rgba(0,0,0,.45);
-      min-width: 220px;
-    }
+      /* Dark dropdown */
+      .navbar .dropdown-menu {
+        background-color: #0b0b0b;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        padding: 0.4rem;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+        min-width: 220px;
+      }
 
-    .navbar .dropdown-item {
-      color: rgba(255,255,255,.9);
-      border-radius: 8px;
-      padding: .55rem .75rem;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: .55rem;
-    }
+      .navbar .dropdown-item {
+        color: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        padding: 0.55rem 0.75rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+      }
 
-    .navbar .dropdown-item:hover,
-    .navbar .dropdown-item:focus {
-      background-color: rgba(255,255,255,.08);
-      color: #fff;
-    }
+      .navbar .dropdown-item:hover,
+      .navbar .dropdown-item:focus {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
 
-    .navbar .dropdown-divider {
-      border-top: 1px solid rgba(255,255,255,.12);
-      margin: .35rem 0;
-    }
+      .navbar .dropdown-divider {
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        margin: 0.35rem 0;
+      }
 
-    .navbar .dropdown-item i {
-      width: 1.1rem;
-      text-align: center;
-      opacity: .9;
-    }
+      .navbar .dropdown-item i {
+        width: 1.1rem;
+        text-align: center;
+        opacity: 0.9;
+      }
 
-    /* Floating Back To Top */
+      /* Floating Back To Top */
 
-.back-to-top {
-  position: fixed;
-  right: 25px;
-  bottom: 30px;
-  z-index: 1050;
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 18px rgba(0,0,0,.25);
-  transition: transform .25s ease, opacity .25s ease;
-}
+      .back-to-top {
+        position: fixed;
+        right: 25px;
+        bottom: 30px;
+        z-index: 1050;
 
-.back-to-top:hover {
-  transform: translateY(-4px);
-}
-  </style>
-</head>
+        border-radius: 50%;
+        width: 42px;
+        height: 42px;
 
-<body class="d-flex flex-column h-100">
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-{% with ns=request.resolver_match.namespace rn=request.resolver_match.url_name %}
-<nav class="navbar navbar-expand-md navbar-dark bg-black">
-  <div class="container-fluid">
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+        transition:
+          transform 0.25s ease,
+          opacity 0.25s ease;
+      }
 
-    <!-- Brand -->
-    <a class="navbar-brand" href="{{ home_url }}">
-      <img src="{% static 'images/logo.png' %}" height="25" alt="logo">
-    </a>
+      .back-to-top.raise {
+        bottom: 90px; /* pushes it above footer */
+      }
 
-    <!-- Right Controls -->
-    <div class="d-flex align-items-center gap-2 ms-auto order-md-2">
+      .back-to-top:hover {
+        transform: translateY(-4px);
+      }
+    </style>
+  </head>
 
-<!-- Global Cart -->
-<a class="btn btn-outline-light btn-sm position-relative nav-cart-btn"
-   href="{% url 'store:cart' %}">
+  <body class="d-flex flex-column h-100">
+    {% with ns=request.resolver_match.namespace rn=request.resolver_match.url_name %}
+    <nav class="navbar navbar-expand-md navbar-dark bg-black">
+      <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand" href="{{ home_url }}">
+          <img src="{% static 'images/logo.png' %}" height="25" alt="logo" />
+        </a>
 
-  <i class="fa-solid fa-cart-shopping me-1"></i>
-  <span>View Cart</span>
+        <!-- Right Controls -->
+        <div class="d-flex align-items-center gap-2 ms-auto order-md-2">
+          <!-- Global Cart -->
+          <a
+            class="btn btn-outline-light btn-sm position-relative nav-cart-btn"
+            href="{% url 'store:cart' %}"
+          >
+            <i class="fa-solid fa-cart-shopping me-1"></i>
+            <span>View Cart</span>
 
-  {% if cart_count > 0 %}
-    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-badge">
-      {{ cart_count }}
-    </span>
-  {% endif %}
+            {% if cart_count > 0 %}
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-badge"
+            >
+              {{ cart_count }}
+            </span>
+            {% endif %}
+          </a>
 
-</a>
+          <!-- Desktop Dropdown (md+ only) -->
+          <div class="dropdown d-none d-md-block">
+            <button
+              class="btn btn-outline-light btn-sm dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              aria-label="Menu"
+            >
+              <i class="fa-solid fa-bars"></i>
+            </button>
 
-      <!-- Desktop Dropdown (md+ only) -->
-      <div class="dropdown d-none d-md-block">
-        <button class="btn btn-outline-light btn-sm dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                aria-label="Menu">
-          <i class="fa-solid fa-bars"></i>
-        </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              {% if user.is_authenticated %}
 
-        <ul class="dropdown-menu dropdown-menu-end">
-          {% if user.is_authenticated %}
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
+                  href="{% url 'blog:home' %}"
+                >
+                  <i class="fa-solid fa-home"></i> Home
+                </a>
+              </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
-                 href="{% url 'blog:home' %}">
-                <i class="fa-solid fa-home"></i> Home
-              </a>
-            </li>
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'gallery' and rn == 'gallery' %}active{% endif %}"
+                  href="{% url 'blog:gallery' %}"
+                >
+                  <i class="fa-regular fa-images"></i> Gallery
+                </a>
+              </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'gallery' and rn == 'gallery' %}active{% endif %}"
-                 href="{% url 'blog:gallery' %}">
-                <i class="fa-regular fa-images"></i> Gallery
-              </a>
-            </li>
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
+                  href="{% url 'store:shop' %}"
+                >
+                  <i class="fa-solid fa-store"></i> Shop
+                </a>
+              </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
-                 href="{% url 'store:shop' %}">
-                <i class="fa-solid fa-store"></i> Shop
-              </a>
-            </li>
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'blog' and rn == 'bio' %}active{% endif %}"
+                  href="{% url 'blog:bio' %}"
+                >
+                  <i class="fa-solid fa-info-circle"></i> Bio
+                </a>
+              </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'bio' %}active{% endif %}"
-                 href="{% url 'blog:bio' %}">
-                <i class="fa-solid fa-info-circle"></i> Bio
-              </a>
-            </li>
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'blog' and rn == 'profile' %}active{% endif %}"
+                  href="{% url 'blog:profile' %}"
+                >
+                  <i class="fa-solid fa-user"></i> Profile
+                </a>
+              </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'profile' %}active{% endif %}"
-                 href="{% url 'blog:profile' %}">
-                <i class="fa-solid fa-user"></i> Profile
-              </a>
-            </li>
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
+                  href="{% url 'blog:add_post' %}"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i> Post
+                </a>
+              </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
-                 href="{% url 'blog:add_post' %}">
-                <i class="fa-solid fa-pen-to-square"></i> Post
-              </a>
-            </li>
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
+                  href="{% url 'blog:contact' %}"
+                >
+                  <i class="fa-solid fa-envelope"></i> Contact
+                </a>
+              </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
-                 href="{% url 'blog:contact' %}">
-                <i class="fa-solid fa-envelope"></i> Contact
-              </a>
-            </li>
+              <li>
+                <a class="dropdown-item" href="{{ logout_url }}">
+                  <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+              </li>
 
-            <li>
-              <a class="dropdown-item" href="{{ logout_url }}">
-                <i class="fa-solid fa-right-from-bracket"></i> Logout
-              </a>
-            </li>
+              {% else %}
 
-          {% else %}
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
+                  href="{{ home_url }}"
+                >
+                  <i class="fa-solid fa-house"></i> Home
+                </a>
+              </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
-                 href="{{ home_url }}">
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
+                  href="{% url 'blog:gallery' %}"
+                >
+                  <i class="fa-regular fa-images"></i> Gallery
+                </a>
+              </li>
+
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
+                  href="{% url 'store:shop' %}"
+                >
+                  <i class="fa-solid fa-store"></i> Shop
+                </a>
+              </li>
+
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'blog' and rn == 'bio' %}active{% endif %}"
+                  href="{% url 'blog:bio' %}"
+                >
+                  <i class="fa-solid fa-info-circle"></i> Bio
+                </a>
+              </li>
+
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
+                  href="{% url 'blog:contact' %}"
+                >
+                  <i class="fa-solid fa-envelope"></i> Contact
+                </a>
+              </li>
+
+              <li><hr class="dropdown-divider" /></li>
+
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'account' and rn == 'login' %}active{% endif %}"
+                  href="{{ login_url }}"
+                >
+                  <i class="fa-solid fa-right-to-bracket"></i> Login
+                </a>
+              </li>
+
+              <li>
+                <a
+                  class="dropdown-item {% if ns == 'account' and rn == 'signup' %}active{% endif %}"
+                  href="{{ signup_url }}"
+                >
+                  <i class="fa-solid fa-user-plus"></i> Register
+                </a>
+              </li>
+
+              {% endif %}
+            </ul>
+          </div>
+
+          <!-- Mobile Toggler (sm only) -->
+          <button
+            class="navbar-toggler d-md-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMain"
+            aria-controls="navbarMain"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+
+        <!-- MOBILE NAV (sm only): FULL LIST -->
+        <div
+          class="collapse navbar-collapse order-md-1 d-md-none"
+          id="navbarMain"
+        >
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
+                href="{{ home_url }}"
+              >
                 <i class="fa-solid fa-house"></i> Home
               </a>
             </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
-                 href="{% url 'blog:gallery' %}">
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
+                href="{% url 'blog:gallery' %}"
+              >
                 <i class="fa-regular fa-images"></i> Gallery
               </a>
             </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
-                 href="{% url 'store:shop' %}">
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex align-items-center gap-2 {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
+                href="{% url 'store:shop' %}"
+              >
                 <i class="fa-solid fa-store"></i> Shop
               </a>
             </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'bio' %}active{% endif %}"
-                 href="{% url 'blog:bio' %}">
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'bio' %}active{% endif %}"
+                href="{% url 'blog:bio' %}"
+              >
                 <i class="fa-solid fa-info-circle"></i> Bio
               </a>
             </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
-                 href="{% url 'blog:contact' %}">
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
+                href="{% url 'blog:contact' %}"
+              >
                 <i class="fa-solid fa-envelope"></i> Contact
               </a>
             </li>
 
-            <li><hr class="dropdown-divider"></li>
+            <hr class="text-secondary my-2" />
 
-            <li>
-              <a class="dropdown-item {% if ns == 'account' and rn == 'login' %}active{% endif %}"
-                 href="{{ login_url }}">
+            {% if user.is_authenticated %}
+
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'profile' %}active{% endif %}"
+                href="{% url 'blog:profile' %}"
+              >
+                <i class="fa-solid fa-user"></i> Profile
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
+                href="{% url 'blog:add_post' %}"
+              >
+                <i class="fa-solid fa-pen-to-square"></i> Post
+              </a>
+            </li>
+
+            <li><hr class="text-secondary my-2" /></li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex align-items-center gap-2"
+                href="{{ logout_url }}"
+              >
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+              </a>
+            </li>
+
+            {% else %}
+
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex align-items-center gap-2 {% if ns == 'account' and rn == 'login' %}active{% endif %}"
+                href="{{ login_url }}"
+              >
                 <i class="fa-solid fa-right-to-bracket"></i> Login
               </a>
             </li>
 
-            <li>
-              <a class="dropdown-item {% if ns == 'account' and rn == 'signup' %}active{% endif %}"
-                 href="{{ signup_url }}">
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex align-items-center gap-2 {% if ns == 'account' and rn == 'signup' %}active{% endif %}"
+                href="{{ signup_url }}"
+              >
                 <i class="fa-solid fa-user-plus"></i> Register
               </a>
             </li>
 
-          {% endif %}
-        </ul>
+            {% endif %}
+          </ul>
+        </div>
       </div>
+    </nav>
+    {% endwith %}
 
-      <!-- Mobile Toggler (sm only) -->
-      <button class="navbar-toggler d-md-none"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarMain"
-              aria-controls="navbarMain"
-              aria-expanded="false"
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
 
-    <!-- MOBILE NAV (sm only): FULL LIST -->
-    <div class="collapse navbar-collapse order-md-1 d-md-none" id="navbarMain">
-      <ul class="navbar-nav me-auto mb-2 mb-md-0">
-
-        <li class="nav-item">
-          <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'home' %}active{% endif %}"
-             href="{{ home_url }}">
-            <i class="fa-solid fa-house"></i> Home
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'gallery' %}active{% endif %}"
-             href="{% url 'blog:gallery' %}">
-            <i class="fa-regular fa-images"></i> Gallery
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'store' and rn == 'shop' %}active{% endif %}"
-             href="{% url 'store:shop' %}">
-            <i class="fa-solid fa-store"></i> Shop
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'bio' %}active{% endif %}"
-             href="{% url 'blog:bio' %}">
-            <i class="fa-solid fa-info-circle"></i> Bio
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'contact' %}active{% endif %}"
-             href="{% url 'blog:contact' %}">
-            <i class="fa-solid fa-envelope"></i> Contact
-          </a>
-        </li>
-
-        <hr class="text-secondary my-2">
-
-{% if user.is_authenticated %}
-
-<li class="nav-item">
-  <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'profile' %}active{% endif %}"
-     href="{% url 'blog:profile' %}">
-    <i class="fa-solid fa-user"></i> Profile
-  </a>
-</li>
-
-<li class="nav-item">
-  <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'blog' and rn == 'add_post' %}active{% endif %}"
-     href="{% url 'blog:add_post' %}">
-    <i class="fa-solid fa-pen-to-square"></i> Post
-  </a>
-</li>
-
-<li><hr class="text-secondary my-2"></li>
-
-<li class="nav-item">
-  <a class="nav-link d-flex align-items-center gap-2"
-     href="{{ logout_url }}">
-    <i class="fa-solid fa-right-from-bracket"></i> Logout
-  </a>
-</li>
-
-{% else %}
-
-          <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'account' and rn == 'login' %}active{% endif %}"
-               href="{{ login_url }}">
-              <i class="fa-solid fa-right-to-bracket"></i> Login
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2 {% if ns == 'account' and rn == 'signup' %}active{% endif %}"
-               href="{{ signup_url }}">
-              <i class="fa-solid fa-user-plus"></i> Register
-            </a>
-          </li>
-
-        {% endif %}
-
-      </ul>
-    </div>
-
-  </div>
-</nav>
-{% endwith %}
-
-<!-- Main -->
-<main class="flex-fill">
-  <div class="container py-4">
-
-    {# Global Django messages #}
-    {% if messages %}
-      <div class="flash-wrap" aria-live="polite" aria-atomic="true">
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show flash-msg"
-               role="alert"
-               data-autohide="4500">
+    <!-- Main -->
+    <main class="flex-fill">
+      <div class="container py-4">
+        {# Global Django messages #} {% if messages %}
+        <div class="flash-wrap" aria-live="polite" aria-atomic="true">
+          {% for message in messages %}
+          <div
+            class="alert alert-{{ message.tags }} alert-dismissible fade show flash-msg"
+            role="alert"
+            data-autohide="4500"
+          >
             {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
           </div>
-        {% endfor %}
+          {% endfor %}
+        </div>
+        {% endif %} {% block content %}{% endblock %}
       </div>
-    {% endif %}
+    </main>
 
-    {% block content %}{% endblock %}
-  </div>
-</main>
+    <!-- Footer -->
+    <footer class="footer mt-auto">
+      <div class="container position-relative">
+        <div class="d-flex align-items-center justify-content-between">
+          <!-- LEFT -->
+          <div>
+            <a
+              href="{% url 'blog:contact' %}"
+              class="text-white text-decoration-none"
+            >
+              Contact Us
+            </a>
+          </div>
 
+          <!-- CENTER -->
+          <div class="position-absolute start-50 translate-middle-x">
+            <a href="#" class="text-white me-3" aria-label="Instagram">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/thomas-overment/"
+              class="text-white"
+              aria-label="LinkedIn"
+            >
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </div>
 
-  <!-- Footer -->
-<footer class="footer mt-auto py-4">
-  <div class="container position-relative">
-
-    <div class="d-flex align-items-center">
-
-      <!-- LEFT: Contact -->
-      <div>
-        <a href="{% url 'blog:contact' %}" class="text-white text-decoration-none">
-          Contact Us
-        </a>
+          <!-- RIGHT -->
+          <div class="text-end">© {% now "Y" %} TomozArt</div>
+        </div>
       </div>
+    </footer>
 
-      <!-- CENTER: Social Icons -->
-      <div class="position-absolute start-50 translate-middle-x">
-        <a href="#" class="text-white me-3" aria-label="Instagram">
-          <i class="fa-brands fa-instagram"></i>
-        </a>
-        <a href="https://www.linkedin.com/in/thomas-overment/" class="text-white" aria-label="LinkedIn">
-          <i class="fa-brands fa-linkedin"></i>
-        </a>
+    <!-- Back To Top -->
+    <button
+      id="backToTop"
+      class="btn btn-dark btn-sm back-to-top d-none"
+      type="button"
+      aria-label="Back to top"
+    >
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- back to top -->
+    <script>
+      const backBtn = document.getElementById("backToTop");
+      const footer = document.querySelector("footer");
+
+      window.addEventListener("scroll", () => {
+        // Show / hide
+        if (window.scrollY > 300) {
+          backBtn.classList.remove("d-none");
+        } else {
+          backBtn.classList.add("d-none");
+        }
+
+        // Detect footer collision
+        const footerRect = footer.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        if (footerRect.top < windowHeight - 60) {
+          backBtn.classList.add("raise");
+        } else {
+          backBtn.classList.remove("raise");
+        }
+      });
+
+      backBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    </script>
+
+    <script>
+      /* Hover preview (used by .js-hover-thumb thumbnails) */
+      (() => {
+        const GAP = 12;
+        const DELAY = 500;
+
+        let timer = null;
+        let currentEl = null;
+
+        function getEls() {
+          return {
+            preview: document.getElementById("hoverPreview"),
+            img: document.getElementById("hoverPreviewImg"),
+            title: document.getElementById("hoverPreviewTitle"),
+            desc: document.getElementById("hoverPreviewDesc"),
+          };
+        }
+
+        function clearTimer() {
+          if (timer) {
+            clearTimeout(timer);
+            timer = null;
+          }
+        }
+
+        function place(preview, el) {
+          const r = el.getBoundingClientRect();
+          preview.style.display = "block";
+
+          const pr = preview.getBoundingClientRect();
+          let left = r.right + GAP;
+          let top = r.top;
+
+          if (left + pr.width > window.innerWidth - 10)
+            left = r.left - pr.width - GAP;
+          if (top + pr.height > window.innerHeight - 10)
+            top = window.innerHeight - pr.height - 10;
+          if (top < 10) top = 10;
+
+          preview.style.left = `${left}px`;
+          preview.style.top = `${top}px`;
+        }
+
+        function show(el) {
+          const { preview, img, title, desc } = getEls();
+          if (!preview || !img || !title || !desc) return;
+
+          img.src = el.dataset.previewImg || "";
+          img.alt = el.dataset.previewTitle || "";
+          title.textContent = el.dataset.previewTitle || "";
+          desc.textContent = el.dataset.previewDesc || "";
+
+          place(preview, el);
+          requestAnimationFrame(() => preview.classList.add("show"));
+        }
+
+        function hide() {
+          const { preview } = getEls();
+          if (!preview) return;
+
+          preview.classList.remove("show");
+          setTimeout(() => {
+            if (!currentEl) preview.style.display = "none";
+          }, 180);
+        }
+
+        document.addEventListener("mousemove", (e) => {
+          const el = e.target.closest(".js-hover-thumb");
+          if (!el) return;
+          if (currentEl === el) return;
+
+          clearTimer();
+          currentEl = el;
+
+          timer = setTimeout(() => {
+            if (currentEl === el) show(el);
+          }, DELAY);
+        });
+
+        document.addEventListener("mouseover", (e) => {
+          const el = e.target.closest(".js-hover-thumb");
+          if (!el) return;
+
+          const { preview } = getEls();
+          if (
+            preview &&
+            preview.classList.contains("show") &&
+            currentEl === el
+          ) {
+            place(preview, el);
+          }
+        });
+
+        document.addEventListener("mouseout", (e) => {
+          const leftThumb = e.target.closest(".js-hover-thumb");
+          if (!leftThumb) return;
+
+          const to = e.relatedTarget;
+          if (to && to.closest && to.closest(".js-hover-thumb") === leftThumb)
+            return;
+
+          clearTimer();
+          currentEl = null;
+          hide();
+        });
+
+        window.addEventListener(
+          "scroll",
+          () => {
+            clearTimer();
+            currentEl = null;
+            hide();
+          },
+          true,
+        );
+        window.addEventListener("resize", () => {
+          clearTimer();
+          currentEl = null;
+          hide();
+        });
+      })();
+    </script>
+
+    <script>
+      /* Auto-hide alerts (prevents duplicates by marking processed nodes) */
+      (() => {
+        document.querySelectorAll(".flash-msg").forEach((el) => {
+          if (el.dataset.autohideInit === "1") return;
+          el.dataset.autohideInit = "1";
+
+          const delay = parseInt(el.dataset.autohide || "4500", 10);
+          window.setTimeout(() => {
+            if (window.bootstrap && bootstrap.Alert) {
+              const alert = bootstrap.Alert.getOrCreateInstance(el);
+              alert.close();
+            } else {
+              el.remove();
+            }
+          }, delay);
+        });
+      })();
+    </script>
+
+    <!-- Hover preview element -->
+    <div id="hoverPreview" class="hover-preview-fixed" aria-hidden="true">
+      <img id="hoverPreviewImg" alt="" />
+      <div class="hover-content">
+        <strong id="hoverPreviewTitle"></strong>
+        <p id="hoverPreviewDesc"></p>
       </div>
-
     </div>
 
-  </div>
-</footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const trigger = document.querySelector(".fullscreen-trigger");
+        const overlay = document.getElementById("fullscreenOverlay");
 
-<!-- Back To Top -->
-<button id="backToTop"
-        class="btn btn-dark btn-sm back-to-top d-none"
-        type="button"
-        aria-label="Back to top">
-  <i class="fa-solid fa-arrow-up"></i>
-</button>
+        if (trigger && overlay) {
+          trigger.addEventListener("click", function () {
+            overlay.classList.add("active");
+          });
 
-
-
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-  /* Back to top */
-  const backBtn = document.getElementById("backToTop");
-
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 300) backBtn.classList.remove("d-none");
-    else backBtn.classList.add("d-none");
-  });
-
-  backBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-</script>
-
-<script>
-  /* Hover preview (used by .js-hover-thumb thumbnails) */
-  (() => {
-    const GAP = 12;
-    const DELAY = 500;
-
-    let timer = null;
-    let currentEl = null;
-
-    function getEls() {
-      return {
-        preview: document.getElementById("hoverPreview"),
-        img: document.getElementById("hoverPreviewImg"),
-        title: document.getElementById("hoverPreviewTitle"),
-        desc: document.getElementById("hoverPreviewDesc"),
-      };
-    }
-
-    function clearTimer() {
-      if (timer) { clearTimeout(timer); timer = null; }
-    }
-
-    function place(preview, el) {
-      const r = el.getBoundingClientRect();
-      preview.style.display = "block";
-
-      const pr = preview.getBoundingClientRect();
-      let left = r.right + GAP;
-      let top = r.top;
-
-      if (left + pr.width > window.innerWidth - 10) left = r.left - pr.width - GAP;
-      if (top + pr.height > window.innerHeight - 10) top = window.innerHeight - pr.height - 10;
-      if (top < 10) top = 10;
-
-      preview.style.left = `${left}px`;
-      preview.style.top = `${top}px`;
-    }
-
-    function show(el) {
-      const { preview, img, title, desc } = getEls();
-      if (!preview || !img || !title || !desc) return;
-
-      img.src = el.dataset.previewImg || "";
-      img.alt = el.dataset.previewTitle || "";
-      title.textContent = el.dataset.previewTitle || "";
-      desc.textContent = el.dataset.previewDesc || "";
-
-      place(preview, el);
-      requestAnimationFrame(() => preview.classList.add("show"));
-    }
-
-    function hide() {
-      const { preview } = getEls();
-      if (!preview) return;
-
-      preview.classList.remove("show");
-      setTimeout(() => {
-        if (!currentEl) preview.style.display = "none";
-      }, 180);
-    }
-
-    document.addEventListener("mousemove", (e) => {
-      const el = e.target.closest(".js-hover-thumb");
-      if (!el) return;
-      if (currentEl === el) return;
-
-      clearTimer();
-      currentEl = el;
-
-      timer = setTimeout(() => {
-        if (currentEl === el) show(el);
-      }, DELAY);
-    });
-
-    document.addEventListener("mouseover", (e) => {
-      const el = e.target.closest(".js-hover-thumb");
-      if (!el) return;
-
-      const { preview } = getEls();
-      if (preview && preview.classList.contains("show") && currentEl === el) {
-        place(preview, el);
-      }
-    });
-
-    document.addEventListener("mouseout", (e) => {
-      const leftThumb = e.target.closest(".js-hover-thumb");
-      if (!leftThumb) return;
-
-      const to = e.relatedTarget;
-      if (to && to.closest && to.closest(".js-hover-thumb") === leftThumb) return;
-
-      clearTimer();
-      currentEl = null;
-      hide();
-    });
-
-    window.addEventListener("scroll", () => { clearTimer(); currentEl = null; hide(); }, true);
-    window.addEventListener("resize", () => { clearTimer(); currentEl = null; hide(); });
-  })();
-</script>
-
-<script>
-  /* Auto-hide alerts (prevents duplicates by marking processed nodes) */
-  (() => {
-    document.querySelectorAll(".flash-msg").forEach((el) => {
-      if (el.dataset.autohideInit === "1") return;
-      el.dataset.autohideInit = "1";
-
-      const delay = parseInt(el.dataset.autohide || "4500", 10);
-      window.setTimeout(() => {
-        if (window.bootstrap && bootstrap.Alert) {
-          const alert = bootstrap.Alert.getOrCreateInstance(el);
-          alert.close();
-        } else {
-          el.remove();
+          overlay.addEventListener("click", function () {
+            overlay.classList.remove("active");
+          });
         }
-      }, delay);
-    });
-  })();
-</script>
-
-<!-- Hover preview element -->
-<div id="hoverPreview" class="hover-preview-fixed" aria-hidden="true">
-  <img id="hoverPreviewImg" alt="">
-  <div class="hover-content">
-    <strong id="hoverPreviewTitle"></strong>
-    <p id="hoverPreviewDesc"></p>
-  </div>
-</div>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-
-  const trigger = document.querySelector(".fullscreen-trigger");
-  const overlay = document.getElementById("fullscreenOverlay");
-
-  if (trigger && overlay) {
-
-    trigger.addEventListener("click", function() {
-      overlay.classList.add("active");
-    });
-
-    overlay.addEventListener("click", function() {
-      overlay.classList.remove("active");
-    });
-
-  }
-
-});
-</script>
-
-</body>
+      });
+    </script>
+  </body>
 </html>

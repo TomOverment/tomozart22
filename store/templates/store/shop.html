@@ -113,16 +113,18 @@
 </div>
 
 <div class="text-center mt-5 mb-4">
-  <a class="btn btn-outline-dark btn-lg position-relative"
+  <a class="btn btn-dark btn-lg position-relative"
      href="{% url 'store:cart' %}">
+
     <i class="fa-solid fa-cart-shopping me-2"></i>
     View Cart
 
     {% if cart_count > 0 %}
-      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-badge">
         {{ cart_count }}
       </span>
     {% endif %}
+
   </a>
 </div>
 

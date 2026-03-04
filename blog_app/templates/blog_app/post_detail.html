@@ -1,42 +1,64 @@
 {% extends "base.html" %}
-{% block title %} {{ post.title }} {% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
 
-<div class="container mt-5">
+<div class="container-fluid px-lg-5 golden-layout">
   <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-xxl-11">
 
-      <div class="card shadow-sm">
-        <div class="card-body">
+      <!-- TITLE ROW -->
+      <div class="title-row position-relative py-3">
+        <a href="{% url 'blog:home' %}"
+           class="btn btn-outline-dark btn-sm position-absolute start-0 top-50 translate-middle-y">
+          ← Back
+        </a>
 
-          <h2 class="mb-2">{{ post.title }}</h2>
-          <p class="text-muted small mb-3">
+        <h1 class="fw-bold text-center mb-0">
+          {{ post.title }}
+        </h1>
+      </div>
+
+      <!-- IMAGE + CONTENT ROW -->
+      <div class="row align-items-start g-5">
+
+        <!-- IMAGE (66%) -->
+        <div class="col-lg-8 text-center">
+          {% if post.post_image %}
+          <div class="image-hover-wrapper">
+            <div class="floating-image">
+              <img
+                src="{{ post.post_image.url }}"
+                class="img-fluid rounded fullscreen-trigger"
+                alt="{{ post.title }}"
+              />
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- CONTENT (33%) -->
+        <div class="col-lg-4">
+          <p class="text-muted small">
             Created on {{ post.created_on }}
           </p>
 
-          {% if post.post_image %}
-            <img src="{{ post.post_image.url }}"
-                 class="img-fluid mb-4 rounded"
-                 alt="{{ post.title }}">
-          {% endif %}
-
-          <p class="card-text">
+          <div class="artwork-description">
             {{ post.content|safe }}
-          </p>
-
-          <div class="text-center mt-4">
-            <a href="{% url 'blog:home' %}"
-               class="btn btn-sm btn-outline-dark">
-              Back
-            </a>
           </div>
-
         </div>
+
       </div>
 
     </div>
   </div>
 </div>
+
+<!-- Fullscreen Overlay -->
+{% if post.post_image %}
+<div id="fullscreenOverlay" class="fullscreen-overlay">
+  <img src="{{ post.post_image.url }}" alt="{{ post.title }}" />
+</div>
+{% endif %}
 
 {% endblock %}
