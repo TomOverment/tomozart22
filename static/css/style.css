@@ -736,6 +736,14 @@ body {
   visibility: visible;
 }
 
+/* newsletter form */
+.newsletter-signup input {
+  border-radius: 8px;
+}
+
+.newsletter-signup button {
+  border-radius: 8px;
+}
 /* =========================================================
    END
    ========================================================= */

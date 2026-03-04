@@ -1,0 +1,7 @@
+Hi{% if first_name %} {{ first_name }}{% endif %},
+
+Thanks for subscribing to TomozArt.
+
+You’ll be the first to hear about new artwork, prints, and drops.
+
+— Tomo

@@ -1,0 +1,6 @@
+New newsletter signup
+
+Email: {{ email }}
+Name: {{ first_name|default:"-" }}
+Source: {{ source|default:"-" }}
+New subscriber: {{ created }}

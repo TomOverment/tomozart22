@@ -69,6 +69,40 @@
 
     </form>
 
+    <div class="newsletter-signup text-center mt-5">
+
+  <h5 class="mb-2">Join the TomozArt mailing list</h5>
+
+  <p class="text-muted small mb-3">
+    Get updates on new artwork, prints and upcoming drops.
+  </p>
+
+  <form method="post"
+        action="{% url 'blog:newsletter_signup' %}"
+        class="d-flex gap-2 justify-content-center flex-wrap">
+        
+    {% csrf_token %}
+
+    <input
+      type="email"
+      name="email"
+      class="form-control"
+      placeholder="Your email"
+      required
+      style="max-width:320px;"
+    >
+
+    <input type="hidden" name="source" value="contact_page">
+
+    <button type="submit" class="btn btn-dark">
+      Subscribe
+    </button>
+
+  </form>
+
+</div>
+    
+
   </div>
 </div>
 {% endblock %}

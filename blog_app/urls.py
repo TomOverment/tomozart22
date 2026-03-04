@@ -23,6 +23,8 @@ urlpatterns = [
     path("contact/", views.contact_view, name="contact"),
     path("artwork/<int:pk>/", views.artwork_detail, name="artwork_detail"),
     path("gallery/full/<int:pk>/", views.gallery_full, name="gallery_full"),
+
+    path("newsletter/signup/", views.mailing_list_signup, name="newsletter_signup"),
 ]
 
 

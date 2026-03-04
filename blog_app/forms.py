@@ -92,3 +92,23 @@ class BootstrapSignupForm(SignupForm):
             css = field.widget.attrs.get("class", "")
             if name in ("email", "username", "password1", "password2"):
                 field.widget.attrs["class"] = (css + " form-control").strip()
+
+
+class MailingListSignupForm(forms.Form):
+    first_name = forms.CharField(
+        required=False,
+        max_length=60,
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": "First name (optional)",
+            "autocomplete": "given-name",
+        }),
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            "class": "form-control",
+            "placeholder": "Your email",
+            "autocomplete": "email",
+        })
+    )
+    source = forms.CharField(required=False, widget=forms.HiddenInput())
