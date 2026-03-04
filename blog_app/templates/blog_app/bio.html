@@ -1,20 +1,47 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Artist Bio | Tomozart{% endblock %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="card login-card-shadow p-4">
-        <h1 class="mb-3">{{ name }}</h1>
-        <p>{{ bio }}</p>
-        <hr>
-        <h5>Comming soon...</h5>
-        <ul>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+
+      <!-- Back Button -->
+      <div class="mb-3">
+        <a href="{% url 'blog:home' %}" class="btn btn-outline-dark btn-sm">
+          ← Back to Home
+        </a>
+      </div>
+
+      <div class="card login-card-shadow p-4">
+        <div class="card-body">
+
+          <h2 class="mb-4 text-center">{{ name }}</h2>
+
+          <p class="text-muted mb-4 text-center">
+            {{ bio }}
+          </p>
+
+          <hr>
+
+          <h5 class="text-center mb-3">Coming Soon</h5>
+
+          <div class="d-flex flex-wrap justify-content-center gap-2">
             {% for platform, link in social_links.items %}
-                <li><a href="{{ link }}" target="_blank">{{ platform|title }}</a></li>
+              <a href="{{ link }}" target="_blank" class="btn btn-outline-dark btn-sm">
+                {{ platform|title }}
+              </a>
             {% endfor %}
-        </ul>
+          </div>
+
+        </div>
+      </div>
+
     </div>
+  </div>
 </div>
+
 {% endblock %}

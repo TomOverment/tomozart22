@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block title %}Shop{% endblock %}
-
 {% block content %}
 
 <style>
   .shop-card {
     border-radius: 0;
     overflow: hidden;
-    transition: transform .25s ease, box-shadow .25s ease;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
   }
 
   .shop-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   }
 
   .shop-img {
@@ -24,17 +24,14 @@
 
   .shop-card .card-body {
     background-color: #f8f9fa;
-    border-top: 1px solid rgba(0,0,0,.08);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
   }
 </style>
 
 <div class="container py-5">
-
   <!-- Header -->
   <div class="mb-4">
-
     <div class="d-flex flex-column flex-md-row align-items-center gap-3">
-
       <!-- Title + Subheading -->
       <div class="text-center flex-grow-1">
         <h2 class="mb-2">Shop</h2>
@@ -42,89 +39,89 @@
           Discover limited edition prints and original artwork by Tomo.
         </p>
       </div>
-
     </div>
 
-    <hr class="mt-4">
-
+    <hr class="mt-4" />
   </div>
 
   {% if products %}
-    <div class="row g-4">
-      {% for product in products %}
-        <div class="col-12 col-sm-6 col-lg-4">
+  <div class="row g-4">
+    {% for product in products %}
+    <div class="col-12 col-sm-6 col-lg-4">
+      <div class="card shop-card h-100 border-0 shadow-sm">
+        <a
+          href="{% url 'store:product_detail' product.id %}"
+          class="text-decoration-none"
+        >
+          {% if product.image %}
+          <img
+            src="{{ product.image.url }}"
+            class="card-img-top shop-img"
+            alt="{{ product.name }}"
+          />
+          {% else %}
+          <img
+            src="{% static 'images/placeholder.png' %}"
+            class="card-img-top shop-img"
+            alt="No image"
+          />
+          {% endif %}
+        </a>
 
-          <div class="card shop-card h-100 border-0 shadow-sm">
+        <div class="card-body d-flex flex-column">
+          <a
+            href="{% url 'store:product_detail' product.id %}"
+            class="text-decoration-none text-dark"
+          >
+            <h5 class="card-title mb-1">{{ product.name }}</h5>
+          </a>
 
-            <a href="{% url 'store:product_detail' product.id %}" class="text-decoration-none">
-              {% if product.image %}
-                <img src="{{ product.image.url }}"
-                     class="card-img-top shop-img"
-                     alt="{{ product.name }}">
-              {% else %}
-                <img src="{% static 'images/placeholder.png' %}"
-                     class="card-img-top shop-img"
-                     alt="No image">
-              {% endif %}
-            </a>
+          {% if product.description %}
+          <p class="card-text text-muted small mb-2">
+            {{ product.description|truncatechars:120 }}
+          </p>
+          {% endif %}
 
-            <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center justify-content-between mt-2">
+            <span class="fw-bold">£{{ product.price }}</span>
 
-              <a href="{% url 'store:product_detail' product.id %}"
-                 class="text-decoration-none text-dark">
-                <h5 class="card-title mb-1">{{ product.name }}</h5>
-              </a>
-
-              {% if product.description %}
-                <p class="card-text text-muted small mb-2">
-                  {{ product.description|truncatechars:120 }}
-                </p>
-              {% endif %}
-
-              <div class="d-flex align-items-center justify-content-between mt-2">
-                <span class="fw-bold">£{{ product.price }}</span>
-
-                <form method="post" action="{% url 'store:cart_add' product.id %}">
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-dark btn-sm">
-                    Add to Cart
-                  </button>
-                </form>
-              </div>
-
-              <a href="{% url 'store:product_detail' product.id %}"
-                 class="btn btn-outline-dark btn-sm mt-3">
-                View details
-              </a>
-
-            </div>
-
+            <form
+              method="post"
+              action="{% url 'store:cart_add' product.id %}"
+              class="js-add-to-cart"
+            >
+              {% csrf_token %}
+              <button type="submit" class="btn btn-dark btn-sm">
+                Add to Cart
+              </button>
+            </form>
           </div>
 
+          <a
+            href="{% url 'store:product_detail' product.id %}"
+            class="btn btn-outline-dark btn-sm mt-3"
+          >
+            View details
+          </a>
         </div>
-      {% endfor %}
+      </div>
     </div>
+    {% endfor %}
+  </div>
   {% else %}
-    <div class="alert alert-secondary text-center">
-      No products yet.
-    </div>
+  <div class="alert alert-secondary text-center">No products yet.</div>
   {% endif %}
-
 </div>
 
 <div class="text-center mt-5 mb-4">
-  <a class="btn btn-dark btn-lg position-relative"
-     href="{% url 'store:cart' %}">
-
+  <a class="btn btn-dark btn-lg position-relative" href="{% url 'store:cart' %}">
     <i class="fa-solid fa-cart-shopping me-2"></i>
     View Cart
 
-    {% if cart_count > 0 %}
-      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-badge">
-        {{ cart_count }}
-      </span>
-    {% endif %}
-
+    <span
+      class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-badge {% if cart_count|default:0 == 0 %}d-none{% endif %}">
+      {{ cart_count|default:0 }}
+    </span>
   </a>
 </div>
 

@@ -1,4 +1,5 @@
 {% load static %}
+
 {% url 'blog:home' as home_url %}
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
@@ -164,13 +165,10 @@
             <i class="fa-solid fa-cart-shopping me-1"></i>
             <span>View Cart</span>
 
-            {% if cart_count > 0 %}
             <span
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-badge"
-            >
-              {{ cart_count }}
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-badge {% if cart_count|default:0 == 0 %}d-none{% endif %}">
+              {{ cart_count|default:0 }}
             </span>
-            {% endif %}
           </a>
 
           <!-- Desktop Dropdown (md+ only) -->
@@ -453,7 +451,6 @@
     </nav>
     {% endwith %}
 
-
     <!-- Main -->
     <main class="flex-fill">
       <div class="container py-4">
@@ -495,14 +492,23 @@
 
           <!-- CENTER -->
           <div class="position-absolute start-50 translate-middle-x">
-            <a href="#" class="text-white me-3" aria-label="Instagram">
+            <a
+              href="https://www.instagram.com/taodog22?igsh=bnV4a2xjZTRsbGR5"
+              class="text-white me-3"
+              aria-label="Instagram"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i class="fa-brands fa-instagram"></i>
             </a>
+
             <a
               href="https://www.linkedin.com/in/thomas-overment/"
               class="text-white"
               aria-label="LinkedIn"
-            >
+              target="_blank"
+              rel="noopener noreferrer"
+        >
               <i class="fa-brands fa-linkedin"></i>
             </a>
           </div>
@@ -722,5 +728,28 @@
         }
       });
     </script>
+    <script>
+(() => {
+  const csrftoken = (document.cookie.match(/csrftoken=([^;]+)/) || [])[1];
+  const setCount = (n) => document.querySelectorAll(".cart-badge").forEach(b => {
+    b.textContent = n; b.classList.toggle("d-none", n <= 0);
+  });
+
+  document.addEventListener("submit", async (e) => {
+    const form = e.target.closest(".js-add-to-cart");
+    if (!form) return;
+    e.preventDefault();
+
+    const res = await fetch(form.action, {
+      method: "POST",
+      headers: { "X-CSRFToken": csrftoken, "X-Requested-With": "XMLHttpRequest" },
+      body: new FormData(form),
+    });
+
+    const data = await res.json();
+    if (data && typeof data.cart_count !== "undefined") setCount(data.cart_count);
+  });
+})();
+</script>
   </body>
 </html>

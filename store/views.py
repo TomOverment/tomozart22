@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Product, Order, OrderItem
-
+from django.http import HttpResponse, JsonResponse
 
 # -----------------------------
 # CART (session-based)
@@ -66,6 +66,13 @@ def cart_add(request, product_id):
     pid = str(product_id)
     cart[pid] = int(cart.get(pid, 0)) + 1
     request.session.modified = True
+
+    cart_count = sum(int(q) for q in cart.values())
+
+    # AJAX: return JSON (no redirect, no jump)
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        return JsonResponse({"cart_count": cart_count})
+
     messages.success(request, "Added to cart.")
     return redirect(request.META.get("HTTP_REFERER", "store:shop"))
 
