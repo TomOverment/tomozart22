@@ -13,14 +13,14 @@
   <div class="text-center hero-wrap">
 
     <h1 class="fw-light mb-3">
-      This is {% if user.is_authenticated %}{{ user.username }}’s {% endif %}
-      Tom O’s Art Gallery
+      Welcome {% if user.is_authenticated %}{{ user.username }} {% endif %}
+      you've found Tomo’s Art Gallery.
     </h1>
 
     <p class="lead text-muted mx-auto" style="max-width: 850px;">
       Explore original artworks, limited edition Giclée prints and experimental
       creative pieces. From vibrant spray painting to mixed-media canvases,
-      TomozArt explores ideas built from the walls of everyday life.
+      Tomo's art explores ideas built from the walls of everyday life.
     </p>
 
     <!-- Newsletter sentence -->
@@ -35,14 +35,14 @@
     {% if not user.is_authenticated %}
       <p class="text-muted small mt-4" style="letter-spacing:.3px;">
         Guests are welcome to explore freely. Creating an account lets you manage
-        purchases, save favourites and join the TomozArt mailing list for updates.
+        purchases, contribute your experiences.
       </p>
     {% endif %}
 
     <hr class="my-4">
 
     <p class="text-muted small mb-0">
-      Scroll down to discover our <strong>Featured Products</strong>.
+      Scroll down to discover and enjoy <strong>TomozArt</strong>.
     </p>
 
   </div>
