@@ -28,6 +28,9 @@ ALLOWED_HOSTS = [
     ".herokuapp.com",
     ".gitpod.io",
     ".codeinstitute-ide.net",
+    "tomozart.com",
+    "www.tomozart.com",
+    "tomozart-bf051bead065.herokuapp.com",
 ]
 
 ALLOWED_HOST = os.environ.get("ALLOWED_HOST")
