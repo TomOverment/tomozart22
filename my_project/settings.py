@@ -22,26 +22,14 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "462126332")
 
 DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    ".herokuapp.com",
-    ".gitpod.io",
-    ".codeinstitute-ide.net",
-    "tomozart.com",
-    "www.tomozart.com",
-    "tomozart-bf051bead065.herokuapp.com",
-]
-
-ALLOWED_HOST = os.environ.get("ALLOWED_HOST")
-if ALLOWED_HOST:
-    ALLOWED_HOSTS.append(ALLOWED_HOST)
-
 CSRF_TRUSTED_ORIGINS = [
     "https://*.gitpod.io",
     "https://*.herokuapp.com",
     "https://*.codeinstitute-ide.net",
+    "https://tomozart.com",
+    "https://www.tomozart.com",
 ]
+
 CSRF_TRUSTED_ORIGIN = os.environ.get("CSRF_TRUSTED_ORIGIN")
 if CSRF_TRUSTED_ORIGIN:
     CSRF_TRUSTED_ORIGINS.append(CSRF_TRUSTED_ORIGIN)
@@ -164,29 +152,31 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # CLOUDINARY
+CLOUDINARY_ENABLED = bool(os.getenv("CLOUDINARY_CLOUD_NAME"))
+
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME"),
     "API_KEY": os.getenv("CLOUDINARY_API_KEY"),
     "API_SECRET": os.getenv("CLOUDINARY_API_SECRET"),
 }
 
-if not DEBUG and not os.getenv("CLOUDINARY_CLOUD_NAME"):
+# Local dev: fail fast if you expect Cloudinary locally
+if DEBUG and not CLOUDINARY_ENABLED:
     raise RuntimeError(
         "Cloudinary not configured: CLOUDINARY_CLOUD_NAME missing. "
         "Check .env location and formatting."
     )
 
+# Only use Cloudinary storage when configured
+if CLOUDINARY_ENABLED:
+    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
-# --- Add explicit Cloudinary configuration (DIRECTLY BELOW CLOUDINARY_STORAGE) ---
-cloudinary.config(
-    cloud_name=CLOUDINARY_STORAGE.get("CLOUD_NAME"),
-    api_key=CLOUDINARY_STORAGE.get("API_KEY"),
-    api_secret=CLOUDINARY_STORAGE.get("API_SECRET"),
-    secure=True,
-)
-# ------------------------------------------------------------------------------
-
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+    cloudinary.config(
+        cloud_name=CLOUDINARY_STORAGE["CLOUD_NAME"],
+        api_key=CLOUDINARY_STORAGE["API_KEY"],
+        api_secret=CLOUDINARY_STORAGE["API_SECRET"],
+        secure=True,
+    )
 
 # EMAIL (dev vs prod)
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "")  # where contact messages are delivered
