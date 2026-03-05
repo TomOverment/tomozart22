@@ -43,9 +43,6 @@ CSRF_TRUSTED_ORIGIN = os.environ.get("CSRF_TRUSTED_ORIGIN")
 if CSRF_TRUSTED_ORIGIN:
     CSRF_TRUSTED_ORIGINS.append(CSRF_TRUSTED_ORIGIN)
 
-# Printouts are fine for debugging locally, but remove for production if you prefer
-print(os.environ.get("DATABASE_URL"))
-print(CSRF_TRUSTED_ORIGINS)
 
 INSTALLED_APPS = [
     "jazzmin",
@@ -170,7 +167,7 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": os.getenv("CLOUDINARY_API_SECRET"),
 }
 
-if not os.getenv("CLOUDINARY_CLOUD_NAME"):
+if not DEBUG and not os.getenv("CLOUDINARY_CLOUD_NAME"):
     raise RuntimeError(
         "Cloudinary not configured: CLOUDINARY_CLOUD_NAME missing. "
         "Check .env location and formatting."
@@ -211,17 +208,6 @@ STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
 
-# mailing list
-EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
-EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") == "True"
-
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
 
 
 
