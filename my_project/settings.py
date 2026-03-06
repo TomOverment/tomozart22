@@ -18,17 +18,27 @@ MEDIA_ROOT = BASE_DIR / "media"
 TEMPLATES_DIR = BASE_DIR / "templates"
 
 # SECURITY
-SECRET_KEY = os.environ.get("SECRET_KEY", "462126332")
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only-secret")
 
 DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "tomozart-bf051bead065.herokuapp.com",
+    "tomozart.com",
+    "www.tomozart.com",
+]
+
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.gitpod.io",
     "https://*.herokuapp.com",
-    "https://*.codeinstitute-ide.net",
     "https://tomozart.com",
     "https://www.tomozart.com",
 ]
+
+ALLOWED_HOST = os.environ.get("ALLOWED_HOST")
+if ALLOWED_HOST:
+    ALLOWED_HOSTS.append(ALLOWED_HOST)
 
 CSRF_TRUSTED_ORIGIN = os.environ.get("CSRF_TRUSTED_ORIGIN")
 if CSRF_TRUSTED_ORIGIN:
@@ -200,6 +210,15 @@ DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "no
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    ".herokuapp.com",
+    "tomozart-bf051bead065.herokuapp.com",
+    "tomozart.com",
+    "www.tomozart.com",
+]
 
 
 
