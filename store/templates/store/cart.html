@@ -31,13 +31,13 @@
                   {% if i.product.image %}
                     {# hover preview trigger (keeps you on cart) #}
                     <img
-                      src="{{ item.product.optimized_image_url }}"
+                      src="{{ i.product.optimized_image_url|default:i.product.image.url }}"
                       alt="{{ i.product.name }}"
                       class="cart-thumb js-hover-thumb"
                       data-preview-img="{{ i.product.image.url }}"
                       data-preview-title="{{ i.product.name|escape }}"
                       data-preview-desc="{{ i.product.description|default:''|truncatewords:30|escape }}"
-                    >
+                  >
                   {% endif %}
 
                   <div>
