@@ -31,7 +31,7 @@
                   {% if i.product.image %}
                     {# hover preview trigger (keeps you on cart) #}
                     <img
-                      src="{{ i.product.image.url }}"
+                      src="{{ item.product.optimized_image_url }}"
                       alt="{{ i.product.name }}"
                       class="cart-thumb js-hover-thumb"
                       data-preview-img="{{ i.product.image.url }}"

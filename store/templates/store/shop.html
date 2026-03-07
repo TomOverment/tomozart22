@@ -55,15 +55,17 @@
         >
           {% if product.image %}
           <img
-            src="{{ product.image.url }}"
+            src="{{ product.optimized_image_url }}"
             class="card-img-top shop-img"
             alt="{{ product.name }}"
+            loading="lazy"
           />
           {% else %}
           <img
-            src="{% static 'images/placeholder.png' %}"
+            src="{% static 'images/no-image.jpg' %}"
             class="card-img-top shop-img"
             alt="No image"
+            loading="lazy"
           />
           {% endif %}
         </a>
