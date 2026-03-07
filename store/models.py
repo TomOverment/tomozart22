@@ -82,6 +82,7 @@ class Order(models.Model):
     class Status(models.TextChoices):
         PENDING = "pending", "Pending"
         PAID = "paid", "Paid"
+        SHIPPED = "shipped", "Shipped"
         CANCELED = "canceled", "Canceled"
         FAILED = "failed", "Failed"
         REFUNDED = "refunded", "Refunded"

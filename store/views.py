@@ -11,6 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import Product, Order, OrderItem
 
+from django.core.mail import send_mail
+
 
 # -----------------------------
 # CART (session-based)
@@ -353,7 +355,8 @@ def checkout_cancel(request):
 @csrf_exempt
 def stripe_webhook(request):
     """
-    Stripe calls this endpoint. It confirms payment and updates the Order.
+    Stripe calls this endpoint. It confirms payment, updates the Order,
+    and sends confirmation emails.
     """
     payload = request.body
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE", "")
@@ -364,71 +367,125 @@ def stripe_webhook(request):
             sig_header=sig_header,
             secret=settings.STRIPE_WEBHOOK_SECRET,
         )
-    except ValueError:
-        return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError:
-        return HttpResponse(status=400)
     except Exception:
         return HttpResponse(status=400)
 
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
-
-        metadata = session.get("metadata") or {}
-        order_id = metadata.get("order_id") or session.get("client_reference_id")
+        order_id = (session.get("metadata") or {}).get("order_id")
         payment_intent = session.get("payment_intent")
 
         if order_id:
-            order = Order.objects.filter(id=order_id).first()
+            try:
+                order = Order.objects.get(id=order_id)
+            except Order.DoesNotExist:
+                return HttpResponse(status=200)
 
-            if order:
-                customer_details = session.get("customer_details") or {}
-                shipping_details = session.get("shipping_details") or {}
-
-                # Stripe may include shipping cost separately
-                amount_total = session.get("amount_total")
-                shipping_cost_data = session.get("shipping_cost") or {}
-                shipping_amount = shipping_cost_data.get("amount_total")
-
-                billing_address = customer_details.get("address") or {}
-                shipping_address = shipping_details.get("address") or {}
-
+            # Prevent duplicate processing / duplicate emails
+            if order.status != Order.Status.PAID:
                 order.status = Order.Status.PAID
                 order.stripe_payment_intent_id = payment_intent or ""
+
+                # Pull customer/shipping details from Stripe session if present
+                customer_details = session.get("customer_details") or {}
+                shipping_details = session.get("shipping_details") or {}
+                shipping_cost = session.get("shipping_cost") or {}
+
                 order.email = customer_details.get("email") or order.email
+                order.phone = customer_details.get("phone") or order.phone
+                order.full_name = (
+                    shipping_details.get("name")
+                    or customer_details.get("name")
+                    or order.full_name
+                )
 
-                # If these fields exist on your model, save them
-                if hasattr(order, "full_name"):
-                    order.full_name = (
-                        shipping_details.get("name")
-                        or customer_details.get("name")
-                        or ""
-                    )
+                address = shipping_details.get("address") or {}
 
-                if hasattr(order, "phone"):
-                    order.phone = customer_details.get("phone") or ""
+                order.shipping_line1 = address.get("line1", "")
+                order.shipping_line2 = address.get("line2", "")
+                order.shipping_city = address.get("city", "")
+                order.shipping_postcode = address.get("postal_code", "")
+                order.shipping_country = address.get("country", "")
 
-                if hasattr(order, "shipping_line1"):
-                    order.shipping_line1 = shipping_address.get("line1", "")
-                    order.shipping_line2 = shipping_address.get("line2", "")
-                    order.shipping_city = shipping_address.get("city", "")
-                    order.shipping_postcode = shipping_address.get("postal_code", "")
-                    order.shipping_country = shipping_address.get("country", "")
+                # If you also want billing snapshot:
+                billing_address = (customer_details.get("address") or {})
+                order.billing_line1 = billing_address.get("line1", "")
+                order.billing_line2 = billing_address.get("line2", "")
+                order.billing_city = billing_address.get("city", "")
+                order.billing_postcode = billing_address.get("postal_code", "")
+                order.billing_country = billing_address.get("country", "")
 
-                if hasattr(order, "billing_line1"):
-                    order.billing_line1 = billing_address.get("line1", "")
-                    order.billing_line2 = billing_address.get("line2", "")
-                    order.billing_city = billing_address.get("city", "")
-                    order.billing_postcode = billing_address.get("postal_code", "")
-                    order.billing_country = billing_address.get("country", "")
+                order.save()
 
-                if hasattr(order, "shipping_amount") and shipping_amount is not None:
+                # Build item summary
+                order_items = order.items.all()
+                items_text = "\n".join(
+                    [
+                        f"- {item.quantity} x {item.name} (£{item.unit_price} each)"
+                        for item in order_items
+                    ]
+                )
+
+                shipping_address = order.shipping_address_display or "Not provided"
+                billing_address = order.billing_address_display or "Not provided"
+
+                shipping_amount = shipping_cost.get("amount_total")
+                if shipping_amount is not None:
                     order.shipping_amount = Decimal(shipping_amount) / Decimal("100")
 
+                amount_total = session.get("amount_total")
                 if amount_total is not None:
                     order.total = Decimal(amount_total) / Decimal("100")
 
-                order.save()
+                # Customer email
+                if order.email:
+                    customer_subject = f"Tomozart order confirmation #{order.id}"
+                    customer_message = (
+                        f"Hi {order.full_name or 'there'},\n\n"
+                        f"Thank you for your order from Tomozart.\n\n"
+                        f"Order number: {order.id}\n"
+                        f"Payment status: Paid\n\n"
+                        f"Items:\n{items_text}\n\n"
+                        f"Subtotal: £{order.subtotal}\n"
+                        f"Shipping: £{order.shipping_amount}\n"
+                        f"Total: £{order.total}\n\n"
+                        f"Shipping address:\n{shipping_address}\n\n"
+                        f"Billing address:\n{billing_address}\n\n"
+                        f"If you have any questions, reply to this email.\n\n"
+                        f"Tomozart"
+                    )
+
+                    send_mail(
+                        subject=customer_subject,
+                        message=customer_message,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[order.email],
+                        fail_silently=False,
+                    )
+
+                # Admin notification
+                if settings.ADMIN_EMAIL:
+                    admin_subject = f"New paid Tomozart order #{order.id}"
+                    admin_message = (
+                        f"A new order has been paid.\n\n"
+                        f"Order number: {order.id}\n"
+                        f"Customer: {order.full_name or 'Unknown'}\n"
+                        f"Email: {order.email or 'Unknown'}\n\n"
+                        f"Items:\n{items_text}\n\n"
+                        f"Subtotal: £{order.subtotal}\n"
+                        f"Shipping: £{order.shipping_amount}\n"
+                        f"Total: £{order.total}\n\n"
+                        f"Shipping address:\n{shipping_address}\n\n"
+                        f"Billing address:\n{billing_address}\n"
+                    )
+
+                    send_mail(
+                        subject=admin_subject,
+                        message=admin_message,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[settings.ADMIN_EMAIL],
+                        fail_silently=False,
+                    )
 
     elif event["type"] == "payment_intent.payment_failed":
         payment_intent = event["data"]["object"]
@@ -437,6 +494,6 @@ def stripe_webhook(request):
         if payment_intent_id:
             Order.objects.filter(
                 stripe_payment_intent_id=payment_intent_id
-            ).update(status=Order.Status.CANCELED)
+            ).update(status=Order.Status.FAILED)
 
     return HttpResponse(status=200)
