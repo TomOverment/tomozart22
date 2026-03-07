@@ -25,6 +25,15 @@
 
   .cart-table {
     margin-bottom: 0;
+    background: transparent;
+  }
+
+  .cart-table thead,
+  .cart-table tbody,
+  .cart-table tr,
+  .cart-table td,
+  .cart-table th {
+    background: transparent !important;
   }
 
   .cart-table thead th {
@@ -36,7 +45,25 @@
   .cart-table td,
   .cart-table th {
     vertical-align: middle;
-    padding: 1.25rem 1rem;
+    padding: 1.4rem 1rem;
+    border: none !important;
+  }
+
+  .table > :not(caption) > * > * {
+    border-bottom: none;
+  }
+
+  .cart-table tbody tr {
+    transition: all .18s ease;
+  }
+
+  .cart-table tbody tr + tr {
+    border-top: 1px solid rgba(0,0,0,.06);
+  }
+
+  .cart-table tbody tr:hover {
+    background: rgba(255,255,255,.35);
+    transform: translateY(-1px);
   }
 
   .cart-thumb {
@@ -47,6 +74,7 @@
     flex-shrink: 0;
     border: 1px solid rgba(0,0,0,.06);
     background: #f3f3f3;
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
   }
 
   .cart-item-title {
@@ -86,6 +114,7 @@
     border: 1px solid rgba(0,0,0,.06);
     background: #f3f3f3;
     flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
   }
 
   .cart-mobile-title {
