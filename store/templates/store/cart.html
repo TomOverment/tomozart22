@@ -1,105 +1,328 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Cart{% endblock %}
 
 {% block content %}
-<div class="container py-4">
+<style>
+  .cart-page-title {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 300;
+  }
 
-  <div class="d-flex align-items-center justify-content-between mb-4">
-    <h1 class="mb-0">Cart</h1>
+  .cart-shell {
+    background: transparent;
+  }
+
+  .cart-table-wrap,
+  .cart-summary-card,
+  .cart-item-card {
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 24px;
+    box-shadow: 10px 10px 24px rgba(0,0,0,.18);
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .cart-table {
+    margin-bottom: 0;
+  }
+
+  .cart-table thead th {
+    border-bottom: 1px solid rgba(0,0,0,.08);
+    font-size: .95rem;
+    letter-spacing: .2px;
+  }
+
+  .cart-table td,
+  .cart-table th {
+    vertical-align: middle;
+    padding: 1.25rem 1rem;
+  }
+
+  .cart-thumb {
+    width: 92px;
+    height: 92px;
+    object-fit: cover;
+    border-radius: 14px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,.06);
+    background: #f3f3f3;
+  }
+
+  .cart-item-title {
+    font-weight: 700;
+    margin-bottom: .2rem;
+  }
+
+  .cart-item-meta {
+    color: rgba(0,0,0,.62);
+    font-size: .92rem;
+  }
+
+  .cart-summary-card {
+    min-width: 300px;
+  }
+
+  .cart-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cart-summary-total {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .cart-item-card {
+    padding: 1rem;
+  }
+
+  .cart-mobile-thumb {
+    width: 84px;
+    height: 84px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.06);
+    background: #f3f3f3;
+    flex-shrink: 0;
+  }
+
+  .cart-mobile-title {
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: .15rem;
+  }
+
+  .cart-mobile-price,
+  .cart-mobile-line-total {
+    font-weight: 700;
+  }
+
+  .cart-mobile-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .cart-mobile-actions form {
+    margin: 0;
+  }
+
+  .cart-qty-input {
+    max-width: 90px;
+  }
+
+  @media (max-width: 991.98px) {
+    .cart-summary-card {
+      min-width: 100%;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .cart-page-title {
+      margin-bottom: 1rem;
+    }
+
+    .cart-mobile-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: .75rem;
+    }
+
+    .cart-mobile-actions {
+      display: grid;
+      gap: .75rem;
+    }
+
+    .cart-qty-input {
+      max-width: 100%;
+    }
+  }
+</style>
+
+<div class="container py-4 py-md-5 cart-shell">
+
+  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <h1 class="cart-page-title mb-0">Cart</h1>
     <a href="{% url 'store:shop' %}" class="btn btn-outline-dark">Back to Shop</a>
   </div>
 
   {% if items %}
-    <div class="table-responsive">
-      <table class="table align-middle">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th style="width:120px;">Price</th>
-            <th style="width:150px;">Qty</th>
-            <th style="width:140px;">Line total</th>
-            <th style="width:90px;"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for i in items %}
+
+    <!-- DESKTOP TABLE -->
+    <div class="cart-table-wrap p-3 p-md-4 d-none d-lg-block">
+      <div class="table-responsive">
+        <table class="table align-middle cart-table">
+          <thead>
             <tr>
-              <td>
-                <div class="d-flex align-items-center gap-3">
+              <th>Item</th>
+              <th style="width:120px;">Price</th>
+              <th style="width:150px;">Qty</th>
+              <th style="width:140px;">Line total</th>
+              <th style="width:90px;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in items %}
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-3">
 
-                  {% if i.product.image %}
-                    {# hover preview trigger (keeps you on cart) #}
-                    <img
-                      src="{{ i.product.optimized_image_url|default:i.product.image.url }}"
-                      alt="{{ i.product.name }}"
-                      class="cart-thumb js-hover-thumb"
-                      data-preview-img="{{ i.product.image.url }}"
-                      data-preview-title="{{ i.product.name|escape }}"
-                      data-preview-desc="{{ i.product.description|default:''|truncatewords:30|escape }}"
-                  >
-                  {% endif %}
-
-                  <div>
-                    <div class="fw-semibold">{{ i.product.name }}</div>
-                    {% if i.product.category %}
-                      <div class="text-muted small">{{ i.product.category }}</div>
+                    {% if i.product.image %}
+                      <img
+                        src="{{ i.product.optimized_image_url|default:i.product.image.url }}"
+                        alt="{{ i.product.name }}"
+                        class="cart-thumb js-hover-thumb"
+                        data-preview-img="{{ i.product.image.url }}"
+                        data-preview-title="{{ i.product.name|escape }}"
+                        data-preview-desc="{{ i.product.description|default:''|truncatewords:30|escape }}"
+                      >
+                    {% else %}
+                      <img
+                        src="{% static 'images/placeholder.png' %}"
+                        alt="No image"
+                        class="cart-thumb"
+                      >
                     {% endif %}
 
-                    {# Optional: “View details” opens new tab so cart page stays #}
-                    <a href="{% url 'store:product_detail' i.product.id %}?next=cart"
-                       target="_blank" rel="noopener"
-                       class="small text-decoration-none">
-                      View details
-                    </a>
+                    <div>
+                      <div class="cart-item-title">{{ i.product.name }}</div>
+                      {% if i.product.category %}
+                        <div class="cart-item-meta">{{ i.product.category }}</div>
+                      {% endif %}
+
+                      <a href="{% url 'store:product_detail' i.product.id %}?next=cart"
+                         target="_blank" rel="noopener"
+                         class="small text-decoration-none">
+                        View details
+                      </a>
+                    </div>
+
                   </div>
+                </td>
 
+                <td>£{{ i.product.price }}</td>
+
+                <td>
+                  <form method="post" action="{% url 'store:cart_set_qty' i.product.id %}">
+                    {% csrf_token %}
+                    <input
+                      type="number"
+                      name="qty"
+                      value="{{ i.qty }}"
+                      min="0"
+                      max="99"
+                      class="form-control form-control-sm cart-qty-input"
+                      oninput="this.form.submit()"
+                    >
+                  </form>
+                </td>
+
+                <td class="fw-bold">£{{ i.line_total }}</td>
+
+                <td>
+                  <form method="post" action="{% url 'store:cart_remove' i.product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MOBILE / TABLET CARDS -->
+    <div class="d-lg-none">
+      <div class="row g-3">
+        {% for i in items %}
+          <div class="col-12">
+            <div class="cart-item-card">
+
+              <div class="d-flex gap-3 align-items-start mb-3">
+                {% if i.product.image %}
+                  <img
+                    src="{{ i.product.optimized_image_url|default:i.product.image.url }}"
+                    alt="{{ i.product.name }}"
+                    class="cart-mobile-thumb"
+                  >
+                {% else %}
+                  <img
+                    src="{% static 'images/placeholder.png' %}"
+                    alt="No image"
+                    class="cart-mobile-thumb"
+                  >
+                {% endif %}
+
+                <div class="flex-grow-1">
+                  <div class="cart-mobile-title">{{ i.product.name }}</div>
+
+                  {% if i.product.category %}
+                    <div class="cart-item-meta mb-1">{{ i.product.category }}</div>
+                  {% endif %}
+
+                  <a href="{% url 'store:product_detail' i.product.id %}?next=cart"
+                     class="small text-decoration-none">
+                    View details
+                  </a>
                 </div>
-              </td>
+              </div>
 
-              <td>£{{ i.product.price }}</td>
+              <div class="cart-mobile-row mb-3">
+                <div>
+                  <div class="text-muted small">Price</div>
+                  <div class="cart-mobile-price">£{{ i.product.price }}</div>
+                </div>
 
-              <td>
+                <div>
+                  <div class="text-muted small">Line total</div>
+                  <div class="cart-mobile-line-total">£{{ i.line_total }}</div>
+                </div>
+              </div>
+
+              <div class="cart-mobile-actions">
                 <form method="post" action="{% url 'store:cart_set_qty' i.product.id %}">
                   {% csrf_token %}
+                  <label class="form-label small text-muted mb-1">Quantity</label>
                   <input
                     type="number"
                     name="qty"
                     value="{{ i.qty }}"
                     min="0"
                     max="99"
-                    class="form-control form-control-sm"
-                    style="max-width:90px;"
+                    class="form-control cart-qty-input"
                     oninput="this.form.submit()"
                   >
                 </form>
-              </td>
 
-              <td class="fw-bold">£{{ i.line_total }}</td>
-
-              <td>
                 <form method="post" action="{% url 'store:cart_remove' i.product.id %}">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                  <button type="submit" class="btn btn-outline-danger w-100">Remove</button>
                 </form>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+              </div>
+
+            </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
 
     <div class="d-flex justify-content-end mt-4">
-      <div class="card shadow-sm" style="min-width:280px;">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
+      <div class="card cart-summary-card border-0">
+        <div class="card-body p-4">
+          <div class="cart-summary-row">
             <span class="text-muted">Items</span>
             <span class="fw-semibold">{{ count }}</span>
           </div>
+
           <hr>
-          <div class="d-flex justify-content-between">
-            <span class="fw-bold">Total</span>
-            <span class="fw-bold">£{{ total }}</span>
+
+          <div class="cart-summary-row">
+            <span class="cart-summary-total">Total</span>
+            <span class="cart-summary-total">£{{ total }}</span>
           </div>
 
           <a href="{% url 'store:checkout_start' %}" class="btn btn-dark w-100 mt-3">
@@ -115,4 +338,16 @@
   {% endif %}
 
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const isMobile = window.matchMedia("(max-width: 991.98px)").matches;
+
+    if (isMobile) {
+      document.querySelectorAll(".js-hover-thumb").forEach(el => {
+        el.classList.remove("js-hover-thumb");
+      });
+    }
+  });
+</script>
 {% endblock %}
