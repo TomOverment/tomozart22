@@ -1,9 +1,305 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Bio{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-  <h1>Bio page test</h1>
-  <p>If you can see this, the bio view and routing are fine.</p>
-</div>
+<style>
+  .bio-page {
+    padding: 0 0 4rem;
+  }
+
+  .bio-hero {
+    position: relative;
+    min-height: 420px;
+    background:
+      linear-gradient(rgba(0,0,0,.42), rgba(0,0,0,.48)),
+      url("{% static 'images/bio-hero.jpg' %}") center center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 1.25rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+
+  .bio-hero-content {
+    max-width: 920px;
+    color: #fff;
+  }
+
+  .bio-kicker {
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: .82rem;
+    font-weight: 700;
+    opacity: .92;
+    margin-bottom: .9rem;
+  }
+
+  .bio-title {
+    font-size: clamp(2.6rem, 6vw, 4.8rem);
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .bio-subtitle {
+    font-size: 1.08rem;
+    max-width: 760px;
+    margin: 0 auto;
+    color: rgba(255,255,255,.92);
+    line-height: 1.75;
+  }
+
+  .bio-wrap {
+    max-width: 1240px;
+  }
+
+  .bio-card {
+    background: rgba(255,255,255,.88);
+    border: 1px solid rgba(255,255,255,.38);
+    border-radius: 28px;
+    box-shadow: 10px 10px 24px rgba(0,0,0,.18);
+    overflow: hidden;
+    backdrop-filter: blur(3px);
+  }
+
+  .bio-logo-panel {
+    background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.5));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    padding: 2rem;
+  }
+
+  .bio-logo {
+    width: 100%;
+    max-width: 420px;
+    max-height: 460px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,.12));
+  }
+
+  .bio-body {
+    padding: 2.4rem 2.1rem;
+  }
+
+  .bio-heading {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1.1rem;
+    color: #222;
+  }
+
+  .bio-heading .accent {
+    color: var(--tomo-warm, #E84610);
+  }
+
+  .bio-intro-line {
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    padding: .45rem .8rem;
+    border-radius: 999px;
+    background: rgba(47,125,122,.12);
+    color: #1f4f4d;
+    font-weight: 700;
+    font-size: .9rem;
+    letter-spacing: .02em;
+  }
+
+  .bio-text p {
+    font-size: 1.03rem;
+    line-height: 1.9;
+    color: rgba(0,0,0,.8);
+    margin-bottom: 1.15rem;
+  }
+
+  .bio-text strong {
+    color: #222;
+  }
+
+  .bio-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .85rem;
+    margin-top: 1.75rem;
+  }
+
+  .bio-btn-main,
+  .bio-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 180px;
+    padding: .85rem 1.4rem;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: .02em;
+    border-radius: 14px;
+    transition: transform .22s ease, box-shadow .22s ease, background-color .22s ease, color .22s ease, border-color .22s ease;
+  }
+
+  .bio-btn-main {
+    background: var(--tomo-accent, #2f7d7a);
+    color: #fff;
+    border: 2px solid var(--tomo-accent, #2f7d7a);
+    box-shadow: 0 8px 18px rgba(47,125,122,.18);
+  }
+
+  .bio-btn-main:hover {
+    background: var(--tomo-accent-2, #188181);
+    border-color: var(--tomo-accent-2, #188181);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .bio-btn-outline {
+    background: transparent;
+    color: #222;
+    border: 2px solid rgba(0,0,0,.7);
+  }
+
+  .bio-btn-outline:hover {
+    background: #222;
+    color: #fff;
+    border-color: #222;
+    transform: translateY(-2px);
+  }
+
+  .bio-quote {
+    margin-top: 2rem;
+    padding: 1.6rem 1.4rem;
+    text-align: center;
+    background: rgba(255,255,255,.72);
+    border-left: 4px solid var(--tomo-warm, #E84610);
+    border-radius: 20px;
+    box-shadow: 10px 10px 24px rgba(0,0,0,.12);
+  }
+
+  .bio-quote p {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin: 0;
+    color: rgba(0,0,0,.78);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 991.98px) {
+    .bio-hero {
+      min-height: 340px;
+      padding: 4rem 1.15rem;
+      margin-bottom: 2rem;
+    }
+
+    .bio-logo-panel {
+      padding: 2rem 1.5rem 1rem;
+    }
+
+    .bio-logo {
+      max-width: 320px;
+      max-height: 260px;
+    }
+
+    .bio-body {
+      padding: 1.65rem 1.35rem 1.8rem;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .bio-title {
+      font-size: 2.35rem;
+    }
+
+    .bio-subtitle {
+      font-size: .98rem;
+    }
+
+    .bio-heading {
+      font-size: 1.65rem;
+    }
+
+    .bio-text p {
+      font-size: .98rem;
+      line-height: 1.8;
+    }
+
+    .bio-btn-main,
+    .bio-btn-outline {
+      width: 100%;
+    }
+  }
+</style>
+
+<section class="bio-page">
+  <section class="bio-hero">
+    <div class="bio-hero-content">
+      <div class="bio-kicker">Artist • Designer • Maker</div>
+      <h1 class="bio-title">Tomozart</h1>
+      <p class="bio-subtitle">
+        A Bath-based creative practice shaped by painting, symbolism, instinct, craftsmanship, and the constant search for new ways to communicate visually.
+      </p>
+    </div>
+  </section>
+
+  <section class="bio-section">
+    <div class="container bio-wrap">
+      <div class="bio-card">
+        <div class="row g-0">
+          <div class="col-lg-5">
+            <div class="bio-logo-panel">
+              <img
+                src="{% static 'images/tomo_logo_black.png' %}"
+                alt="Tomozart logo"
+                class="bio-logo"
+              >
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="bio-body">
+              <div class="bio-intro-line">About the artist</div>
+              <h2 class="bio-heading">About <span class="accent">Tomozart</span></h2>
+
+              <div class="bio-text">
+                <p>
+                  <strong>Thomas “Tomo” Overment</strong> is an English multidisciplinary artist from Bath, working under the name <strong>Tomozart</strong>. Creating since childhood, he has always been drawn to image-making as a way of exploring ideas, perception, and meaning. At the age of eight he won a competition for a pro-recycling poster, an early sign of the visual instinct and creative drive that would continue to shape his work.
+                </p>
+
+                <p>
+                  Over the years, Tomo has developed his practice across a wide range of creative disciplines. He has worked as a silk-screener, sign-maker, and on major film productions including <strong>Prince of Persia</strong> and <strong>Nanny McPhee and the Big Bang</strong>, contributing on set within greens and props. These experiences built a strong understanding of materials, surface, composition, practical problem-solving, and visual impact.
+                </p>
+
+                <p>
+                  His work is rooted in metaphor, symbolism, and the way ideas form in the human mind. Tomo is especially interested in how two separate inputs can combine to create an entirely new thought, image, or meaning. Drawing on a long-standing interest in human behaviour and psychology, he creates work that is intended not only to be seen, but to be felt and interpreted on multiple levels.
+                </p>
+
+                <p>
+                  Working organically and intuitively, Tomo explores the canvas in real time, allowing the piece to emerge through process rather than rigid planning. He can spray paint freehand without grids or projection aids, relying instead on instinct, control, and experience. His practice moves fluidly between acrylic painting, paint pens, spray paint, and graphic design, always searching for a fresh twist in progression.
+                </p>
+
+                <p>
+                  Tomo also carries a creative lineage connected to both <strong>Charles Darwin</strong> and the <strong>Wedgwood</strong> pottery family — a heritage that reflects observation, experimentation, craft, and curiosity. Through <strong>Tomozart</strong>, he continues to build an evolving body of work that merges traditional art, visual storytelling, and contemporary creative thinking.
+                </p>
+              </div>
+
+              <div class="bio-cta-row">
+                <a href="{% url 'blog:gallery' %}" class="bio-btn-main">View Gallery</a>
+                <a href="{% url 'store:shop' %}" class="bio-btn-outline">Shop Prints & Work</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bio-quote">
+        <p>
+          “My work grows through metaphor, instinct, and exploration — where two ideas meet, something new can emerge.”
+        </p>
+      </div>
+    </div>
+  </section>
+</section>
 {% endblock %}
