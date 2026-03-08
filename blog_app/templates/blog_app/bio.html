@@ -1,47 +1,234 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}Artist Bio | Tomozart{% endblock %}
+{% block title %}Bio{% endblock %}
 
 {% block content %}
+<style>
+  .bio-hero {
+    position: relative;
+    min-height: 380px;
+    background:
+      linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+      url("{% static 'images/bio-hero.jpg' %}") center center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 1.25rem;
+    margin-bottom: 3rem;
+  }
 
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-6">
+  .bio-hero-content {
+    max-width: 900px;
+    color: #fff;
+  }
 
-      <!-- Back Button -->
-      <div class="mb-3">
-        <a href="{% url 'blog:home' %}" class="btn btn-outline-dark btn-sm">
-          ← Back to Home
-        </a>
-      </div>
+  .bio-kicker {
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 700;
+    opacity: 0.9;
+    margin-bottom: 0.85rem;
+  }
 
-      <div class="card login-card-shadow p-4">
-        <div class="card-body">
+  .bio-title {
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
 
-          <h2 class="mb-4 text-center">{{ name }}</h2>
+  .bio-subtitle {
+    font-size: 1.1rem;
+    max-width: 760px;
+    margin: 0 auto;
+    color: rgba(255,255,255,0.92);
+  }
 
-          <p class="text-muted mb-4 text-center">
-            {{ bio }}
-          </p>
+  .bio-section {
+    padding-bottom: 4rem;
+  }
 
-          <hr>
+  .bio-card {
+    background: #fff;
+    border: 0;
+    border-radius: 0;
+    box-shadow: 10px 10px 24px rgba(0,0,0,.18);
+    overflow: hidden;
+  }
 
-          <h5 class="text-center mb-3">Coming Soon</h5>
+  .bio-image-wrap {
+    height: 100%;
+    min-height: 100%;
+  }
 
-          <div class="d-flex flex-wrap justify-content-center gap-2">
-            {% for platform, link in social_links.items %}
-              <a href="{{ link }}" target="_blank" class="btn btn-outline-dark btn-sm">
-                {{ platform|title }}
-              </a>
-            {% endfor %}
+  .bio-image {
+    width: 100%;
+    height: 100%;
+    min-height: 520px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .bio-body {
+    padding: 2.2rem 2rem;
+  }
+
+  .bio-heading {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1.25rem;
+    color: #222;
+  }
+
+  .bio-heading .accent {
+    color: var(--tomo-warm, #E84610);
+  }
+
+  .bio-text p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: rgba(0,0,0,0.78);
+    margin-bottom: 1.2rem;
+  }
+
+  .bio-text strong {
+    color: #222;
+  }
+
+  .bio-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 1.75rem;
+  }
+
+  .bio-btn-main,
+  .bio-btn-outline {
+    display: inline-block;
+    padding: 0.8rem 1.4rem;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: all 0.25s ease;
+  }
+
+  .bio-btn-main {
+    background: var(--tomo-accent, #2f7d7a);
+    color: #fff;
+    border: 2px solid var(--tomo-accent, #2f7d7a);
+  }
+
+  .bio-btn-main:hover {
+    background: var(--tomo-accent-2, #188181);
+    border-color: var(--tomo-accent-2, #188181);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .bio-btn-outline {
+    background: transparent;
+    color: #222;
+    border: 2px solid #222;
+  }
+
+  .bio-btn-outline:hover {
+    background: #222;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .bio-quote {
+    margin-top: 3rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    background: #f8f9fa;
+    border-left: 4px solid var(--tomo-warm, #E84610);
+  }
+
+  .bio-quote p {
+    font-size: 1.15rem;
+    font-style: italic;
+    margin: 0;
+    color: rgba(0,0,0,0.78);
+  }
+
+  @media (max-width: 991.98px) {
+    .bio-image {
+      min-height: 340px;
+    }
+
+    .bio-body {
+      padding: 1.6rem 1.35rem;
+    }
+  }
+</style>
+
+<section class="bio-hero">
+  <div class="bio-hero-content">
+    <div class="bio-kicker">Artist • Designer • Developer</div>
+    <h1 class="bio-title">TOMOZART</h1>
+    <p class="bio-subtitle">
+      A creative space where original art, digital design, and evolving ideas come together.
+    </p>
+  </div>
+</section>
+
+<section class="bio-section">
+  <div class="container">
+    <div class="card bio-card">
+      <div class="row g-0">
+        <div class="col-lg-5">
+          <div class="bio-image-wrap">
+            <img
+              src="{% static 'images/tomo_logo_black.png' %}"
+              alt="Thomas Tomo Overment"
+              class="bio-image"
+            >
           </div>
+        </div>
 
+        <div class="col-lg-7">
+          <div class="bio-body">
+            <h2 class="bio-heading">About <span class="accent">Tomozart</span></h2>
+
+            <div class="bio-text">
+              <p>
+                <strong>Thomas “Tomo” Overment</strong> is a multidisciplinary artist and developer based in Bath, UK, working under the name <strong>Tomozart</strong>. His work brings together traditional art, digital design, and modern technology to create a practice that sits between handcrafted expression and contemporary digital culture.
+              </p>
+
+              <p>
+                Drawing inspiration from nature, symbolism, mythology, movement, and urban visual language, Tomo creates artwork that aims to feel both raw and considered. His creative process moves across mediums, from drawing and painting to digital image-making, interactive web design, and creative technology.
+              </p>
+
+              <p>
+                Alongside his artistic practice, Tomo has trained in full-stack software engineering and data analytics with AI. This technical background shapes the way he builds and presents his work, allowing Tomozart to exist not only as an art brand, but as an evolving digital space where creativity, experimentation, and storytelling meet.
+              </p>
+
+              <p>
+                <strong>Tomozart</strong> is both a gallery and a working studio environment — a place to share original pieces, creative experiments, and selected works available as prints and products. Whether through one-off artworks, collectable designs, or future shop releases, the aim is to create pieces that people can connect with and bring into their own spaces.
+              </p>
+
+              <p>
+                At its core, Tomozart is about building something lasting: a body of work and a creative platform that blends art, identity, and innovation.
+              </p>
+            </div>
+
+            <div class="bio-cta-row">
+              <a href="{% url 'blog:gallery' %}" class="bio-btn-main">View Gallery</a>
+              <a href="{% url 'store:shop' %}" class="bio-btn-outline">Shop Prints & Work</a>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
 
+    <div class="bio-quote">
+      <p>
+        “Tomozart is a space for art, ideas, and experimentation — built to evolve.”
+      </p>
     </div>
   </div>
-</div>
-
+</section>
 {% endblock %}
