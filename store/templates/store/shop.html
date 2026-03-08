@@ -30,18 +30,19 @@
 
 <div class="container py-5">
   <!-- Header -->
-  <div class="mb-4 position-relative">
-  <div class="text-center">
-    <h2 class="mb-2">Cart</h2>
+  <div class="mb-4">
+    <div class="d-flex flex-column flex-md-row align-items-center gap-3">
+      <!-- Title + Subheading -->
+      <div class="text-center flex-grow-1">
+        <h2 class="mb-2">Shop</h2>
+        <p class="text-muted mb-0">
+          Discover limited edition giclée prints and original artwork by Tomo.
+        </p>
+      </div>
+    </div>
+
+    <hr class="mt-4" />
   </div>
-
-  <a href="{% url 'store:shop' %}"
-     class="btn btn-outline-dark position-absolute top-50 end-0 translate-middle-y">
-    Back to Shop
-  </a>
-
-  <hr class="mt-4" />
-</div>
 
   {% if products %}
   <div class="row g-4">
