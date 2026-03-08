@@ -214,6 +214,31 @@
       max-width: 100%;
     }
   }
+
+  .cart-thumb {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 14px;
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,.06);
+  background: #f3f3f3;
+  box-shadow: 0 4px 10px rgba(0,0,0,.15);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.cart-thumb:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0,0,0,.22);
+}
+
+.cart-segment {
+  padding: 1.25rem 1.25rem 1.1rem;
+  border-radius: 20px;
+  background: rgba(255,255,255,.88);
+  border: 1px solid rgba(0,0,0,.06);
+  transition: all .18s ease;
+}
 </style>
 
 <div class="container py-4 py-md-5 cart-shell">
