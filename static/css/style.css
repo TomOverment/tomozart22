@@ -521,3 +521,36 @@ body{
   font-size: clamp(2.4rem, 4vw, 3rem);
   letter-spacing: .4px;
 }
+
+/* =========================
+   BIO EXPERIENCE STRIP
+   ========================= */
+
+.experience-strip{
+  margin-top: 3rem;
+}
+
+.exp-item{
+  background: #ffffff;
+  padding: 20px 10px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 24px rgba(0,0,0,.18);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.exp-item:hover{
+  transform: translateY(-4px);
+  box-shadow: 14px 14px 30px rgba(0,0,0,.22);
+}
+
+.exp-item i{
+  font-size: 1.6rem;
+  color: var(--tomo-accent);
+  margin-bottom: 8px;
+}
+
+.exp-item p{
+  font-weight: 600;
+  font-size: .9rem;
+  margin: 0;
+}
