@@ -554,3 +554,127 @@ body{
   font-size: .9rem;
   margin: 0;
 }
+
+.mobile-cart-card {
+  padding: 1rem 1rem 1.1rem;
+  background: rgba(255,255,255,.88);
+  border-radius: 24px;
+  box-shadow: 10px 10px 24px rgba(0,0,0,.18);
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.mobile-cart-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mobile-cart-thumb-link {
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.cart-mobile-thumb {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,.06);
+  background: #f3f3f3;
+  box-shadow: 0 8px 18px rgba(0,0,0,.14);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.cart-mobile-thumb:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(0,0,0,.18);
+}
+
+.mobile-cart-head {
+  min-width: 0;
+  padding-top: .1rem;
+}
+
+.cart-mobile-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  margin-bottom: .2rem;
+}
+
+.cart-item-meta {
+  color: rgba(0,0,0,.62);
+  font-size: .95rem;
+}
+
+.mobile-cart-meta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  margin-bottom: 1rem;
+}
+
+.mobile-meta-box {
+  background: rgba(255,255,255,.45);
+  border: 1px solid rgba(0,0,0,.05);
+  border-radius: 14px;
+  padding: .8rem .9rem;
+}
+
+.mobile-meta-label {
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: rgba(0,0,0,.55);
+  margin-bottom: .2rem;
+}
+
+.mobile-meta-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.mobile-cart-actions-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: .75rem;
+  align-items: end;
+}
+
+.mobile-qty-form,
+.mobile-remove-form {
+  margin: 0;
+}
+
+.mobile-remove-btn {
+  width: 100%;
+  height: 46px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.cart-qty-input {
+  height: 46px;
+  border-radius: 12px;
+}
+
+@media (max-width: 575.98px) {
+  .mobile-cart-card {
+    padding: .95rem;
+  }
+
+  .cart-mobile-thumb {
+    width: 84px;
+    height: 84px;
+  }
+
+  .cart-mobile-title {
+    font-size: 1.25rem;
+  }
+
+  .mobile-cart-actions-row {
+    grid-template-columns: 95px 1fr;
+  }
+}
