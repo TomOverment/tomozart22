@@ -9,6 +9,14 @@
     background: transparent;
   }
 
+  .cart-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
   .cart-table-wrap,
   .cart-summary-card,
   .cart-item-card {
@@ -16,49 +24,6 @@
     border-radius: 24px;
     box-shadow: 10px 10px 24px rgba(0,0,0,.18);
     border: 1px solid rgba(0,0,0,.06);
-  }
-
-  .cart-table {
-    margin-bottom: 0;
-    background: transparent;
-  }
-
-  .cart-table thead,
-  .cart-table tbody,
-  .cart-table tr,
-  .cart-table td,
-  .cart-table th {
-    background: transparent !important;
-  }
-
-  .cart-table thead th {
-    border-bottom: 1px solid rgba(0,0,0,.08);
-    font-size: .95rem;
-    letter-spacing: .2px;
-  }
-
-  .cart-table td,
-  .cart-table th {
-    vertical-align: middle;
-    padding: 1.4rem 1rem;
-    border: none !important;
-  }
-
-  .table > :not(caption) > * > * {
-    border-bottom: none;
-  }
-
-  .cart-table tbody tr {
-    transition: all .18s ease;
-  }
-
-  .cart-table tbody tr + tr {
-    border-top: 1px solid rgba(0,0,0,.06);
-  }
-
-  .cart-table tbody tr:hover {
-    background: rgba(255,255,255,.35);
-    transform: translateY(-1px);
   }
 
   .cart-thumb {
@@ -74,7 +39,7 @@
 
   .cart-item-title {
     font-weight: 700;
-    margin-bottom: .2rem;
+    margin-bottom: 0;
   }
 
   .cart-item-meta {
@@ -138,101 +103,102 @@
     max-width: 90px;
   }
 
+  .cart-segment-list {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .cart-segment {
+    padding: 1.25rem 1.25rem 1.1rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,.22);
+    border: 1px solid rgba(0,0,0,.05);
+    transition: all .18s ease;
+  }
+
+  .cart-segment:hover {
+    background: rgba(255,255,255,.32);
+    transform: translateY(-1px);
+  }
+
+  .cart-segment-top {
+    margin-bottom: 1rem;
+  }
+
+  .cart-title-line {
+    display: flex;
+    align-items: baseline;
+    gap: .45rem;
+    flex-wrap: wrap;
+  }
+
+  .cart-inline-meta {
+    margin-bottom: 0;
+  }
+
+  .cart-segment-body {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  .cart-segment-product {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .65rem;
+  }
+
+  .cart-thumb-link {
+    margin-left: .1rem;
+  }
+
+  .cart-segment-meta {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(110px, 1fr));
+    gap: 1rem;
+    align-items: end;
+  }
+
+  .cart-meta-block {
+    min-width: 0;
+  }
+
+  .cart-meta-label {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: rgba(0,0,0,.55);
+    margin-bottom: .45rem;
+  }
+
+  .cart-meta-value {
+    font-size: 1.05rem;
+  }
+
+  .cart-remove-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+  }
+
   @media (max-width: 991.98px) {
     .cart-summary-card {
       min-width: 100%;
     }
-  }
 
-  .cart-header-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-}
-
-.cart-segment-list {
-  display: grid;
-  gap: 1.25rem;
-}
-
-.cart-segment {
-  padding: 1.25rem 1.25rem 1.1rem;
-  border-radius: 20px;
-  background: rgba(255,255,255,.22);
-  border: 1px solid rgba(0,0,0,.05);
-  transition: all .18s ease;
-}
-
-.cart-segment:hover {
-  background: rgba(255,255,255,.32);
-  transform: translateY(-1px);
-}
-
-.cart-segment-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.cart-item-desc {
-  font-size: .92rem;
-  color: rgba(0,0,0,.62);
-  line-height: 1.5;
-  max-width: 48ch;
-}
-
-.cart-segment-body {
-  display: grid;
-  grid-template-columns: 110px 1fr;
-  gap: 1.25rem;
-  align-items: center;
-}
-
-.cart-segment-meta {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(110px, 1fr));
-  gap: 1rem;
-  align-items: end;
-}
-
-.cart-meta-block {
-  min-width: 0;
-}
-
-.cart-meta-label {
-  font-size: .8rem;
-  text-transform: uppercase;
-  letter-spacing: .4px;
-  color: rgba(0,0,0,.55);
-  margin-bottom: .45rem;
-}
-
-.cart-meta-value {
-  font-size: 1.05rem;
-}
-
-.cart-remove-block {
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-}
-
-@media (max-width: 991.98px) {
-  .cart-header-row {
-    flex-direction: column;
-  }
-}
-
-  @media (max-width: 575.98px) {
-    .cart-page-title {
-      margin-bottom: 1rem;
+    .cart-header-row {
+      flex-direction: column;
+      justify-content: center;
     }
 
+    .cart-back-btn {
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: 575.98px) {
     .cart-mobile-row {
       flex-direction: column;
       align-items: stretch;
@@ -250,99 +216,97 @@
   }
 </style>
 
-<div class="cart-header-row mb-4">
-  <h1 class="page-title mb-0">Cart</h1>
-  <a href="{% url 'store:shop' %}" class="btn btn-outline-dark">Back to Shop</a>
-</div>
+<div class="container py-4 py-md-5 cart-shell">
+
+  <div class="cart-header-row mb-4">
+    <h1 class="page-title mb-0">Cart</h1>
+    <a href="{% url 'store:shop' %}" class="btn btn-outline-dark cart-back-btn">
+      Back to Shop
+    </a>
+  </div>
 
   {% if items %}
 
-    <!-- DESKTOP TABLE -->
-<!-- DESKTOP SEGMENTED CART -->
-<div class="cart-table-wrap p-3 p-md-4 d-none d-lg-block">
-  <div class="cart-segment-list">
-    {% for i in items %}
-      <div class="cart-segment">
-        <div class="cart-segment-top">
-          <div>
-            <div class="cart-item-title mb-1">{{ i.product.name }}</div>
-            {% if i.product.category %}
-              <div class="cart-item-meta">{{ i.product.category }}</div>
-            {% endif %}
-            {% if i.product.description %}
-              <div class="cart-item-desc mt-1">
-                {{ i.product.description|truncatewords:18 }}
+    <!-- DESKTOP SEGMENTED CART -->
+    <div class="cart-table-wrap p-3 p-md-4 d-none d-lg-block">
+      <div class="cart-segment-list">
+        {% for i in items %}
+          <div class="cart-segment">
+            <div class="cart-segment-top">
+              <div class="cart-title-line">
+                <span class="cart-item-title">{{ i.product.name }}</span>
+                {% if i.product.category %}
+                  <span class="cart-item-meta cart-inline-meta">- {{ i.product.category }}</span>
+                {% endif %}
               </div>
-            {% endif %}
+            </div>
+
+            <div class="cart-segment-body">
+              <div class="cart-segment-product">
+                {% if i.product.image %}
+                  <img
+                    src="{{ i.product.optimized_image_url|default:i.product.image.url }}"
+                    alt="{{ i.product.name }}"
+                    class="cart-thumb js-hover-thumb"
+                    data-preview-img="{{ i.product.image.url }}"
+                    data-preview-title="{{ i.product.name|escape }}"
+                    data-preview-desc="{{ i.product.description|default:''|truncatewords:30|escape }}"
+                  >
+                {% else %}
+                  <img
+                    src="{% static 'images/placeholder.png' %}"
+                    alt="No image"
+                    class="cart-thumb"
+                  >
+                {% endif %}
+
+                <a href="{% url 'store:product_detail' i.product.id %}?next=cart"
+                   target="_blank" rel="noopener"
+                   class="small text-decoration-none cart-thumb-link">
+                  View details
+                </a>
+              </div>
+
+              <div class="cart-segment-meta">
+                <div class="cart-meta-block">
+                  <div class="cart-meta-label">Price</div>
+                  <div class="cart-meta-value">£{{ i.product.price }}</div>
+                </div>
+
+                <div class="cart-meta-block">
+                  <div class="cart-meta-label">Qty</div>
+                  <form method="post" action="{% url 'store:cart_set_qty' i.product.id %}">
+                    {% csrf_token %}
+                    <input
+                      type="number"
+                      name="qty"
+                      value="{{ i.qty }}"
+                      min="0"
+                      max="99"
+                      class="form-control form-control-sm cart-qty-input"
+                      oninput="this.form.submit()"
+                    >
+                  </form>
+                </div>
+
+                <div class="cart-meta-block">
+                  <div class="cart-meta-label">Line total</div>
+                  <div class="cart-meta-value fw-bold">£{{ i.line_total }}</div>
+                </div>
+
+                <div class="cart-meta-block cart-remove-block">
+                  <div class="cart-meta-label">&nbsp;</div>
+                  <form method="post" action="{% url 'store:cart_remove' i.product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <a href="{% url 'store:product_detail' i.product.id %}?next=cart"
-             target="_blank" rel="noopener"
-             class="small text-decoration-none">
-            View details
-          </a>
-        </div>
-
-        <div class="cart-segment-body">
-          <div class="cart-segment-product">
-            {% if i.product.image %}
-              <img
-                src="{{ i.product.optimized_image_url|default:i.product.image.url }}"
-                alt="{{ i.product.name }}"
-                class="cart-thumb js-hover-thumb"
-                data-preview-img="{{ i.product.image.url }}"
-                data-preview-title="{{ i.product.name|escape }}"
-                data-preview-desc="{{ i.product.description|default:''|truncatewords:30|escape }}"
-              >
-            {% else %}
-              <img
-                src="{% static 'images/placeholder.png' %}"
-                alt="No image"
-                class="cart-thumb"
-              >
-            {% endif %}
-          </div>
-
-          <div class="cart-segment-meta">
-            <div class="cart-meta-block">
-              <div class="cart-meta-label">Price</div>
-              <div class="cart-meta-value">£{{ i.product.price }}</div>
-            </div>
-
-            <div class="cart-meta-block">
-              <div class="cart-meta-label">Qty</div>
-              <form method="post" action="{% url 'store:cart_set_qty' i.product.id %}">
-                {% csrf_token %}
-                <input
-                  type="number"
-                  name="qty"
-                  value="{{ i.qty }}"
-                  min="0"
-                  max="99"
-                  class="form-control form-control-sm cart-qty-input"
-                  oninput="this.form.submit()"
-                >
-              </form>
-            </div>
-
-            <div class="cart-meta-block">
-              <div class="cart-meta-label">Line total</div>
-              <div class="cart-meta-value fw-bold">£{{ i.line_total }}</div>
-            </div>
-
-            <div class="cart-meta-block cart-remove-block">
-              <div class="cart-meta-label">&nbsp;</div>
-              <form method="post" action="{% url 'store:cart_remove' i.product.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
-              </form>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
       </div>
-    {% endfor %}
-  </div>
-</div>
+    </div>
 
     <!-- MOBILE / TABLET CARDS -->
     <div class="d-lg-none">
