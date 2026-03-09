@@ -43,8 +43,15 @@
     padding: 1.25rem;
   }
 
+  .cart-summary-wrap {
+    display: flex;
+    justify-content: flex-end;
+  }
+
   .cart-summary-card {
     min-width: 300px;
+    max-width: 420px;
+    width: 100%;
   }
 
   .cart-summary-row {
@@ -113,7 +120,8 @@
     align-items: flex-start;
   }
 
-  .cart-thumb-link {
+  .cart-thumb-link,
+  .mobile-cart-thumb-link {
     display: inline-block;
     line-height: 0;
     text-decoration: none;
@@ -141,7 +149,7 @@
   }
 
   .cart-thumb-link:hover .cart-thumb,
-  .cart-thumb-link:hover .cart-mobile-thumb {
+  .mobile-cart-thumb-link:hover .cart-mobile-thumb {
     transform: translateY(-3px);
     box-shadow: 0 10px 22px rgba(0,0,0,.22);
   }
@@ -157,7 +165,8 @@
     min-width: 0;
   }
 
-  .cart-meta-label {
+  .cart-meta-label,
+  .mobile-meta-label {
     font-size: .8rem;
     text-transform: uppercase;
     letter-spacing: .4px;
@@ -165,7 +174,8 @@
     margin-bottom: .45rem;
   }
 
-  .cart-meta-value {
+  .cart-meta-value,
+  .mobile-meta-value {
     font-size: 1.05rem;
   }
 
@@ -183,31 +193,74 @@
     padding: 1rem;
   }
 
+  .mobile-cart-card {
+    padding: 1rem 1rem 1.1rem;
+  }
+
+  .mobile-cart-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .mobile-cart-head {
+    min-width: 0;
+    padding-top: .1rem;
+  }
+
   .cart-mobile-title {
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: .15rem;
+    font-size: 1.1rem;
   }
 
-  .cart-mobile-price,
-  .cart-mobile-line-total {
-    font-weight: 700;
+  .mobile-cart-meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+    margin-bottom: 1rem;
   }
 
-  .cart-mobile-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    align-items: center;
+  .mobile-meta-box {
+    background: rgba(255,255,255,.45);
+    border: 1px solid rgba(0,0,0,.05);
+    border-radius: 14px;
+    padding: .8rem .9rem;
   }
 
-  .cart-mobile-actions form {
+  .mobile-cart-actions-row {
+    display: grid;
+    grid-template-columns: 110px auto;
+    gap: .75rem;
+    align-items: end;
+    justify-content: start;
+  }
+
+  .mobile-qty-form,
+  .mobile-remove-form {
     margin: 0;
+    width: auto;
+  }
+
+  .mobile-remove-btn {
+    width: auto;
+    min-width: 110px;
+    height: 46px;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0 .95rem;
   }
 
   @media (max-width: 991.98px) {
+    .cart-summary-wrap {
+      justify-content: stretch;
+    }
+
     .cart-summary-card {
       min-width: 100%;
+      max-width: none;
     }
 
     .cart-header-row {
@@ -223,15 +276,23 @@
   }
 
   @media (max-width: 575.98px) {
-    .cart-mobile-row {
-      flex-direction: column;
-      align-items: stretch;
-      gap: .75rem;
+    .cart-mobile-thumb {
+      width: 80px;
+      height: 80px;
     }
 
-    .cart-mobile-actions {
-      display: grid;
-      gap: .75rem;
+    .cart-mobile-title {
+      font-size: 1rem;
+    }
+
+    .mobile-cart-actions-row {
+      grid-template-columns: 90px auto;
+    }
+
+    .mobile-remove-btn {
+      min-width: 98px;
+      height: 44px;
+      padding: 0 .85rem;
     }
 
     .cart-qty-input {
@@ -243,7 +304,7 @@
 <div class="container py-4 py-md-5 cart-shell">
 
   <div class="cart-header-row">
-    <h2 class="mb-2">Cart</h2>
+    <h2 class="page-title mb-2">Cart</h2>
     <a href="{% url 'store:shop' %}" class="btn btn-outline-dark cart-back-btn">
       Back to Shop
     </a>
@@ -369,101 +430,102 @@
     </div>
 
     <!-- MOBILE / TABLET -->
-    <!-- MOBILE / TABLET CARDS -->
-<div class="d-lg-none">
-  <div class="row g-3">
-    {% for i in items %}
-      <div class="col-12">
-        <div class="cart-item-card mobile-cart-card">
+    <div class="d-lg-none">
+      <div class="row g-3">
+        {% for i in items %}
+          <div class="col-12">
+            <div class="cart-item-card mobile-cart-card">
 
-          <div class="mobile-cart-top">
-            <a href="{% url 'store:product_detail' i.product.id %}?next=cart" class="mobile-cart-thumb-link">
-              {% if i.product.image %}
-                <img
-                  src="{{ i.product.optimized_image_url|default:i.product.image.url }}"
-                  alt="{{ i.product.name }}"
-                  class="cart-mobile-thumb"
-                >
-              {% else %}
-                <img
-                  src="{% static 'images/placeholder.png' %}"
-                  alt="No image"
-                  class="cart-mobile-thumb"
-                >
-              {% endif %}
+              <div class="mobile-cart-top">
+                <a href="{% url 'store:product_detail' i.product.id %}?next=cart" class="mobile-cart-thumb-link">
+                  {% if i.product.image %}
+                    <img
+                      src="{{ i.product.optimized_image_url|default:i.product.image.url }}"
+                      alt="{{ i.product.name }}"
+                      class="cart-mobile-thumb"
+                    >
+                  {% else %}
+                    <img
+                      src="{% static 'images/placeholder.png' %}"
+                      alt="No image"
+                      class="cart-mobile-thumb"
+                    >
+                  {% endif %}
+                </a>
+
+                <div class="mobile-cart-head">
+                  <div class="cart-mobile-title">{{ i.product.name }}</div>
+
+                  {% if i.product.category %}
+                    <div class="cart-item-meta">{{ i.product.category }}</div>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="mobile-cart-meta-row">
+                <div class="mobile-meta-box">
+                  <div class="mobile-meta-label">Price</div>
+                  <div class="mobile-meta-value">£{{ i.product.price }}</div>
+                </div>
+
+                <div class="mobile-meta-box">
+                  <div class="mobile-meta-label">Line total</div>
+                  <div class="mobile-meta-value fw-bold">£{{ i.line_total }}</div>
+                </div>
+              </div>
+
+              <div class="mobile-cart-actions-row">
+                <form method="post" action="{% url 'store:cart_set_qty' i.product.id %}" class="mobile-qty-form">
+                  {% csrf_token %}
+                  <label class="form-label small text-muted mb-1">Qty</label>
+                  <input
+                    type="number"
+                    name="qty"
+                    value="{{ i.qty }}"
+                    min="0"
+                    max="99"
+                    class="form-control cart-qty-input"
+                    oninput="this.form.submit()"
+                  >
+                </form>
+
+                <form method="post" action="{% url 'store:cart_remove' i.product.id %}" class="mobile-remove-form">
+                  {% csrf_token %}
+                  <label class="form-label small text-muted mb-1 d-block">&nbsp;</label>
+                  <button type="submit" class="btn btn-outline-danger mobile-remove-btn">
+                    Remove
+                  </button>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- ONE summary card only -->
+      <div class="cart-summary-wrap mt-4">
+        <div class="card cart-summary-card border-0">
+          <div class="card-body p-4">
+            <div class="cart-summary-row">
+              <span class="text-muted">Items</span>
+              <span class="fw-semibold">{{ count }}</span>
+            </div>
+
+            <hr>
+
+            <div class="cart-summary-row">
+              <span class="cart-summary-total">Total</span>
+              <span class="cart-summary-total">£{{ total }}</span>
+            </div>
+
+            <a href="{% url 'store:checkout_start' %}" class="btn btn-dark w-100 mt-3">
+              Checkout
             </a>
-
-            <div class="mobile-cart-head">
-              <div class="cart-mobile-title">{{ i.product.name }}</div>
-
-              {% if i.product.category %}
-                <div class="cart-item-meta">{{ i.product.category }}</div>
-              {% endif %}
-            </div>
           </div>
-
-          <div class="mobile-cart-meta-row">
-            <div class="mobile-meta-box">
-              <div class="mobile-meta-label">Price</div>
-              <div class="mobile-meta-value">£{{ i.product.price }}</div>
-            </div>
-
-            <div class="mobile-meta-box">
-              <div class="mobile-meta-label">Line total</div>
-              <div class="mobile-meta-value">£{{ i.line_total }}</div>
-            </div>
-          </div>
-
-          <div class="mobile-cart-actions-row">
-            <form method="post" action="{% url 'store:cart_set_qty' i.product.id %}" class="mobile-qty-form">
-              {% csrf_token %}
-              <label class="form-label small text-muted mb-1">Qty</label>
-              <input
-                type="number"
-                name="qty"
-                value="{{ i.qty }}"
-                min="0"
-                max="99"
-                class="form-control cart-qty-input"
-                oninput="this.form.submit()"
-              >
-            </form>
-
-            <form method="post" action="{% url 'store:cart_remove' i.product.id %}" class="mobile-remove-form">
-              {% csrf_token %}
-              <label class="form-label small text-muted mb-1 d-block">&nbsp;</label>
-              <button type="submit" class="btn btn-outline-danger mobile-remove-btn">
-                Remove
-              </button>
-            </form>
-          </div>
-          <div class="cart-summary-wrap mt-4">
-  <div class="card cart-summary-card border-0">
-    <div class="card-body p-4">
-      <div class="cart-summary-row">
-        <span class="text-muted">Items</span>
-        <span class="fw-semibold">{{ count }}</span>
-      </div>
-
-      <hr>
-
-      <div class="cart-summary-row">
-        <span class="cart-summary-total">Total</span>
-        <span class="cart-summary-total">£{{ total }}</span>
-      </div>
-
-      <a href="{% url 'store:checkout_start' %}" class="btn btn-dark w-100 mt-3">
-        Checkout
-      </a>
-    </div>
-  </div>
-</div>
-
         </div>
       </div>
-    {% endfor %}
-  </div>
-</div>
+    </div>
 
   {% else %}
     <div class="alert alert-secondary">Your cart is empty (for now).</div>
