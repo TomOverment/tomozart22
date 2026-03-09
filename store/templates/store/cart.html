@@ -437,6 +437,27 @@
               </button>
             </form>
           </div>
+          <div class="cart-summary-wrap mt-4">
+  <div class="card cart-summary-card border-0">
+    <div class="card-body p-4">
+      <div class="cart-summary-row">
+        <span class="text-muted">Items</span>
+        <span class="fw-semibold">{{ count }}</span>
+      </div>
+
+      <hr>
+
+      <div class="cart-summary-row">
+        <span class="cart-summary-total">Total</span>
+        <span class="cart-summary-total">£{{ total }}</span>
+      </div>
+
+      <a href="{% url 'store:checkout_start' %}" class="btn btn-dark w-100 mt-3">
+        Checkout
+      </a>
+    </div>
+  </div>
+</div>
 
         </div>
       </div>
