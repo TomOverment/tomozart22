@@ -8,13 +8,6 @@ from .models import Category, Customer, Product, Order, OrderItem
 from blog_app.models import MailingListSubscriber
 
 
-# Register everything EXCEPT Product here (Product is registered via @admin.register below)
-admin.site.register(Category)
-admin.site.register(Customer)
-admin.site.register(Order)
-admin.site.register(OrderItem)
-
-
 def _abs_url(path: str) -> str:
     base = getattr(settings, "SITE_URL", "http://127.0.0.1:8000").rstrip("/")
     if not path.startswith("/"):
@@ -38,7 +31,6 @@ def send_product_drop(modeladmin, request, queryset):
     bcc_list = list(subs_qs.values_list("email", flat=True))
 
     for product in queryset:
-        # Product detail URL
         try:
             product_path = product.get_absolute_url()
         except Exception:
@@ -46,7 +38,6 @@ def send_product_drop(modeladmin, request, queryset):
 
         product_url = _abs_url(product_path)
 
-        # Image URL (best effort)
         image_url = ""
         if getattr(product, "image", None):
             try:
@@ -57,7 +48,11 @@ def send_product_drop(modeladmin, request, queryset):
                 image_url = ""
 
         subject = f"New in the Shop: {product.name}"
-        ctx = {"product": product, "product_url": product_url, "image_url": image_url}
+        ctx = {
+            "product": product,
+            "product_url": product_url,
+            "image_url": image_url,
+        }
 
         html = render_to_string("emails/product_drop.html", ctx)
         text = render_to_string("emails/product_drop.txt", ctx)
@@ -66,7 +61,7 @@ def send_product_drop(modeladmin, request, queryset):
             subject=subject,
             body=text,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[settings.DEFAULT_FROM_EMAIL],  # keeps Outlook happy
+            to=[settings.DEFAULT_FROM_EMAIL],
             bcc=bcc_list,
         )
         msg.attach_alternative(html, "text/html")
@@ -78,9 +73,123 @@ def send_product_drop(modeladmin, request, queryset):
     )
 
 
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
+
+
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ("name", "email", "phone")
+    search_fields = ("name", "email", "phone")
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "price", "is_active")
-    list_filter = ("is_active",)
+    list_display = ("name", "category", "price", "is_active", "created_at")
+    list_filter = ("is_active", "category", "created_at")
     search_fields = ("name", "description")
     actions = [send_product_drop]
+
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
+    readonly_fields = ("product", "name", "unit_price", "quantity", "line_total")
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "full_name",
+        "email",
+        "status",
+        "subtotal",
+        "shipping_amount",
+        "total",
+        "created_at",
+    )
+    list_filter = (
+        "status",
+        "created_at",
+        "shipping_country",
+        "billing_country",
+    )
+    search_fields = (
+        "id",
+        "full_name",
+        "email",
+        "stripe_checkout_session_id",
+        "stripe_payment_intent_id",
+    )
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+        "stripe_checkout_session_id",
+        "stripe_payment_intent_id",
+        "billing_address_display",
+        "shipping_address_display",
+    )
+    inlines = [OrderItemInline]
+
+    fieldsets = (
+        ("Order Status", {
+            "fields": (
+                "status",
+                "created_at",
+                "updated_at",
+            )
+        }),
+        ("Customer", {
+            "fields": (
+                "user",
+                "customer",
+                "full_name",
+                "email",
+                "phone",
+            )
+        }),
+        ("Billing Address", {
+            "fields": (
+                "billing_line1",
+                "billing_line2",
+                "billing_city",
+                "billing_postcode",
+                "billing_country",
+                "billing_address_display",
+            )
+        }),
+        ("Shipping Address", {
+            "fields": (
+                "shipping_line1",
+                "shipping_line2",
+                "shipping_city",
+                "shipping_postcode",
+                "shipping_country",
+                "shipping_address_display",
+            )
+        }),
+        ("Totals", {
+            "fields": (
+                "currency",
+                "subtotal",
+                "shipping_amount",
+                "total",
+            )
+        }),
+        ("Stripe", {
+            "fields": (
+                "stripe_checkout_session_id",
+                "stripe_payment_intent_id",
+            )
+        }),
+    )
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ("order", "name", "unit_price", "quantity", "line_total")
+    search_fields = ("name", "order__id")
+    list_filter = ("order__created_at",)
