@@ -72,10 +72,12 @@
 
                     <a href="{% url 'store:product_detail' product.id %}">
                       {% if product.image %}
-                        <img src="{{ product.optimized_image_url}}"
-                             class="card-img-top product-card-img"
-                             alt="{{ product.name }}">
-                             {% if not forloop.first %}loading="lazy"{% endif %}>
+                        <img
+                          src="{{ product.optimized_image_url }}"
+                          class="card-img-top product-card-img"
+                          alt="{{ product.name }}"
+                      {% if not forloop.first %}loading="lazy"{% endif %}
+                        />
                       {% endif %}
                     </a>
 
