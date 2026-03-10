@@ -4,103 +4,125 @@
 
 {% block content %}
 <style>
-  .delete-post-wrap {
-    min-height: 70vh;
+  .delete-wrap {
+    min-height: 72vh;
     display: flex;
     align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
   }
 
-  .delete-post-card {
+  .delete-card {
     background: rgba(255, 255, 255, 0.88);
     border-radius: 24px;
     box-shadow: 10px 10px 24px rgba(0,0,0,.18);
-    border: 1px solid rgba(0,0,0,.06);
+    border: 1px solid rgba(255,255,255,.35);
     overflow: hidden;
   }
 
-  .delete-post-card .card-body {
-    padding: 2.25rem 2rem;
+  .delete-card .card-body {
+    padding: 2.4rem 2rem;
   }
 
-  .delete-post-title {
-    font-size: clamp(2rem, 4vw, 3rem);
+  .delete-title {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
     font-weight: 300;
-    line-height: 1.1;
-    margin-bottom: .75rem;
+    line-height: 1.05;
+    margin-bottom: 1rem;
     color: #222;
   }
 
-  .delete-post-text {
+  .delete-text {
     font-size: 1.05rem;
-    color: rgba(0,0,0,.72);
     line-height: 1.7;
+    color: rgba(0,0,0,.72);
     margin-bottom: 1.5rem;
   }
 
   .delete-post-name {
-    display: inline-block;
     font-weight: 700;
     color: #222;
     word-break: break-word;
   }
 
-  .delete-post-actions {
+  .delete-actions {
     display: flex;
     justify-content: center;
-    gap: .75rem;
+    gap: .9rem;
     flex-wrap: wrap;
-    margin-top: 1rem;
+    margin-top: .5rem;
   }
 
-  .delete-post-btn {
-    min-width: 140px;
+  .delete-btn {
+    min-width: 150px;
     border-radius: 12px;
-    padding: .75rem 1.1rem;
+    padding: .8rem 1.15rem;
     font-weight: 600;
   }
 
-  .delete-post-btn-danger {
-    border: 1px solid rgba(220,53,69,.45);
+  .delete-btn-dark {
+    background: #212529;
+    border-color: #212529;
+    color: #fff;
+  }
+
+  .delete-btn-dark:hover,
+  .delete-btn-dark:focus {
+    background: #111418;
+    border-color: #111418;
+    color: #fff;
+  }
+
+  .delete-btn-outline {
+    border: 1px solid #212529;
+    color: #212529;
+    background: transparent;
+  }
+
+  .delete-btn-outline:hover,
+  .delete-btn-outline:focus {
+    background: #212529;
+    color: #fff;
   }
 
   @media (max-width: 575.98px) {
-    .delete-post-card .card-body {
-      padding: 1.5rem 1.15rem;
+    .delete-card .card-body {
+      padding: 1.7rem 1.2rem;
     }
 
-    .delete-post-actions {
+    .delete-actions {
       flex-direction: column;
     }
 
-    .delete-post-btn {
+    .delete-btn {
       width: 100%;
+      min-width: 0;
     }
   }
 </style>
 
-<div class="container py-4 py-md-5 delete-post-wrap">
+<div class="container delete-wrap">
   <div class="row justify-content-center w-100">
     <div class="col-12 col-md-10 col-lg-7 col-xl-6">
 
-      <div class="card delete-post-card border-0">
+      <div class="card delete-card border-0">
         <div class="card-body text-center">
 
-          <h1 class="delete-post-title">Delete Post</h1>
+          <h1 class="delete-title">Delete Post</h1>
 
-          <p class="delete-post-text">
+          <p class="delete-text">
             Are you sure you want to delete
             <span class="delete-post-name">“{{ post.title }}”</span>?
           </p>
 
           <form method="post">
             {% csrf_token %}
-
-            <div class="delete-post-actions">
-              <button type="submit" class="btn btn-outline-danger delete-post-btn delete-post-btn-danger">
+            <div class="delete-actions">
+              <button type="submit" class="btn delete-btn delete-btn-dark">
                 Yes, Delete
               </button>
 
-              <a href="{% url 'blog:home' %}" class="btn btn-dark delete-post-btn">
+              <a href="{% url 'blog:post_detail' post.slug %}" class="btn delete-btn delete-btn-outline">
                 Cancel
               </a>
             </div>
