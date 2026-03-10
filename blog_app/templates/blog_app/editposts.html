@@ -1,50 +1,43 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %} {{ post.title }} {% endblock %}
+{% block title %}Edit {{ post.title }}{% endblock %}
 
 {% block content %}
 
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
+<div class="auth-wrapper">
+  <div class="form-card login-card-shadow">
 
-      <div class="card login-card-shadow">
-        <div class="card-body p-4 text-center">
+    <h2 class="form-title text-center">Edit Post</h2>
+    <p class="form-subtitle text-center mb-4">
+      Update your post and save the changes.
+    </p>
 
-          <h2 class="mb-4">Edit Post</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
 
-          <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            <div class="text-start">
-              {{ form.as_p }}
-            </div>
-
-            <!-- Buttons -->
-            <div class="mt-4">
-              <button type="submit"
-                      class="btn btn-sm btn-outline-dark me-2">
-                Save
-              </button>
-
-              <a href="{% url 'blog:delete_post' post.id %}"
-                 class="btn btn-sm btn-outline-dark me-2">
-                Delete
-              </a>
-
-              <a href="{% url 'blog:home' %}"
-                 class="btn btn-sm btn-outline-dark">
-                Back
-              </a>
-            </div>
-
-          </form>
-
-        </div>
+      <div class="text-start">
+        {{ form.as_p }}
       </div>
 
-    </div>
+      <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
+
+        <button type="submit" class="btn btn-dark px-4">
+          Save
+        </button>
+
+        <a href="{% url 'blog:delete_post' post.id %}" class="btn btn-outline-dark px-4">
+          Delete
+        </a>
+
+        <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-outline-dark px-4">
+          Back
+        </a>
+
+      </div>
+
+    </form>
+
   </div>
 </div>
 
