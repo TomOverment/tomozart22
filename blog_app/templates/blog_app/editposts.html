@@ -16,21 +16,37 @@
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
 
-      <div class="text-start">
-        {{ form.as_p }}
+      <div class="mb-3 text-start">
+        <label class="form-label">Title</label>
+        {{ form.title }}
+      </div>
+
+      <div class="mb-3 text-start">
+        <label class="form-label">Content</label>
+        {{ form.content }}
+      </div>
+
+      <div class="mb-3 text-start">
+        <label class="form-label">Status</label>
+        {{ form.status }}
+      </div>
+
+      <div class="mb-4 text-start">
+        <label class="form-label">Post Image</label>
+        {{ form.post_image }}
       </div>
 
       <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
 
-        <button type="submit" class="btn btn-dark px-4">
+        <button type="submit" class="btn btn-dark">
           Save
         </button>
 
-        <a href="{% url 'blog:delete_post' post.id %}" class="btn btn-outline-dark px-4">
+        <a href="{% url 'blog:delete_post' post.id %}" class="btn btn-outline-dark">
           Delete
         </a>
 
-        <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-outline-dark px-4">
+        <a href="{% url 'blog:home' %}" class="btn btn-outline-dark">
           Back
         </a>
 

@@ -1,31 +1,80 @@
-<h2 style="margin:0 0 10px;">{{ product.name }}</h2>
+<!doctype html>
+<html>
+  <body style="margin:0; padding:0; background-color:#f4f4f4; font-family:Arial, Helvetica, sans-serif; color:#222;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f4f4f4; margin:0; padding:0;">
+      <tr>
+        <td align="center" style="padding:32px 16px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px; background:#ffffff; border-radius:18px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.08);">
 
-{% if image_url %}
-  <p style="margin:0 0 12px;">
-    <a href="{{ product_url }}">
-      <img src="{{ image_url }}" alt="{{ product.name }}" style="max-width:520px;width:100%;border-radius:12px;display:block;">
-    </a>
-  </p>
-{% endif %}
+            {% if image_url %}
+            <tr>
+              <td style="padding:0;">
+                <img
+                  src="{{ image_url }}"
+                  alt="{{ product.name }}"
+                  style="display:block; width:100%; height:auto; border:0;"
+                >
+              </td>
+            </tr>
+            {% endif %}
 
-<p style="margin:0 0 10px;">
-  <strong>Price:</strong> £{{ product.price }}
-</p>
+            <tr>
+              <td style="padding:32px 28px 18px;">
+                <div style="font-size:12px; letter-spacing:2px; text-transform:uppercase; color:#2f7d7a; font-weight:bold; margin-bottom:10px;">
+                  New in the Shop
+                </div>
 
-{% if product.description %}
-  <p style="margin:0 0 14px;">
-    {{ product.description }}
-  </p>
-{% endif %}
+                <h1 style="margin:0 0 12px; font-size:30px; line-height:1.15; font-weight:700; color:#111;">
+                  {{ product.name }}
+                </h1>
 
-<p style="margin:18px 0 0;">
-  <a href="{{ product_url }}" style="display:inline-block;padding:10px 14px;border-radius:10px;background:#111;color:#fff;text-decoration:none;">
-    View product
-  </a>
-</p>
+                {% if product.price %}
+                <p style="margin:0 0 18px; font-size:20px; line-height:1.4; font-weight:bold; color:#E84610;">
+                  £{{ product.price }}
+                </p>
+                {% endif %}
 
-<hr style="margin:22px 0;border:none;border-top:1px solid #eee;">
+                <p style="margin:0 0 16px; font-size:16px; line-height:1.7; color:#444;">
+                  A new Tomozart piece is now available in the shop. Explore the latest release and view the full details online.
+                </p>
 
-<p style="font-size:12px;opacity:.7;margin:0;">
-  You’re receiving this because you subscribed to TomozArt shop updates.
-</p>
+                {% if product.description %}
+                <p style="margin:0 0 24px; font-size:15px; line-height:1.7; color:#555;">
+                  {{ product.description|truncatewords:32 }}
+                </p>
+                {% endif %}
+
+                <table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 26px;">
+                  <tr>
+                    <td align="center" bgcolor="#2f7d7a" style="border-radius:10px;">
+                      <a
+                        href="{{ product_url }}"
+                        style="display:inline-block; padding:14px 22px; font-size:15px; font-weight:bold; color:#ffffff; text-decoration:none; border-radius:10px;"
+                      >
+                        View in Shop
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+
+                <hr style="border:none; border-top:1px solid #e9e9e9; margin:0 0 20px;">
+
+                <p style="margin:0; font-size:14px; line-height:1.7; color:#666;">
+                  You’re receiving this email because you subscribed to Tomozart updates.
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 28px 28px; font-size:13px; line-height:1.6; color:#888;">
+                Tomozart<br>
+                Original artwork, limited-edition prints, and evolving creative releases.
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

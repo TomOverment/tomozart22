@@ -1,12 +1,14 @@
-{{ product.name }}
+New in the Shop: {{ product.name }}
 
-Price: £{{ product.price }}
+{% if product.price %}Price: £{{ product.price }}{% endif %}
+
+A new Tomozart piece is now available in the shop.
 
 {% if product.description %}
-{{ product.description }}
+{{ product.description|truncatewords:40 }}
 {% endif %}
 
-View product:
+View it here:
 {{ product_url }}
 
-You’re receiving this because you subscribed to TomozArt shop updates.
+You’re receiving this email because you subscribed to Tomozart updates.
