@@ -228,8 +228,7 @@
 
           {% if post.can_edit %}
             <div class="mt-4">
-              <a href="{% url 'blog:update_post' post.pk %}"
-                 class="btn btn-sm btn-dark me-2">
+              <a href="{% url 'blog:update_post' post.pk %}?next=home" class="btn btn-outline-dark">
                 Edit
               </a>
 

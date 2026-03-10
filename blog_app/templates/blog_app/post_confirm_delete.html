@@ -13,15 +13,22 @@
 
     <form method="post">
       {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next_page|default:'home' }}">
 
       <div class="d-flex justify-content-center gap-3 flex-wrap">
-        <button type="submit" class="btn btn-dark px-4 py-2">
+        <button type="submit" class="btn btn-dark">
           Yes, Delete
         </button>
 
-        <a href="{% url 'blog:home' %}" class="btn btn-outline-dark px-4 py-2">
-          Cancel
-        </a>
+        {% if next_page == "profile" %}
+          <a href="{% url 'blog:profile' %}" class="btn btn-outline-dark">
+            Cancel
+          </a>
+        {% else %}
+          <a href="{% url 'blog:home' %}" class="btn btn-outline-dark">
+            Cancel
+          </a>
+        {% endif %}
       </div>
     </form>
 

@@ -151,13 +151,27 @@ class UpdatePost(generic.UpdateView):
     model = Post
     form_class = UpdateForm
     template_name = "blog_app/editposts.html"
-    success_url = reverse_lazy("blog:home")
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         messages.success(self.request, "Post updated successfully!")
         return super().form_valid(form)
 
+    def get_success_url(self):
+        next_page = self.request.POST.get("next") or self.request.GET.get("next")
+
+        if next_page == "profile":
+            return reverse_lazy("blog:profile")
+
+        if next_page == "home":
+            return reverse_lazy("blog:home")
+
+        return reverse_lazy("blog:home")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["next_page"] = self.request.GET.get("next", "home")
+        return context
 
 # =============================
 # DELETE POST
@@ -169,15 +183,23 @@ def delete_post(request, post_id):
     if request.user != post.author:
         raise PermissionDenied
 
+    next_page = request.POST.get("next") or request.GET.get("next", "home")
+
     if request.method == "POST":
         post.delete()
         messages.success(request, "Post deleted successfully!")
-        return redirect('blog:home')
+
+        if next_page == "profile":
+            return redirect("blog:profile")
+        return redirect("blog:home")
 
     return render(
         request,
         'blog_app/post_confirm_delete.html',
-        {'post': post}
+        {
+            'post': post,
+            'next_page': next_page,
+        }
     )
 
 
