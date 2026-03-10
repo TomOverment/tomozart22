@@ -3,135 +3,28 @@
 {% block title %}Delete {{ post.title }}{% endblock %}
 
 {% block content %}
-<style>
-  .delete-wrap {
-    min-height: 72vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 0;
-  }
+<div class="auth-wrapper">
+  <div class="form-card login-card-shadow">
 
-  .delete-card {
-    background: rgba(255, 255, 255, 0.88);
-    border-radius: 24px;
-    box-shadow: 10px 10px 24px rgba(0,0,0,.18);
-    border: 1px solid rgba(255,255,255,.35);
-    overflow: hidden;
-  }
+    <h2 class="form-title text-center">Delete Post</h2>
+    <p class="form-subtitle text-center mb-4">
+      Are you sure you want to delete <strong>“{{ post.title }}”</strong>?
+    </p>
 
-  .delete-card .card-body {
-    padding: 2.4rem 2rem;
-  }
+    <form method="post">
+      {% csrf_token %}
 
-  .delete-title {
-    font-size: clamp(2.2rem, 5vw, 3.2rem);
-    font-weight: 300;
-    line-height: 1.05;
-    margin-bottom: 1rem;
-    color: #222;
-  }
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <button type="submit" class="btn btn-dark px-4 py-2">
+          Yes, Delete
+        </button>
 
-  .delete-text {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: rgba(0,0,0,.72);
-    margin-bottom: 1.5rem;
-  }
-
-  .delete-post-name {
-    font-weight: 700;
-    color: #222;
-    word-break: break-word;
-  }
-
-  .delete-actions {
-    display: flex;
-    justify-content: center;
-    gap: .9rem;
-    flex-wrap: wrap;
-    margin-top: .5rem;
-  }
-
-  .delete-btn {
-    min-width: 150px;
-    border-radius: 12px;
-    padding: .8rem 1.15rem;
-    font-weight: 600;
-  }
-
-  .delete-btn-dark {
-    background: #212529;
-    border-color: #212529;
-    color: #fff;
-  }
-
-  .delete-btn-dark:hover,
-  .delete-btn-dark:focus {
-    background: #111418;
-    border-color: #111418;
-    color: #fff;
-  }
-
-  .delete-btn-outline {
-    border: 1px solid #212529;
-    color: #212529;
-    background: transparent;
-  }
-
-  .delete-btn-outline:hover,
-  .delete-btn-outline:focus {
-    background: #212529;
-    color: #fff;
-  }
-
-  @media (max-width: 575.98px) {
-    .delete-card .card-body {
-      padding: 1.7rem 1.2rem;
-    }
-
-    .delete-actions {
-      flex-direction: column;
-    }
-
-    .delete-btn {
-      width: 100%;
-      min-width: 0;
-    }
-  }
-</style>
-
-<div class="container delete-wrap">
-  <div class="row justify-content-center w-100">
-    <div class="col-12 col-md-10 col-lg-7 col-xl-6">
-
-      <div class="card delete-card border-0">
-        <div class="card-body text-center">
-
-          <h1 class="delete-title">Delete Post</h1>
-
-          <p class="delete-text">
-            Are you sure you want to delete
-            <span class="delete-post-name">“{{ post.title }}”</span>?
-          </p>
-
-          <form method="post">
-            {% csrf_token %}
-            <div class="delete-actions">
-              <button type="submit" class="btn delete-btn delete-btn-dark">
-                Yes, Delete
-              </button>
-
-              <a href="{% url 'blog:post_detail' post.slug %}" class="btn delete-btn delete-btn-outline">
-                Cancel
-              </a>
-            </div>
-          </form>
-
-        </div>
+        <a href="{% url 'blog:home' %}" class="btn btn-outline-dark px-4 py-2">
+          Cancel
+        </a>
       </div>
+    </form>
 
-    </div>
   </div>
 </div>
 {% endblock %}
