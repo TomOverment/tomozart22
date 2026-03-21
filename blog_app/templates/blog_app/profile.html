@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Profile{% endblock %}
+
 {% block content %}
 
 <div class="container my-5">
@@ -25,7 +26,6 @@
     {% for post in drafts %}
       <div class="col-12 col-md-6 col-lg-4">
 
-        <!-- EXACT style as index -->
         <div class="post-card p-4 h-100 d-flex flex-column">
 
           {% if post.post_image and post.post_image != "placeholder" %}
@@ -47,13 +47,17 @@
           </div>
 
           <div class="mt-auto pt-3 text-center">
-            <a href="{% url 'blog:update_post' post.pk %}?next=profile" class="btn btn-outline-dark">
+
+            <a href="{% url 'blog:update_post' post.pk %}?next=profile"
+               class="btn btn-outline-dark">
               Edit
             </a>
-            <a href="{% url 'blog:delete_post' post.id %}"
-               class="btn btn-sm btn-dark">
+
+            <a href="{% url 'blog:delete_post' post.id %}?next=profile"
+               class="btn btn-dark btn-sm">
               Delete
             </a>
+
           </div>
 
         </div>
@@ -68,6 +72,7 @@
     {% endfor %}
   </div>
 
+
   <!-- ===================== -->
   <!-- PUBLISHED POSTS -->
   <!-- ===================== -->
@@ -80,7 +85,6 @@
     {% for post in published %}
       <div class="col-12 col-md-6 col-lg-4">
 
-        <!-- EXACT style as index -->
         <div class="post-card p-4 h-100 d-flex flex-column">
 
           {% if post.post_image and post.post_image != "placeholder" %}
@@ -109,18 +113,22 @@
           </div>
 
           <div class="mt-auto pt-3 text-center">
+
             <a href="{% url 'blog:post_detail' post.slug %}"
-               class="btn btn-sm btn-dark me-2">
+               class="btn btn-dark btn-sm me-2">
               View
             </a>
-            <a href="{% url 'blog:update_post' post.pk %}"
-               class="btn btn-sm btn-dark me-2">
+
+            <a href="{% url 'blog:update_post' post.pk %}?next=profile"
+               class="btn btn-dark btn-sm me-2">
               Edit
             </a>
-            <a href="{% url 'blog:delete_post' post.id %}"
-               class="btn btn-sm btn-dark">
+
+            <a href="{% url 'blog:delete_post' post.id %}?next=profile"
+               class="btn btn-dark btn-sm">
               Delete
             </a>
+
           </div>
 
         </div>
@@ -135,8 +143,9 @@
     {% endfor %}
   </div>
 
+
   <!-- ===================== -->
-  <!-- AUTH BUTTON -->
+  <!-- LOGOUT -->
   <!-- ===================== -->
   <div class="text-center">
     <form action="{% url 'account_logout' %}" method="post">
