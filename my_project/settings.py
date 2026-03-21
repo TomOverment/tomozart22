@@ -25,6 +25,7 @@ DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
+    ".herokuapp.com",
     "tomozart-bf051bead065.herokuapp.com",
     "tomozart.com",
     "www.tomozart.com",
@@ -216,17 +217,16 @@ STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
 # HTTPS / Heroku security
 # ---------------------------
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    ".herokuapp.com",
-    "tomozart-bf051bead065.herokuapp.com",
-    "tomozart.com",
-    "www.tomozart.com",
-]
+if DEBUG:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+else:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 
 
