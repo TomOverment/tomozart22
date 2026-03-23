@@ -18,7 +18,6 @@
     border-radius: 28px;
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
     border: 1px solid rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(4px);
   }
 
   .edit-post-form-card {
@@ -26,35 +25,31 @@
   }
 
   .edit-post-preview-shell {
-    padding: 1.5rem;
+    padding: 1.25rem;
     position: sticky;
     top: 2rem;
   }
 
   .edit-post-preview-heading {
     text-align: center;
-    font-size: 1.35rem;
+    font-size: 1.45rem;
     font-weight: 800;
     color: #222;
-    margin-bottom: 1.25rem;
-  }
-
-  .edit-post-preview-card {
-    background: transparent;
+    margin-bottom: 1rem;
   }
 
   .edit-post-form-card .form-title {
-    font-size: clamp(2.2rem, 4vw, 3.3rem);
+    font-size: clamp(2.3rem, 4vw, 3.25rem);
     font-weight: 300;
     text-align: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.65rem;
     color: #1f1f1f;
   }
 
   .edit-post-form-card .form-subtitle {
     text-align: center;
     color: rgba(0, 0, 0, 0.68);
-    font-size: 1.1rem;
+    font-size: 1.08rem;
     margin-bottom: 2rem;
   }
 
@@ -105,51 +100,40 @@
   .edit-post-actions .btn {
     min-width: 120px;
     border-radius: 999px;
-    padding: 0.65rem 1.1rem;
+    padding: 0.65rem 1.15rem;
   }
 
-  /* preview card uses same visual family as site post cards */
-  .edit-post-preview-card .post-card {
+  /* Preview uses homepage card structure exactly */
+  .edit-post-preview-shell .post-card {
+    padding: 1.5rem !important;
     border-radius: 24px;
-    padding: 1.5rem;
     box-shadow: 0 10px 24px rgba(0,0,0,.10);
-    background: rgba(255,255,255,.96);
+    background: rgba(255,255,255,.97);
+    height: auto !important;
   }
 
-  .edit-post-preview-card .post-image-wrapper {
+  .edit-post-preview-shell .post-header {
     margin-bottom: 1rem;
-    border-radius: 18px;
-    overflow: hidden;
   }
 
-  .edit-post-preview-card .post-image {
-    width: 100%;
-    display: block;
-    object-fit: cover;
+  .edit-post-preview-shell .post-title {
+    margin-bottom: 0.45rem;
   }
 
-  .edit-post-preview-meta {
-    font-size: 0.92rem;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    color: rgba(0,0,0,.55);
-    margin-bottom: .75rem;
+  .edit-post-preview-shell .post-author {
+    display: inline-block;
+    font-size: 0.95rem;
   }
 
-  .edit-post-preview-card h5 {
-    font-size: 2rem;
-    line-height: 1.05;
-    margin-bottom: 0.8rem;
-    color: #1d1d1d;
+  .edit-post-preview-shell .post-image-wrapper {
+    margin-bottom: 1rem;
   }
 
-  .edit-post-preview-content {
-    color: rgba(0,0,0,.78);
+  .edit-post-preview-shell .post-description {
     line-height: 1.75;
-    word-break: break-word;
   }
 
-  .edit-post-preview-content p:last-child {
+  .edit-post-preview-shell .post-description p:last-child {
     margin-bottom: 0;
   }
 
@@ -183,10 +167,6 @@
       width: 100%;
       min-width: 0;
     }
-
-    .edit-post-preview-card h5 {
-      font-size: 1.6rem;
-    }
   }
 </style>
 
@@ -196,8 +176,8 @@
     <!-- FORM -->
     <div class="edit-post-form-wrap">
       <div class="edit-post-form-card">
-        <h2 class="form-title text-center">Edit Post</h2>
-        <p class="form-subtitle text-center mb-4">
+        <h2 class="form-title">Edit Post</h2>
+        <p class="form-subtitle">
           Update your post and save the changes.
         </p>
 
@@ -252,29 +232,27 @@
     <div class="edit-post-preview-shell">
       <div class="edit-post-preview-heading">Current Post Preview</div>
 
-      <div class="edit-post-preview-card">
-        <div class="post-card h-100 d-flex flex-column">
+      <div class="post-card d-flex flex-column">
 
-          {% if post.post_image and post.post_image != "placeholder" %}
-            <div class="post-image-wrapper">
-              <img
-                src="{{ post.post_image.url }}"
-                alt="{{ post.title }}"
-                class="img-fluid post-image"
-              >
-            </div>
-          {% endif %}
-
-          <div class="edit-post-preview-meta">
-            Posted by {{ post.author|upper }}
-          </div>
-
-          <h5>{{ post.title }}</h5>
-
-          <div class="edit-post-preview-content">
-            {{ post.content|safe }}
-          </div>
+        <div class="post-header">
+          <h2 class="post-title">{{ post.title }}</h2>
+          <span class="post-author">
+            Posted by: {{ post.author|upper }}
+          </span>
         </div>
+
+        {% if post.post_image %}
+          <div class="post-image-wrapper mb-3">
+            <img src="{{ post.post_image.url }}"
+                 alt="{{ post.title }}"
+                 class="img-fluid post-image">
+          </div>
+        {% endif %}
+
+        <div class="post-description">
+          {{ post.content|safe }}
+        </div>
+
       </div>
     </div>
 

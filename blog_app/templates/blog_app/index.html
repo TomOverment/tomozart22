@@ -1,261 +1,256 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}Edit {{ post.title }}{% endblock %}
+{% block title %}TOMOZART{% endblock %}
 
 {% block content %}
-<style>
-  .edit-post-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
-    gap: 2rem;
-    align-items: start;
-  }
 
-  .edit-post-form-card,
-  .edit-post-preview-shell {
-    background: rgba(255, 255, 255, 0.90);
-    border-radius: 28px;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.45);
-  }
 
-  .edit-post-form-card {
-    padding: 2.25rem;
-  }
 
-  .edit-post-preview-shell {
-    padding: 1.25rem;
-    position: sticky;
-    top: 2rem;
-  }
+<!-- ========================= -->
+<!-- HERO INTRO -->
+<!-- ========================= -->
+<div class="container py-5">
+  <div class="text-center hero-wrap">
 
-  .edit-post-preview-heading {
-    text-align: center;
-    font-size: 1.45rem;
-    font-weight: 800;
-    color: #222;
-    margin-bottom: 1rem;
-  }
+    <h1 class="fw-light mb-3">
+      Welcome {% if user.is_authenticated %}{{ user.username }}. {% endif %}
+      This is Tomo’s Art Gallery.
+    </h1>
 
-  .edit-post-form-card .form-title {
-    font-size: clamp(2.3rem, 4vw, 3.25rem);
-    font-weight: 300;
-    text-align: center;
-    margin-bottom: 0.65rem;
-    color: #1f1f1f;
-  }
+    <p class="lead text-muted mx-auto" style="max-width: 850px;">
+      Explore original artworks, limited edition Giclée prints and experimental
+      pieces. From vibrant spray painting to mixed-media canvases,
+      Tomo's work explores ideas built from the walls of everyday life.
+    </p>
 
-  .edit-post-form-card .form-subtitle {
-    text-align: center;
-    color: rgba(0, 0, 0, 0.68);
-    font-size: 1.08rem;
-    margin-bottom: 2rem;
-  }
+    <!-- Newsletter sentence -->
+    <p class="mx-auto mt-3" style="max-width:750px;">
+      New work is released periodically.  
+      <a href="{% url 'blog:newsletter' %}" class="fw-semibold text-decoration-none">
+        Join the TomozArt mailing list
+      </a>
+      to hear first when new artwork and limited edition prints become available.
+    </p>
 
-  .edit-post-form-card .form-label {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #222;
-    margin-bottom: 0.6rem;
-  }
+    {% if not user.is_authenticated %}
+      <p class="text-muted small mt-4" style="letter-spacing:.3px;">
+        Guests are welcome to explore freely. Creating an account lets you manage
+        purchases and access additional features.
+      </p>
+    {% endif %}
 
-  .edit-post-form-card input[type="text"],
-  .edit-post-form-card input[type="file"],
-  .edit-post-form-card textarea,
-  .edit-post-form-card select {
-    width: 100%;
-    border-radius: 18px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    background: rgba(255, 255, 255, 0.98);
-    padding: 1rem 1.1rem;
-    color: #222;
-    transition: all 0.2s ease;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
-  }
+    <hr class="my-4">
 
-  .edit-post-form-card textarea {
-    min-height: 240px;
-    resize: vertical;
-  }
-
-  .edit-post-form-card input:focus,
-  .edit-post-form-card textarea:focus,
-  .edit-post-form-card select:focus {
-    outline: none;
-    border-color: rgba(47, 125, 122, 0.42);
-    box-shadow:
-      0 0 0 4px rgba(47, 125, 122, 0.10),
-      0 12px 24px rgba(47, 125, 122, 0.08);
-  }
-
-  .edit-post-actions {
-    display: flex;
-    justify-content: center;
-    gap: .75rem;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
-  }
-
-  .edit-post-actions .btn {
-    min-width: 120px;
-    border-radius: 999px;
-    padding: 0.65rem 1.15rem;
-  }
-
-  /* Preview uses homepage card structure exactly */
-  .edit-post-preview-shell .post-card {
-    padding: 1.5rem !important;
-    border-radius: 24px;
-    box-shadow: 0 10px 24px rgba(0,0,0,.10);
-    background: rgba(255,255,255,.97);
-    height: auto !important;
-  }
-
-  .edit-post-preview-shell .post-header {
-    margin-bottom: 1rem;
-  }
-
-  .edit-post-preview-shell .post-title {
-    margin-bottom: 0.45rem;
-  }
-
-  .edit-post-preview-shell .post-author {
-    display: inline-block;
-    font-size: 0.95rem;
-  }
-
-  .edit-post-preview-shell .post-image-wrapper {
-    margin-bottom: 1rem;
-  }
-
-  .edit-post-preview-shell .post-description {
-    line-height: 1.75;
-  }
-
-  .edit-post-preview-shell .post-description p:last-child {
-    margin-bottom: 0;
-  }
-
-  @media (max-width: 991.98px) {
-    .edit-post-layout {
-      grid-template-columns: 1fr;
-    }
-
-    .edit-post-preview-shell {
-      position: static;
-      order: 2;
-    }
-
-    .edit-post-form-wrap {
-      order: 1;
-    }
-  }
-
-  @media (max-width: 575.98px) {
-    .edit-post-form-card,
-    .edit-post-preview-shell {
-      padding: 1.25rem;
-      border-radius: 20px;
-    }
-
-    .edit-post-actions {
-      flex-direction: column;
-    }
-
-    .edit-post-actions .btn {
-      width: 100%;
-      min-width: 0;
-    }
-  }
-</style>
-
-<div class="container py-4 py-md-5">
-  <div class="edit-post-layout">
-
-    <!-- FORM -->
-    <div class="edit-post-form-wrap">
-      <div class="edit-post-form-card">
-        <h2 class="form-title">Edit Post</h2>
-        <p class="form-subtitle">
-          Update your post and save the changes.
-        </p>
-
-        <form method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <input type="hidden" name="next" value="{{ next_page }}">
-
-          <div class="mb-3 text-start">
-            <label class="form-label" for="{{ form.title.id_for_label }}">Title</label>
-            {{ form.title }}
-          </div>
-
-          <div class="mb-3 text-start">
-            <label class="form-label" for="{{ form.content.id_for_label }}">Content</label>
-            {{ form.content }}
-          </div>
-
-          <div class="mb-3 text-start">
-            <label class="form-label" for="{{ form.status.id_for_label }}">Status</label>
-            {{ form.status }}
-          </div>
-
-          <div class="mb-4 text-start">
-            <label class="form-label" for="{{ form.post_image.id_for_label }}">Post Image</label>
-            {{ form.post_image }}
-          </div>
-
-          <div class="edit-post-actions">
-            <button type="submit" class="btn btn-dark">
-              Save
-            </button>
-
-            <a href="{% url 'blog:delete_post' post.id %}?next={{ next_page }}" class="btn btn-outline-dark">
-              Delete
-            </a>
-
-            {% if next_page == "profile" %}
-              <a href="{% url 'blog:profile' %}" class="btn btn-outline-dark">
-                Back
-              </a>
-            {% else %}
-              <a href="{% url 'blog:home' %}" class="btn btn-outline-dark">
-                Back
-              </a>
-            {% endif %}
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- PREVIEW -->
-    <div class="edit-post-preview-shell">
-      <div class="edit-post-preview-heading">Current Post Preview</div>
-
-      <div class="post-card d-flex flex-column">
-
-        <div class="post-header">
-          <h2 class="post-title">{{ post.title }}</h2>
-          <span class="post-author">
-            Posted by: {{ post.author|upper }}
-          </span>
-        </div>
-
-        {% if post.post_image %}
-          <div class="post-image-wrapper mb-3">
-            <img src="{{ post.post_image.url }}"
-                 alt="{{ post.title }}"
-                 class="img-fluid post-image">
-          </div>
-        {% endif %}
-
-        <div class="post-description">
-          {{ post.content|safe }}
-        </div>
-
-      </div>
-    </div>
+    <p class="text-muted small mb-0">
+      Scroll down to discover and enjoy <strong>TomozArt</strong>.
+    </p>
 
   </div>
 </div>
+<!-- ========================= -->
+<!-- PRODUCT CAROUSEL (MOBILE: 1 / DESKTOP: 3) -->
+<!-- ========================= -->
+
+{% if products %}
+  <div class="container my-4">
+    <div class="product-carousel-wrap">
+      <h3 class="text-center mb-3">Featured Products</h3>
+
+      <!-- MOBILE (1 item per slide) -->
+      <div class="d-block d-md-none">
+        <div id="productCarouselMobile"
+             class="carousel slide"
+             data-bs-ride="carousel"
+             data-bs-interval="3000"
+             data-bs-pause="hover">
+
+          <div class="carousel-inner">
+            {% for product in products %}
+              <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <div class="px-3">
+                  <div class="card product-card h-100 shadow-sm">
+
+                    <a href="{% url 'store:product_detail' product.id %}">
+                      {% if product.image %}
+                        <img
+                          src="{{ product.optimized_image_url }}"
+                          class="card-img-top product-card-img"
+                          alt="{{ product.name }}"
+                      {% if not forloop.first %}loading="lazy"{% endif %}
+                        />
+                      {% endif %}
+                    </a>
+
+                    <div class="card-body text-center">
+                      <h6 class="card-title mb-1">{{ product.name }}</h6>
+                      {% if product.price %}
+                        <p class="card-text mb-2">£{{ product.price }}</p>
+                      {% endif %}
+                      <a href="{% url 'store:product_detail' product.id %}"
+                         class="btn btn-sm btn-outline-dark">
+                        View
+                      </a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <button class="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#productCarouselMobile"
+                  data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+
+          <button class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#productCarouselMobile"
+                  data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- DESKTOP (3 items per slide - your existing logic) -->
+      <div class="d-none d-md-block">
+        <div id="productCarouselDesktop"
+             class="carousel slide"
+             data-bs-ride="carousel"
+             data-bs-interval="3000"
+             data-bs-pause="hover">
+
+          <div class="carousel-inner">
+            {% for product in products %}
+              {% if forloop.counter0|divisibleby:3 %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <div class="row g-3 justify-content-center">
+              {% endif %}
+
+                    <div class="col-12 col-md-4">
+                      <div class="card product-card h-100 shadow-sm">
+
+                        <a href="{% url 'store:product_detail' product.id %}">
+                          {% if product.image %}
+                            <img src="{{ product.optimized_image_url }}"
+                            class="card-img-top product-card-img"
+                            alt="{{ product.name }}"
+                            {% if not forloop.first %}loading="lazy"{% endif %}>
+                          {% endif %}
+                        </a>
+
+                        <div class="card-body text-center">
+                          <h6 class="card-title mb-1">{{ product.name }}</h6>
+                          {% if product.price %}
+                            <p class="card-text mb-2">£{{ product.price }}</p>
+                          {% endif %}
+                          <a href="{% url 'store:product_detail' product.id %}"
+                             class="btn btn-sm btn-outline-dark">
+                            View
+                          </a>
+                        </div>
+
+                      </div>
+                    </div>
+
+              {% if forloop.counter0|add:1|divisibleby:3 or forloop.last %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <button class="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#productCarouselDesktop"
+                  data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+
+          <button class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#productCarouselDesktop"
+                  data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+{% endif %}
+
+<hr>
+
+<!-- ========================= -->
+<!-- BLOG POSTS -->
+<!-- ========================= -->
+
+<div class="container my-5">
+  <div class="row">
+
+    {% for post in object_list %}
+      <div class="col-12 col-md-6 mb-5">
+        <div class="post-card p-4 h-100 d-flex flex-column">
+
+          <div class="post-header">
+            <a href="{% url 'blog:post_detail' post.slug %}"
+               class="text-decoration-none text-dark">
+              <h2 class="post-title">{{ post.title }}</h2>
+            </a>
+
+            <span class="post-author">
+              Posted by: {{ post.author|upper }}
+            </span>
+          </div>
+
+          {% if post.post_image %}
+            <div class="post-image-wrapper mb-3">
+              <a href="{% url 'blog:post_detail' post.slug %}">
+                <img src="{{ post.post_image.url }}"
+                     alt="{{ post.title }}"
+                     class="img-fluid post-image">
+              </a>
+            </div>
+          {% endif %}
+
+          <div class="post-description">
+            {{ post.content|safe }}
+          </div>
+
+          {% if post.can_edit %}
+            <div class="mt-4">
+              <a href="{% url 'blog:update_post' post.pk %}?next=home" class="btn btn-outline-dark">
+                Edit
+              </a>
+
+              <a href="{% url 'blog:delete_post' post.id %}"
+                 class="btn btn-sm btn-dark">
+                Delete
+              </a>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-secondary text-center">
+          No posts yet.
+        </div>
+      </div>
+    {% endfor %}
+
+  </div>
+</div>
+
 {% endblock %}
