@@ -367,8 +367,12 @@ def stripe_webhook(request):
             sig_header=sig_header,
             secret=settings.STRIPE_WEBHOOK_SECRET,
         )
-    except Exception:
-        return HttpResponse(status=400)
+    except ValueError:
+        return HttpResponse("Invalid payload", status=400)
+    except stripe.error.SignatureVerificationError:
+        return HttpResponse("Invalid signature", status=400)
+    except Exception as e:
+        return HttpResponse(f"Webhook error: {e}", status=400)
 
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
