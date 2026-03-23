@@ -441,6 +441,8 @@ def stripe_webhook(request):
                 if amount_total is not None:
                     order.total = Decimal(amount_total) / Decimal("100")
 
+                order.save()
+
                 # Customer email
                 if order.email:
                     customer_subject = f"Tomozart order confirmation #{order.id}"
