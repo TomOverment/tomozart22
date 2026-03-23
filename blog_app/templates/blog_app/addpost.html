@@ -1,188 +1,59 @@
 {% extends "base.html" %}
-{% load static %}
-
-{% block title %}Edit {{ post.title }}{% endblock %}
+{% block title %}Add Post{% endblock %}
 
 {% block content %}
-<style>
-  .edit-post-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
-    gap: 2rem;
-    align-items: start;
-  }
+<div class="auth-wrapper">
+  <div class="form-card login-card-shadow">
 
-  .edit-post-form-wrap .auth-wrapper {
-    padding: 0;
-    min-height: auto;
-    background: transparent;
-  }
+    <h2 class="form-title text-center">Add Post</h2>
+    <p class="form-subtitle text-center mb-4">
+      Create a new blog entry.
+    </p>
 
-  .edit-post-form-wrap .form-card {
-    margin: 0;
-    max-width: 100%;
-  }
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
 
-  .edit-post-preview-wrap {
-    position: sticky;
-    top: 2rem;
-  }
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
 
-  .edit-post-preview-heading {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 300;
-    margin-bottom: 1.25rem;
-    color: #222;
-  }
+      {% for field in form %}
+        <div class="mb-3">
+          <label class="form-label" for="{{ field.id_for_label }}">
+            {{ field.label }}
+          </label>
 
-  .edit-post-actions {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
-  }
+          {{ field }}
 
-  .edit-post-actions .btn {
-    min-width: 130px;
-  }
-
-  .edit-post-cancel-link {
-    text-align: center;
-    margin-top: 1rem;
-  }
-
-  @media (max-width: 991.98px) {
-    .edit-post-layout {
-      grid-template-columns: 1fr;
-    }
-
-    .edit-post-preview-wrap {
-      position: static;
-      order: 2;
-    }
-
-    .edit-post-form-wrap {
-      order: 1;
-    }
-  }
-</style>
-
-<div class="container py-4 py-md-5">
-  <div class="edit-post-layout">
-
-    <!-- LEFT: EDIT FORM -->
-    <div class="edit-post-form-wrap">
-      <div class="auth-wrapper">
-        <div class="form-card login-card-shadow">
-
-          <h2 class="form-title text-center">Edit Post</h2>
-          <p class="form-subtitle text-center mb-4">
-            Update your post and save the changes.
-          </p>
-
-          <form method="post" enctype="multipart/form-data" novalidate>
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next_page }}">
-
-            {% if form.non_field_errors %}
-              <div class="alert alert-danger">
-                {{ form.non_field_errors }}
-              </div>
-            {% endif %}
-
-            {% for field in form %}
-              <div class="mb-3">
-                <label class="form-label" for="{{ field.id_for_label }}">
-                  {{ field.label }}
-                </label>
-
-                {{ field }}
-
-                {% if field.name == "post_image" and post.post_image %}
-                  <div class="form-text">
-                    Current:
-                    <a href="{{ post.post_image.url }}" target="_blank" class="text-decoration-none">
-                      {{ post.post_image.name|truncatechars:28 }}
-                    </a>
-                  </div>
-                {% endif %}
-
-                {% if field.errors %}
-                  <div class="invalid-feedback d-block">
-                    {{ field.errors|striptags }}
-                  </div>
-                {% endif %}
-
-                {% if field.help_text %}
-                  <div class="form-text">
-                    {{ field.help_text }}
-                  </div>
-                {% endif %}
-              </div>
-            {% endfor %}
-
-            <div class="edit-post-actions">
-              <button type="submit" class="btn btn-dark">
-                Save
-              </button>
-
-              <a href="{% url 'blog:delete_post' post.id %}?next={{ next_page }}"
-                 class="btn btn-outline-dark">
-                Delete
-              </a>
-
-              {% if next_page == "profile" %}
-                <a href="{% url 'blog:profile' %}" class="btn btn-outline-dark">
-                  Back
-                </a>
-              {% else %}
-                <a href="{% url 'blog:home' %}" class="btn btn-outline-dark">
-                  Back
-                </a>
-              {% endif %}
+          {% if field.errors %}
+            <div class="invalid-feedback d-block">
+              {{ field.errors|striptags }}
             </div>
+          {% endif %}
 
-          </form>
-
+          {% if field.help_text %}
+            <div class="form-text">
+              {{ field.help_text }}
+            </div>
+          {% endif %}
         </div>
+      {% endfor %}
+
+      <div class="mt-4">
+        <button type="submit" class="btn btn-dark w-100">
+          Save Post
+        </button>
       </div>
-    </div>
 
-    <!-- RIGHT: CURRENT POST PREVIEW -->
-    <div class="edit-post-preview-wrap">
-      <h2 class="edit-post-preview-heading">Current Post Preview</h2>
-
-      <div class="post-card p-4 h-100 d-flex flex-column">
-
-        <div class="post-header">
-          <a href="{% url 'blog:post_detail' post.slug %}"
-             class="text-decoration-none text-dark">
-            <h2 class="post-title">{{ post.title }}</h2>
-          </a>
-
-          <span class="post-author">
-            Posted by: {{ post.author|upper }}
-          </span>
-        </div>
-
-        {% if post.post_image %}
-          <div class="post-image-wrapper mb-3">
-            <a href="{% url 'blog:post_detail' post.slug %}">
-              <img src="{{ post.post_image.url }}"
-                   alt="{{ post.title }}"
-                   class="img-fluid post-image">
-            </a>
-          </div>
-        {% endif %}
-
-        <div class="post-description">
-          {{ post.content|safe }}
-        </div>
-
+      <div class="text-center mt-3">
+        <a href="{% url 'blog:home' %}" class="text-decoration-none">
+          Cancel
+        </a>
       </div>
-    </div>
+
+    </form>
 
   </div>
 </div>
