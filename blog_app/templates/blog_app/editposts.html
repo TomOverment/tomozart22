@@ -1,211 +1,247 @@
 {% extends "base.html" %}
-{% load static %}
-
-{% block title %}Edit {{ post.title }}{% endblock %}
+{% block title %}Edit Post{% endblock %}
 
 {% block content %}
 <style>
-  .edit-post-layout {
+  .edit-post-section {
+    padding: 3rem 0 4rem;
+  }
+
+  .edit-post-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
+    grid-template-columns: 1.35fr 1fr;
     gap: 2rem;
     align-items: start;
   }
 
-  .edit-post-preview-card,
-  .edit-post-form-card {
-    background: rgba(255, 255, 255, 0.88);
-    border-radius: 24px;
-    box-shadow: 10px 10px 24px rgba(0,0,0,.18);
-    border: 1px solid rgba(255,255,255,.35);
+  .edit-main-card {
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 2rem;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.10);
+    padding: 2.25rem;
   }
 
-  .edit-post-form-card {
-    padding: 2rem;
+  .edit-post-header {
+    text-align: center;
+    margin-bottom: 2rem;
   }
 
-  .edit-post-preview-card {
-    padding: 1.5rem;
-    position: sticky;
-    top: 2rem;
+  .edit-post-header h1 {
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    font-weight: 300;
+    margin-bottom: 0.6rem;
   }
 
-  .edit-post-preview-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: .35rem;
+  .edit-post-header p {
+    color: rgba(0, 0, 0, 0.62);
+    margin-bottom: 0;
+    font-size: 1.05rem;
+  }
+
+  .edit-form-card label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.55rem;
     color: #222;
   }
 
-  .edit-post-preview-meta {
-    font-size: .85rem;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    color: rgba(0,0,0,.6);
-    margin-bottom: 1rem;
-  }
-
-  .edit-post-preview-image-wrap {
-    margin-bottom: 1rem;
-    border-radius: 18px;
-    overflow: hidden;
-    background: #f2f2f2;
-  }
-
-  .edit-post-preview-image {
-    display: block;
+  .edit-form-card input[type="text"],
+  .edit-form-card input[type="file"],
+  .edit-form-card textarea,
+  .edit-form-card select {
     width: 100%;
-    height: auto;
-    object-fit: cover;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 1rem;
+    background: #fff;
+    padding: 0.9rem 1rem;
+    transition: all 0.2s ease;
   }
 
-  .edit-post-preview-content {
-    color: rgba(0,0,0,.78);
-    line-height: 1.7;
-    word-break: break-word;
+  .edit-form-card textarea {
+    min-height: 240px;
+    resize: vertical;
   }
 
-  .edit-post-preview-content p:last-child {
-    margin-bottom: 0;
+  .edit-form-card input:focus,
+  .edit-form-card textarea:focus,
+  .edit-form-card select:focus {
+    outline: none;
+    border-color: rgba(47, 125, 122, 0.45);
+    box-shadow: 0 0 0 4px rgba(47, 125, 122, 0.10);
   }
 
-  .edit-post-actions {
+  .edit-form-card .mb-3 {
+    margin-bottom: 1.35rem !important;
+  }
+
+  .edit-form-card .text-danger ul,
+  .edit-form-card .errorlist {
+    margin: 0.4rem 0 0;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .edit-actions {
     display: flex;
-    justify-content: center;
-    gap: .75rem;
     flex-wrap: wrap;
+    gap: 0.75rem;
     margin-top: 1.5rem;
   }
 
-  .edit-post-actions .btn {
-    min-width: 120px;
-  }
-
-  .edit-post-preview-heading {
-    font-size: 1rem;
-    font-weight: 700;
+  .preview-wrap h4 {
+    font-weight: 300;
     margin-bottom: 1rem;
-    color: #222;
   }
 
-  @media (max-width: 991.98px) {
-    .edit-post-layout {
+  .edit-preview-card.post-card {
+    padding: 1.5rem !important;
+    border-radius: 2rem;
+  }
+
+  .edit-preview-card h5 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .edit-preview-meta {
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 0.9rem;
+  }
+
+  .current-image-note {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.55);
+  }
+
+  @media (max-width: 991px) {
+    .edit-post-grid {
       grid-template-columns: 1fr;
     }
 
-    .edit-post-preview-card {
-      position: static;
-      order: 2;
-    }
-
-    .edit-post-form-wrap {
-      order: 1;
-    }
-  }
-
-  @media (max-width: 575.98px) {
-    .edit-post-form-card,
-    .edit-post-preview-card {
-      padding: 1.25rem;
-    }
-
-    .edit-post-actions {
-      flex-direction: column;
-    }
-
-    .edit-post-actions .btn {
-      width: 100%;
-      min-width: 0;
+    .edit-main-card {
+      padding: 1.5rem;
+      border-radius: 1.5rem;
     }
   }
 </style>
 
-<div class="container py-4 py-md-5">
-  <div class="edit-post-layout">
+<div class="container edit-post-section">
+  <div class="edit-post-grid">
 
-    <!-- FORM -->
-    <div class="edit-post-form-wrap">
-      <div class="edit-post-form-card">
-        <h2 class="form-title text-center">Edit Post</h2>
-        <p class="form-subtitle text-center mb-4">
-          Update your post and save the changes.
-        </p>
-
-        <form method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <input type="hidden" name="next" value="{{ next_page }}">
-
-          <div class="mb-3 text-start">
-            <label class="form-label" for="{{ form.title.id_for_label }}">Title</label>
-            {{ form.title }}
-          </div>
-
-          <div class="mb-3 text-start">
-            <label class="form-label" for="{{ form.content.id_for_label }}">Content</label>
-            {{ form.content }}
-          </div>
-
-          <div class="mb-3 text-start">
-            <label class="form-label" for="{{ form.status.id_for_label }}">Status</label>
-            {{ form.status }}
-          </div>
-
-          <div class="mb-4 text-start">
-            <label class="form-label" for="{{ form.post_image.id_for_label }}">Post Image</label>
-            {{ form.post_image }}
-          </div>
-
-          <div class="edit-post-actions">
-            <button type="submit" class="btn btn-dark">
-              Save
-            </button>
-
-            <a href="{% url 'blog:delete_post' post.id %}?next={{ next_page }}" class="btn btn-outline-dark">
-                Delete
-            </a>
-
-            {% if next_page == "profile" %}
-              <a href="{% url 'blog:profile' %}" class="btn btn-outline-dark">
-                Back
-              </a>
-            {% else %}
-              <a href="{% url 'blog:home' %}" class="btn btn-outline-dark">
-                Back
-              </a>
-            {% endif %}
-          </div>
-        </form>
+    <!-- LEFT: FORM -->
+    <div class="edit-main-card edit-form-card">
+      <div class="edit-post-header">
+        <h1>Edit Post</h1>
+        <p>Update your post and save the changes.</p>
       </div>
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label for="{{ form.title.id_for_label }}">Title</label>
+          {{ form.title }}
+          {% if form.title.errors %}
+            <div class="text-danger">{{ form.title.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.content.id_for_label }}">Content</label>
+          {{ form.content }}
+          {% if form.content.errors %}
+            <div class="text-danger">{{ form.content.errors }}</div>
+          {% endif %}
+        </div>
+
+        {% if form.post_image %}
+        <div class="mb-3">
+          <label for="{{ form.post_image.id_for_label }}">Update Image</label>
+          {{ form.post_image }}
+          {% if post.post_image and post.post_image != "placeholder" %}
+            <div class="current-image-note">Current image is shown in the preview card.</div>
+          {% endif %}
+          {% if form.post_image.errors %}
+            <div class="text-danger">{{ form.post_image.errors }}</div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.excerpt %}
+        <div class="mb-3">
+          <label for="{{ form.excerpt.id_for_label }}">Excerpt</label>
+          {{ form.excerpt }}
+          {% if form.excerpt.errors %}
+            <div class="text-danger">{{ form.excerpt.errors }}</div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.status %}
+        <div class="mb-3">
+          <label for="{{ form.status.id_for_label }}">Status</label>
+          {{ form.status }}
+          {% if form.status.errors %}
+            <div class="text-danger">{{ form.status.errors }}</div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="edit-actions">
+          <button type="submit" class="btn btn-dark">Save Changes</button>
+
+          {% if request.GET.next == "profile" %}
+            <a href="{% url 'blog:profile' %}" class="btn btn-outline-dark">Cancel</a>
+          {% else %}
+            <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-outline-dark">Back to Post</a>
+          {% endif %}
+        </div>
+      </form>
     </div>
 
-    <!-- PREVIEW -->
-    <div class="edit-post-preview-card">
-      <div class="edit-post-preview-heading">Current Post Preview</div>
+    <!-- RIGHT: PREVIEW -->
+    <div class="preview-wrap">
+      <h4>Current Post Preview</h4>
 
-      <div class="edit-post-preview-title">
-        {{ post.title }}
-      </div>
+      <div class="post-card edit-preview-card h-100 d-flex flex-column">
 
-      <div class="edit-post-preview-meta">
-        Posted by {{ post.author|upper }}
-      </div>
+        {% if post.post_image and post.post_image != "placeholder" %}
+          <div class="post-image-wrapper mb-3">
+            <img src="{{ post.post_image.url }}"
+                 class="img-fluid post-image"
+                 alt="{{ post.title }}">
+          </div>
+        {% else %}
+          <div class="text-muted small mb-3">
+            No image uploaded for this post.
+          </div>
+        {% endif %}
 
-      {% if post.post_image %}
-        <div class="edit-post-preview-image-wrap">
-          <img
-            src="{{ post.post_image.url }}"
-            alt="{{ post.title }}"
-            class="edit-post-preview-image"
-          >
+        <div class="edit-preview-meta">Posted by {{ post.author }}</div>
+
+        <h5 class="mb-2">{{ post.title }}</h5>
+
+        <div class="text-muted small">
+          {% if post.excerpt %}
+            {{ post.excerpt }}
+          {% else %}
+            {{ post.content|truncatewords:20|safe }}
+          {% endif %}
         </div>
-      {% endif %}
 
-      <div class="edit-post-preview-content">
-        {{ post.content|safe }}
+        <div class="mt-auto pt-3 text-center">
+          <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-dark btn-sm">
+            View Live Post
+          </a>
+        </div>
       </div>
     </div>
 
   </div>
 </div>
+
 {% endblock %}
