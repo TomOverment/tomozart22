@@ -40,7 +40,11 @@
         <div class="text-muted mb-3">{{ product.category }}</div>
       {% endif %}
 
-      <h3 class="mb-3">£{{ product.price }}</h3>
+      {% if sizes %}
+        <h3 class="mb-3">From £{{ sizes.0.price }}</h3>
+      {% else %}
+        <h3 class="mb-3">£{{ product.price }}</h3>
+      {% endif %}
 
       {% if product.description %}
         <p>{{ product.description }}</p>
@@ -80,7 +84,6 @@
 <!-- Fullscreen Script -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-
   const triggers = document.querySelectorAll(".fullscreen-trigger");
   const overlay = document.getElementById("fullscreenOverlay");
   const fullscreenImage = document.getElementById("fullscreenImage");
@@ -101,7 +104,6 @@ document.addEventListener("DOMContentLoaded", function () {
       overlay.classList.remove("active");
     }
   });
-
 });
 </script>
 
