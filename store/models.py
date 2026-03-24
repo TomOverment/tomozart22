@@ -74,6 +74,36 @@ class Product(models.Model):
             return ""
         return self.image.url.replace("/upload/", "/upload/f_auto,q_auto/")
 
+class ProductSize(models.Model):
+    SIZE_CHOICES = [
+        ("S", "Small"),
+        ("M", "Medium"),
+        ("L", "Large"),
+    ]
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="sizes",
+    )
+    size_code = models.CharField(max_length=1, choices=SIZE_CHOICES)
+    label = models.CharField(max_length=100, blank=True, default="")
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal("0.00"),
+    )
+    stock = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["size_code"]
+        unique_together = ("product", "size_code")
+
+    def __str__(self):
+        if self.label:
+            return f"{self.product.name} - {self.get_size_code_display()} ({self.label})"
+        return f"{self.product.name} - {self.get_size_code_display()}"
 
 # -----------------------------
 # ORDERS / CHECKOUT
@@ -183,11 +213,6 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    """
-    One row per product purchased.
-    Stores snapshot of name + unit_price so historical orders remain correct
-    even if product price changes later.
-    """
     order = models.ForeignKey(
         Order,
         related_name="items",
@@ -198,14 +223,24 @@ class OrderItem(models.Model):
         on_delete=models.PROTECT,
         related_name="order_items",
     )
+    product_size = models.ForeignKey(
+        "ProductSize",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="order_items",
+    )
 
     name = models.CharField(max_length=100, blank=True, null=True)
+    size_code = models.CharField(max_length=1, blank=True, default="")
+    size_label = models.CharField(max_length=100, blank=True, default="")
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     quantity = models.PositiveIntegerField(default=1)
     line_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
 
     def __str__(self):
-        return f"{self.quantity} x {self.name} (Order {self.order.id})"
+        size_part = f" - {self.size_code}" if self.size_code else ""
+        return f"{self.quantity} x {self.name}{size_part} (Order {self.order.id})"
 
     def save(self, *args, **kwargs):
         unit_price = Decimal(self.unit_price or Decimal("0.00"))

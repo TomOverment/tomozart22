@@ -50,7 +50,22 @@
 
       <form method="post" action="{% url 'store:cart_add' product.id %}">
         {% csrf_token %}
-        <button class="btn btn-dark">Add to cart</button>
+
+        {% if sizes %}
+          <div class="mb-3">
+            <label for="size_id" class="form-label fw-semibold">Select size</label>
+            <select name="size_id" id="size_id" class="form-select" required>
+              <option value="">Choose a size</option>
+              {% for size in sizes %}
+                <option value="{{ size.id }}">
+                  {{ size.size_code }}{% if size.label %} — {{ size.label }}{% endif %} — £{{ size.price }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+
+        <button type="submit" class="btn btn-dark">Add to cart</button>
       </form>
     </div>
 

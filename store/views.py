@@ -4,20 +4,19 @@ import stripe
 
 from django.conf import settings
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Product, Order, OrderItem
-
-from django.core.mail import send_mail
+from .models import Product, ProductSize, Order, OrderItem
 
 
 # -----------------------------
 # CART (session-based)
 # -----------------------------
-CART_SESSION_KEY = "cart"  # { "12": 2, "9": 1 }
+CART_SESSION_KEY = "cart"  # { "12:3": 2, "9:1": 1 }
 
 
 def _get_cart(request):
@@ -40,20 +39,39 @@ def shop(request):
 def cart(request):
     cart = _get_cart(request)
 
-    product_ids = [int(pid) for pid in cart.keys()] if cart else []
-    products = Product.objects.filter(id__in=product_ids)
-
     items = []
     total = Decimal("0.00")
 
-    for p in products:
-        qty = int(cart.get(str(p.id), 0))
-        line_total = (p.price or Decimal("0.00")) * qty
+    for cart_key, qty in cart.items():
+        try:
+            product_id_str, size_id_str = cart_key.split(":")
+            product_id = int(product_id_str)
+            size_id = int(size_id_str)
+        except (ValueError, AttributeError):
+            continue
+
+        product = Product.objects.filter(id=product_id, is_active=True).first()
+        size = ProductSize.objects.filter(
+            id=size_id,
+            product_id=product_id,
+            is_active=True
+        ).first()
+
+        if not product or not size:
+            continue
+
+        qty = int(qty)
+        unit_price = Decimal(size.price)
+        line_total = unit_price * qty
         total += line_total
+
         items.append({
-            "product": p,
+            "product": product,
+            "size": size,
             "qty": qty,
+            "unit_price": unit_price,
             "line_total": line_total,
+            "cart_key": cart_key,
         })
 
     return render(request, "store/cart.html", {
@@ -64,33 +82,43 @@ def cart(request):
 
 
 def cart_add(request, product_id):
+    if request.method != "POST":
+        return redirect("store:product_detail", product_id=product_id)
+
     cart = _get_cart(request)
-    pid = str(product_id)
-    cart[pid] = int(cart.get(pid, 0)) + 1
+    size_id = request.POST.get("size_id")
+
+    product = get_object_or_404(Product, id=product_id, is_active=True)
+
+    if not size_id:
+        messages.warning(request, "Please select a size.")
+        return redirect("store:product_detail", product_id=product_id)
+
+    size = get_object_or_404(ProductSize, id=size_id, product=product, is_active=True)
+
+    cart_key = f"{product.id}:{size.id}"
+    cart[cart_key] = int(cart.get(cart_key, 0)) + 1
     request.session.modified = True
 
-    cart_count = sum(int(q) for q in cart.values())
-
-    if request.headers.get("x-requested-with") == "XMLHttpRequest":
-        return JsonResponse({"cart_count": cart_count})
-
-    messages.success(request, "Added to cart.")
-    return redirect(request.META.get("HTTP_REFERER", reverse("store:shop")))
-
-
-def cart_remove(request, product_id):
-    cart = _get_cart(request)
-    pid = str(product_id)
-    if pid in cart:
-        del cart[pid]
-        request.session.modified = True
-        messages.info(request, "Removed from cart.")
+    messages.success(request, f"Added {product.name} ({size.size_code}) to cart.")
     return redirect("store:cart")
 
 
-def cart_set_qty(request, product_id):
+def cart_remove(request):
     cart = _get_cart(request)
-    pid = str(product_id)
+    cart_key = request.POST.get("cart_key")
+
+    if cart_key in cart:
+        del cart[cart_key]
+        request.session.modified = True
+        messages.info(request, "Removed from cart.")
+
+    return redirect("store:cart")
+
+
+def cart_set_qty(request):
+    cart = _get_cart(request)
+    cart_key = request.POST.get("cart_key")
 
     try:
         qty = int(request.POST.get("qty", "1"))
@@ -99,40 +127,50 @@ def cart_set_qty(request, product_id):
 
     qty = max(0, min(qty, 99))
 
-    if qty == 0:
-        cart.pop(pid, None)
-    else:
-        cart[pid] = qty
+    if cart_key in cart:
+        if qty == 0:
+            cart.pop(cart_key, None)
+        else:
+            cart[cart_key] = qty
+        request.session.modified = True
 
-    request.session.modified = True
     return redirect("store:cart")
 
 
-def cart_inc(request, product_id):
+def cart_inc(request):
     cart = _get_cart(request)
-    pid = str(product_id)
-    cart[pid] = int(cart.get(pid, 0)) + 1
-    request.session.modified = True
+    cart_key = request.POST.get("cart_key")
+
+    if cart_key in cart:
+        cart[cart_key] = int(cart.get(cart_key, 0)) + 1
+        request.session.modified = True
+
     return redirect("store:cart")
 
 
-def cart_dec(request, product_id):
+def cart_dec(request):
     cart = _get_cart(request)
-    pid = str(product_id)
-    current = int(cart.get(pid, 0))
+    cart_key = request.POST.get("cart_key")
 
-    if current <= 1:
-        cart.pop(pid, None)
-    else:
-        cart[pid] = current - 1
+    if cart_key in cart:
+        current = int(cart.get(cart_key, 0))
+        if current <= 1:
+            cart.pop(cart_key, None)
+        else:
+            cart[cart_key] = current - 1
+        request.session.modified = True
 
-    request.session.modified = True
     return redirect("store:cart")
 
 
 def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    return render(request, "store/product_detail.html", {"product": product})
+    product = get_object_or_404(Product, id=product_id, is_active=True)
+    sizes = product.sizes.filter(is_active=True)
+
+    return render(request, "store/product_detail.html", {
+        "product": product,
+        "sizes": sizes,
+    })
 
 
 # -----------------------------
@@ -233,34 +271,48 @@ def checkout_start(request):
     line_items = []
     subtotal = Decimal("0.00")
 
-    product_ids = [int(pid) for pid in cart.keys()]
-    products = Product.objects.filter(id__in=product_ids)
-    product_by_id = {p.id: p for p in products}
-
-    for pid_str, qty in cart.items():
-        pid = int(pid_str)
-        qty = int(qty)
-
-        product = product_by_id.get(pid)
-        if not product:
+    for cart_key, qty in cart.items():
+        try:
+            product_id_str, size_id_str = cart_key.split(":")
+            product_id = int(product_id_str)
+            size_id = int(size_id_str)
+            qty = int(qty)
+        except (ValueError, AttributeError):
             continue
 
-        unit_price = Decimal(str(product.price or Decimal("0.00")))
+        product = Product.objects.filter(id=product_id, is_active=True).first()
+        size = ProductSize.objects.filter(
+            id=size_id,
+            product_id=product_id,
+            is_active=True
+        ).first()
+
+        if not product or not size:
+            continue
+
+        unit_price = Decimal(size.price)
         subtotal += unit_price * qty
 
         OrderItem.objects.create(
             order=order,
             product=product,
+            product_size=size,
             name=product.name,
+            size_code=size.size_code,
+            size_label=size.label,
             unit_price=unit_price,
             quantity=qty,
         )
+
+        item_name = f"{product.name} - {size.size_code}"
+        if size.label:
+            item_name += f" ({size.label})"
 
         line_items.append({
             "price_data": {
                 "currency": "gbp",
                 "product_data": {
-                    "name": product.name,
+                    "name": item_name,
                 },
                 "unit_amount": int((unit_price * 100).quantize(Decimal("1"))),
             },
@@ -329,7 +381,6 @@ def checkout_success(request):
             stripe_checkout_session_id=session_id
         ).first()
 
-    # Only clear cart if the order is confirmed as paid
     if order and order.status == Order.Status.PAID:
         request.session[CART_SESSION_KEY] = {}
         request.session.modified = True
@@ -385,12 +436,10 @@ def stripe_webhook(request):
             except Order.DoesNotExist:
                 return HttpResponse(status=200)
 
-            # Prevent duplicate processing / duplicate emails
             if order.status != Order.Status.PAID:
                 order.status = Order.Status.PAID
                 order.stripe_payment_intent_id = payment_intent or ""
 
-                # Pull customer/shipping details from Stripe session if present
                 customer_details = session.get("customer_details") or {}
                 shipping_details = session.get("shipping_details") or {}
                 shipping_cost = session.get("shipping_cost") or {}
@@ -411,7 +460,6 @@ def stripe_webhook(request):
                 order.shipping_postcode = address.get("postal_code", "")
                 order.shipping_country = address.get("country", "")
 
-                # If you also want billing snapshot:
                 billing_address = (customer_details.get("address") or {})
                 order.billing_line1 = billing_address.get("line1", "")
                 order.billing_line2 = billing_address.get("line2", "")
@@ -421,11 +469,15 @@ def stripe_webhook(request):
 
                 order.save()
 
-                # Build item summary
                 order_items = order.items.all()
                 items_text = "\n".join(
                     [
-                        f"- {item.quantity} x {item.name} (£{item.unit_price} each)"
+                        (
+                            f"- {item.quantity} x {item.name}"
+                            f"{f' ({item.size_code}' if item.size_code else ''}"
+                            f"{f' — {item.size_label})' if item.size_label else (')' if item.size_code else '')}"
+                            f" (£{item.unit_price} each)"
+                        )
                         for item in order_items
                     ]
                 )
@@ -443,7 +495,6 @@ def stripe_webhook(request):
 
                 order.save()
 
-                # Customer email
                 if order.email:
                     customer_subject = f"Tomozart order confirmation #{order.id}"
                     customer_message = (
@@ -469,7 +520,6 @@ def stripe_webhook(request):
                         fail_silently=False,
                     )
 
-                # Admin notification
                 if settings.ADMIN_EMAIL:
                     admin_subject = f"New paid Tomozart order #{order.id}"
                     admin_message = (

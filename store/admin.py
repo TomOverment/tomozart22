@@ -4,7 +4,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.urls import reverse
 
-from .models import Category, Customer, Product, Order, OrderItem
+from .models import Category, Customer, Product, ProductSize, Order, OrderItem
 from blog_app.models import MailingListSubscriber
 
 
@@ -73,6 +73,13 @@ def send_product_drop(modeladmin, request, queryset):
     )
 
 
+class ProductSizeInline(admin.TabularInline):
+    model = ProductSize
+    extra = 3
+    fields = ("size_code", "label", "price", "stock", "is_active")
+    ordering = ("size_code",)
+
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
@@ -91,12 +98,22 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ("is_active", "category", "created_at")
     search_fields = ("name", "description")
     actions = [send_product_drop]
+    inlines = [ProductSizeInline]
 
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
-    readonly_fields = ("product", "name", "unit_price", "quantity", "line_total")
+    readonly_fields = (
+        "product",
+        "product_size",
+        "name",
+        "size_code",
+        "size_label",
+        "unit_price",
+        "quantity",
+        "line_total",
+    )
 
 
 @admin.register(Order)
@@ -190,6 +207,14 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ("order", "name", "unit_price", "quantity", "line_total")
-    search_fields = ("name", "order__id")
+    list_display = (
+        "order",
+        "name",
+        "size_code",
+        "size_label",
+        "unit_price",
+        "quantity",
+        "line_total",
+    )
+    search_fields = ("name", "size_label", "order__id")
     list_filter = ("order__created_at",)
