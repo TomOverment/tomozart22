@@ -98,7 +98,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ("is_active", "category", "created_at")
     search_fields = ("name", "description")
     actions = [send_product_drop]
-    inlines = [ProductSizeInline]
+    inlines = []
 
 
 class OrderItemInline(admin.TabularInline):
