@@ -48,6 +48,7 @@ class Product(models.Model):
         max_digits=10,
         decimal_places=2,
         default=Decimal("0.00"),
+        help_text="Fallback/base price. Product print options can override this.",
     )
     category = models.ForeignKey(
         Category,
@@ -74,36 +75,106 @@ class Product(models.Model):
             return ""
         return self.image.url.replace("/upload/", "/upload/f_auto,q_auto/")
 
+    @property
+    def min_active_option_price(self):
+        option = self.sizes.filter(is_active=True).order_by("sort_order", "id").first()
+        return option.price if option else self.price
+
+
 class ProductSize(models.Model):
-    SIZE_CHOICES = [
-        ("S", "Small"),
-        ("M", "Medium"),
-        ("L", "Large"),
-    ]
+    """
+    Flexible print option model for bespoke dimensions / variants.
+    A product can have any number of options:
+    - only 1
+    - 2 sizes
+    - 3 sizes
+    - irregular framed/unframed variants
+    """
 
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
         related_name="sizes",
     )
-    size_code = models.CharField(max_length=1, choices=SIZE_CHOICES)
-    label = models.CharField(max_length=100, blank=True, default="")
+
+    name = models.CharField(
+        max_length=100,
+        blank=True,
+        default="",
+        help_text="Customer-facing option name, e.g. 'Standard Print', 'Framed Print', 'Large Edition'.",
+    )
+
+    width_cm = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+    height_cm = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+
+    dimensions_label = models.CharField(
+        max_length=100,
+        blank=True,
+        default="",
+        help_text="Optional display text, e.g. '30 x 40 cm' or 'Approx 42 x 60 cm'.",
+    )
+
     price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         default=Decimal("0.00"),
     )
-    stock = models.PositiveIntegerField(default=0)
+
+    stock = models.PositiveIntegerField(
+        default=0,
+        help_text="Current available stock for this print option.",
+    )
+
+    edition_total = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text="Optional total edition size, e.g. 50.",
+    )
+    edition_sold = models.PositiveIntegerField(
+        default=0,
+        help_text="How many of this print option have sold.",
+    )
+
     is_active = models.BooleanField(default=True)
+    sort_order = models.PositiveIntegerField(
+        default=0,
+        help_text="Lower numbers show first.",
+    )
 
     class Meta:
-        ordering = ["size_code"]
-        unique_together = ("product", "size_code")
+        ordering = ["sort_order", "id"]
 
     def __str__(self):
-        if self.label:
-            return f"{self.product.name} - {self.get_size_code_display()} ({self.label})"
-        return f"{self.product.name} - {self.get_size_code_display()}"
+        return f"{self.product.name} - {self.display_name}"
+
+    @property
+    def display_name(self):
+        if self.name and self.dimensions_label:
+            return f"{self.name} — {self.dimensions_label}"
+        if self.name:
+            return self.name
+        if self.dimensions_label:
+            return self.dimensions_label
+        if self.width_cm and self.height_cm:
+            return f"{self.width_cm} x {self.height_cm} cm"
+        return "Print option"
+
+    @property
+    def remaining_edition(self):
+        if self.edition_total is None:
+            return None
+        return max(self.edition_total - self.edition_sold, 0)
+
 
 # -----------------------------
 # ORDERS / CHECKOUT
@@ -232,15 +303,15 @@ class OrderItem(models.Model):
     )
 
     name = models.CharField(max_length=100, blank=True, null=True)
-    size_code = models.CharField(max_length=1, blank=True, default="")
-    size_label = models.CharField(max_length=100, blank=True, default="")
+    option_name = models.CharField(max_length=100, blank=True, default="")
+    option_dimensions = models.CharField(max_length=100, blank=True, default="")
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     quantity = models.PositiveIntegerField(default=1)
     line_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
 
     def __str__(self):
-        size_part = f" - {self.size_code}" if self.size_code else ""
-        return f"{self.quantity} x {self.name}{size_part} (Order {self.order.id})"
+        option_part = f" - {self.option_name}" if self.option_name else ""
+        return f"{self.quantity} x {self.name}{option_part} (Order {self.order.id})"
 
     def save(self, *args, **kwargs):
         unit_price = Decimal(self.unit_price or Decimal("0.00"))

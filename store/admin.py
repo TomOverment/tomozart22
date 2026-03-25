@@ -73,13 +73,6 @@ def send_product_drop(modeladmin, request, queryset):
     )
 
 
-class ProductSizeInline(admin.TabularInline):
-    model = ProductSize
-    extra = 3
-    fields = ("size_code", "label", "price", "stock", "is_active")
-    ordering = ("size_code",)
-
-
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
@@ -92,6 +85,24 @@ class CustomerAdmin(admin.ModelAdmin):
     search_fields = ("name", "email", "phone")
 
 
+class ProductSizeInline(admin.TabularInline):
+    model = ProductSize
+    extra = 2
+    fields = (
+        "name",
+        "dimensions_label",
+        "width_cm",
+        "height_cm",
+        "price",
+        "stock",
+        "edition_total",
+        "edition_sold",
+        "is_active",
+        "sort_order",
+    )
+    ordering = ("sort_order", "id")
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ("name", "category", "price", "is_active", "created_at")
@@ -101,6 +112,22 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = []
 
 
+@admin.register(ProductSize)
+class ProductSizeAdmin(admin.ModelAdmin):
+    list_display = (
+        "product",
+        "display_name",
+        "price",
+        "stock",
+        "edition_total",
+        "edition_sold",
+        "is_active",
+        "sort_order",
+    )
+    list_filter = ("is_active", "product__category")
+    search_fields = ("product__name", "name", "dimensions_label")
+
+
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
@@ -108,8 +135,8 @@ class OrderItemInline(admin.TabularInline):
         "product",
         "product_size",
         "name",
-        "size_code",
-        "size_label",
+        "option_name",
+        "option_dimensions",
         "unit_price",
         "quantity",
         "line_total",
@@ -210,11 +237,11 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_display = (
         "order",
         "name",
-        "size_code",
-        "size_label",
+        "option_name",
+        "option_dimensions",
         "unit_price",
         "quantity",
         "line_total",
     )
-    search_fields = ("name", "size_label", "order__id")
+    search_fields = ("name", "option_name", "option_dimensions", "order__id")
     list_filter = ("order__created_at",)
