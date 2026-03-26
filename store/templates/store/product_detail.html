@@ -4,7 +4,6 @@
 {% block content %}
 <div class="container py-2">
 
-  <!-- Back Button -->
   <div class="mb-4">
     {% if request.GET.next == "cart" %}
       <a href="{% url 'store:cart' %}" class="btn btn-outline-dark">
@@ -19,7 +18,6 @@
 
   <div class="row g-4">
 
-    <!-- IMAGE COLUMN -->
     <div class="col-md-6">
       {% if product.image %}
         <div class="image-hover-wrapper">
@@ -32,7 +30,6 @@
       {% endif %}
     </div>
 
-    <!-- DETAILS COLUMN -->
     <div class="col-md-6">
       <h1 class="mb-2">{{ product.name }}</h1>
 
@@ -61,12 +58,20 @@
             <select name="size_id" id="size_id" class="form-select" required>
               <option value="">Choose option...</option>
               {% for size in sizes %}
-                <option value="{{ size.id }}">
-                  {{ size.display_name }} — £{{ size.price }}
+                <option value="{{ size.id }}" {% if size.is_sold_out %}disabled{% endif %}>
+                  {{ size.display_name }} — £{{ size.price }}{% if size.is_sold_out %} — Sold out{% endif %}
                 </option>
               {% endfor %}
             </select>
           </div>
+
+          {% for size in sizes %}
+            {% if size.low_stock_message and not size.is_sold_out %}
+              <div class="text-danger small mb-1">
+                {{ size.display_name }} — {{ size.low_stock_message }}
+              </div>
+            {% endif %}
+          {% endfor %}
         {% endif %}
 
         <button type="submit" class="btn btn-dark">Add to cart</button>
@@ -76,12 +81,10 @@
   </div>
 </div>
 
-<!-- Fullscreen Overlay -->
 <div id="fullscreenOverlay" class="fullscreen-overlay">
   <img id="fullscreenImage" src="" alt="">
 </div>
 
-<!-- Fullscreen Script -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const triggers = document.querySelectorAll(".fullscreen-trigger");

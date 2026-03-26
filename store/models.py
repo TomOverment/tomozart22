@@ -175,6 +175,20 @@ class ProductSize(models.Model):
             return None
         return max(self.edition_total - self.edition_sold, 0)
 
+    @property
+    def is_sold_out(self):
+        return self.stock <= 0
+
+    @property
+    def low_stock_message(self):
+        if self.stock <= 0:
+            return "Sold out"
+        if self.stock <= 3:
+            return "Final copies"
+        if self.stock <= 10:
+            return f"Only {self.stock} left"
+        return ""
+
 
 # -----------------------------
 # ORDERS / CHECKOUT
@@ -188,7 +202,6 @@ class Order(models.Model):
         FAILED = "failed", "Failed"
         REFUNDED = "refunded", "Refunded"
 
-    # Who placed the order
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -197,7 +210,6 @@ class Order(models.Model):
         related_name="orders",
     )
 
-    # Optional link to your Customer table
     customer = models.ForeignKey(
         Customer,
         on_delete=models.SET_NULL,
@@ -215,19 +227,16 @@ class Order(models.Model):
         default=Status.PENDING,
     )
 
-    # Contact snapshot at time of purchase
     full_name = models.CharField(max_length=120, blank=True)
     email = models.EmailField(blank=True)
     phone = models.CharField(max_length=50, blank=True)
 
-    # Billing address
     billing_line1 = models.CharField(max_length=255, blank=True)
     billing_line2 = models.CharField(max_length=255, blank=True)
     billing_city = models.CharField(max_length=120, blank=True)
     billing_postcode = models.CharField(max_length=30, blank=True)
     billing_country = models.CharField(max_length=2, blank=True)
 
-    # Shipping address
     shipping_line1 = models.CharField(max_length=255, blank=True)
     shipping_line2 = models.CharField(max_length=255, blank=True)
     shipping_city = models.CharField(max_length=120, blank=True)
@@ -239,7 +248,6 @@ class Order(models.Model):
     shipping_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
 
-    # Stripe references
     stripe_checkout_session_id = models.CharField(max_length=255, blank=True)
     stripe_payment_intent_id = models.CharField(max_length=255, blank=True)
 

@@ -5,11 +5,10 @@ import stripe
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
 
 from .models import Product, ProductSize, Order, OrderItem
 
@@ -26,6 +25,24 @@ def _get_cart(request):
         cart = {}
         request.session[CART_SESSION_KEY] = cart
     return cart
+
+
+def _cart_count(cart):
+    return sum(int(q) for q in cart.values())
+
+
+def _format_item(item):
+    parts = [f"{item.quantity} x {item.name}"]
+
+    if item.option_name and item.option_dimensions:
+        parts.append(f"{item.option_name} ({item.option_dimensions})")
+    elif item.option_name:
+        parts.append(item.option_name)
+    elif item.option_dimensions:
+        parts.append(item.option_dimensions)
+
+    parts.append(f"£{item.unit_price} each")
+    return " — ".join(parts)
 
 
 def store_home(request):
@@ -105,10 +122,8 @@ def cart(request):
     return render(request, "store/cart.html", {
         "items": items,
         "total": total,
-        "count": sum(int(q) for q in cart.values()),
+        "count": _cart_count(cart),
     })
-
-
 
 
 def cart_add(request, product_id):
@@ -134,11 +149,48 @@ def cart_add(request, product_id):
             is_active=True,
         )
 
+        if size.stock <= 0:
+            cart_count = _cart_count(cart)
+
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse(
+                    {
+                        "success": False,
+                        "error": "This print option is sold out.",
+                        "cart_count": cart_count,
+                    },
+                    status=400,
+                )
+
+            messages.warning(request, "This print option is sold out.")
+            return redirect("store:product_detail", product_id=product_id)
+
         cart_key = f"{product.id}:{size.id}"
-        cart[cart_key] = int(cart.get(cart_key, 0)) + 1
+        current_qty = int(cart.get(cart_key, 0))
+
+        if current_qty >= size.stock:
+            cart_count = _cart_count(cart)
+
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse(
+                    {
+                        "success": False,
+                        "error": "You already have the maximum available quantity in your cart.",
+                        "cart_count": cart_count,
+                    },
+                    status=400,
+                )
+
+            messages.warning(
+                request,
+                "You already have the maximum available quantity in your cart.",
+            )
+            return redirect("store:product_detail", product_id=product_id)
+
+        cart[cart_key] = current_qty + 1
         request.session.modified = True
 
-        cart_count = sum(int(q) for q in cart.values())
+        cart_count = _cart_count(cart)
 
         if request.headers.get("x-requested-with") == "XMLHttpRequest":
             return JsonResponse({
@@ -154,7 +206,7 @@ def cart_add(request, product_id):
     cart[cart_key] = int(cart.get(cart_key, 0)) + 1
     request.session.modified = True
 
-    cart_count = sum(int(q) for q in cart.values())
+    cart_count = _cart_count(cart)
 
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         return JsonResponse({
@@ -164,6 +216,7 @@ def cart_add(request, product_id):
 
     messages.success(request, f"Added {product.name} to cart.")
     return redirect("store:cart")
+
 
 def cart_remove(request):
     cart = _get_cart(request)
@@ -189,10 +242,41 @@ def cart_set_qty(request):
     qty = max(0, min(qty, 99))
 
     if cart_key in cart:
+        # Base product fallback
+        if cart_key.endswith(":base"):
+            if qty == 0:
+                cart.pop(cart_key, None)
+            else:
+                cart[cart_key] = qty
+            request.session.modified = True
+            return redirect("store:cart")
+
+        # Bespoke print option
+        try:
+            product_id_str, size_id_str = cart_key.split(":")
+            product_id = int(product_id_str)
+            size_id = int(size_id_str)
+        except (ValueError, AttributeError):
+            return redirect("store:cart")
+
+        size = ProductSize.objects.filter(
+            id=size_id,
+            product_id=product_id,
+            is_active=True,
+        ).first()
+
+        if not size:
+            cart.pop(cart_key, None)
+            request.session.modified = True
+            return redirect("store:cart")
+
+        qty = min(qty, size.stock)
+
         if qty == 0:
             cart.pop(cart_key, None)
         else:
             cart[cart_key] = qty
+
         request.session.modified = True
 
     return redirect("store:cart")
@@ -203,8 +287,35 @@ def cart_inc(request):
     cart_key = request.POST.get("cart_key")
 
     if cart_key in cart:
-        cart[cart_key] = int(cart.get(cart_key, 0)) + 1
-        request.session.modified = True
+        # Base product fallback
+        if cart_key.endswith(":base"):
+            cart[cart_key] = int(cart.get(cart_key, 0)) + 1
+            request.session.modified = True
+            return redirect("store:cart")
+
+        # Bespoke print option
+        try:
+            product_id_str, size_id_str = cart_key.split(":")
+            product_id = int(product_id_str)
+            size_id = int(size_id_str)
+        except (ValueError, AttributeError):
+            return redirect("store:cart")
+
+        size = ProductSize.objects.filter(
+            id=size_id,
+            product_id=product_id,
+            is_active=True,
+        ).first()
+
+        if not size:
+            cart.pop(cart_key, None)
+            request.session.modified = True
+            return redirect("store:cart")
+
+        current = int(cart.get(cart_key, 0))
+        if current < size.stock:
+            cart[cart_key] = current + 1
+            request.session.modified = True
 
     return redirect("store:cart")
 
@@ -308,6 +419,41 @@ def checkout_start(request):
     if not cart:
         messages.warning(request, "Your cart is empty.")
         return redirect("store:cart")
+
+    # Stock re-validation before creating order
+    for cart_key, qty in cart.items():
+        qty = int(qty)
+
+        if cart_key.endswith(":base"):
+            continue
+
+        try:
+            product_id_str, size_id_str = cart_key.split(":")
+            product_id = int(product_id_str)
+            size_id = int(size_id_str)
+        except (ValueError, AttributeError):
+            continue
+
+        size = ProductSize.objects.filter(
+            id=size_id,
+            product_id=product_id,
+            is_active=True,
+        ).first()
+
+        if not size:
+            messages.warning(request, "An item in your cart is no longer available.")
+            return redirect("store:cart")
+
+        if size.stock <= 0:
+            messages.warning(request, f"{size.display_name} is now sold out.")
+            return redirect("store:cart")
+
+        if qty > size.stock:
+            messages.warning(
+                request,
+                f"Only {size.stock} left for {size.display_name}. Please adjust your cart.",
+            )
+            return redirect("store:cart")
 
     order = Order.objects.create(
         user=request.user if request.user.is_authenticated else None,
@@ -541,19 +687,19 @@ def stripe_webhook(request):
                 order.billing_postcode = billing_address.get("postal_code", "")
                 order.billing_country = billing_address.get("country", "")
 
+                # Step 2: reduce stock and increment edition sold
+                for item in order.items.select_related("product_size").all():
+                    size = item.product_size
+                    if size:
+                        qty = int(item.quantity or 0)
+                        size.stock = max(size.stock - qty, 0)
+                        size.edition_sold += qty
+                        size.save(update_fields=["stock", "edition_sold"])
+
                 order.save()
 
-                order_items = order.items.all()
                 items_text = "\n".join(
-                    [
-                        (
-                            f"- {item.quantity} x {item.name}"
-                            f"{f' ({item.option_name})' if item.option_name else ''}"
-                            f"{f' — {item.option_dimensions}' if item.option_dimensions else ''}"
-                            f" (£{item.unit_price} each)"
-                        )
-                        for item in order_items
-                    ]
+                    [f"- {_format_item(item)}" for item in order.items.all()]
                 )
 
                 shipping_address = order.shipping_address_display or "Not provided"
