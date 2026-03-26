@@ -52,17 +52,17 @@
         <p class="text-muted">No description yet.</p>
       {% endif %}
 
-      <form method="post" action="{% url 'store:cart_add' product.id %}">
+      <form method="post" action="{% url 'store:cart_add' product.id %}" class="js-add-to-cart">
         {% csrf_token %}
 
         {% if sizes %}
           <div class="mb-3">
-            <label for="size_id" class="form-label fw-semibold">Select size</label>
+            <label for="size_id" class="form-label fw-semibold">Select Print Option</label>
             <select name="size_id" id="size_id" class="form-select" required>
-              <option value="">Choose a size</option>
+              <option value="">Choose option...</option>
               {% for size in sizes %}
                 <option value="{{ size.id }}">
-                  {{ size.size_code }}{% if size.label %} — {{ size.label }}{% endif %} — £{{ size.price }}
+                  {{ size.display_name }} — £{{ size.price }}
                 </option>
               {% endfor %}
             </select>

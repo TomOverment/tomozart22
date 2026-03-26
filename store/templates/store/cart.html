@@ -107,6 +107,13 @@
     margin: 0;
   }
 
+  .cart-option-meta,
+  .mobile-option-meta {
+    color: rgba(0,0,0,.68);
+    font-size: .92rem;
+    margin-top: .35rem;
+  }
+
   .cart-segment-body {
     display: grid;
     grid-template-columns: 110px 1fr;
@@ -327,6 +334,12 @@
                         <span class="cart-item-meta cart-inline-meta">- {{ i.product.category }}</span>
                       {% endif %}
                     </div>
+
+                    {% if i.size %}
+                      <div class="cart-option-meta">
+                        {{ i.size.display_name }}
+                      </div>
+                    {% endif %}
                   </div>
 
                   <div class="cart-segment-body">
@@ -366,13 +379,14 @@
                     <div class="cart-segment-meta">
                       <div class="cart-meta-block">
                         <div class="cart-meta-label">Price</div>
-                        <div class="cart-meta-value">£{{ i.product.price }}</div>
+                        <div class="cart-meta-value">£{{ i.unit_price }}</div>
                       </div>
 
                       <div class="cart-meta-block">
                         <div class="cart-meta-label">Qty</div>
-                        <form method="post" action="{% url 'store:cart_set_qty' i.product.id %}">
+                        <form method="post" action="{% url 'store:cart_set_qty' %}">
                           {% csrf_token %}
+                          <input type="hidden" name="cart_key" value="{{ i.cart_key }}">
                           <input
                             type="number"
                             name="qty"
@@ -392,8 +406,9 @@
 
                       <div class="cart-meta-block cart-remove-block">
                         <div class="cart-meta-label">&nbsp;</div>
-                        <form method="post" action="{% url 'store:cart_remove' i.product.id %}">
+                        <form method="post" action="{% url 'store:cart_remove' %}">
                           {% csrf_token %}
+                          <input type="hidden" name="cart_key" value="{{ i.cart_key }}">
                           <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
                         </form>
                       </div>
@@ -459,13 +474,17 @@
                   {% if i.product.category %}
                     <div class="cart-item-meta">{{ i.product.category }}</div>
                   {% endif %}
+
+                  {% if i.size %}
+                    <div class="mobile-option-meta">{{ i.size.display_name }}</div>
+                  {% endif %}
                 </div>
               </div>
 
               <div class="mobile-cart-meta-row">
                 <div class="mobile-meta-box">
                   <div class="mobile-meta-label">Price</div>
-                  <div class="mobile-meta-value">£{{ i.product.price }}</div>
+                  <div class="mobile-meta-value">£{{ i.unit_price }}</div>
                 </div>
 
                 <div class="mobile-meta-box">
@@ -475,8 +494,9 @@
               </div>
 
               <div class="mobile-cart-actions-row">
-                <form method="post" action="{% url 'store:cart_set_qty' i.product.id %}" class="mobile-qty-form">
+                <form method="post" action="{% url 'store:cart_set_qty' %}" class="mobile-qty-form">
                   {% csrf_token %}
+                  <input type="hidden" name="cart_key" value="{{ i.cart_key }}">
                   <label class="form-label small text-muted mb-1">Qty</label>
                   <input
                     type="number"
@@ -489,8 +509,9 @@
                   >
                 </form>
 
-                <form method="post" action="{% url 'store:cart_remove' i.product.id %}" class="mobile-remove-form">
+                <form method="post" action="{% url 'store:cart_remove' %}" class="mobile-remove-form">
                   {% csrf_token %}
+                  <input type="hidden" name="cart_key" value="{{ i.cart_key }}">
                   <label class="form-label small text-muted mb-1 d-block">&nbsp;</label>
                   <button type="submit" class="btn btn-outline-danger mobile-remove-btn">
                     Remove
@@ -503,7 +524,6 @@
         {% endfor %}
       </div>
 
-      <!-- ONE summary card only -->
       <div class="cart-summary-wrap mt-4">
         <div class="card cart-summary-card border-0">
           <div class="card-body p-4">

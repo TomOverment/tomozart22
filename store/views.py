@@ -5,10 +5,11 @@ import stripe
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 from .models import Product, ProductSize, Order, OrderItem
 
@@ -16,7 +17,7 @@ from .models import Product, ProductSize, Order, OrderItem
 # -----------------------------
 # CART (session-based)
 # -----------------------------
-CART_SESSION_KEY = "cart"  # { "12:3": 2, "9:1": 1 }
+CART_SESSION_KEY = "cart"  # e.g. { "12:5": 2, "9:base": 1 }
 
 
 def _get_cart(request):
@@ -43,6 +44,34 @@ def cart(request):
     total = Decimal("0.00")
 
     for cart_key, qty in cart.items():
+        qty = int(qty)
+
+        # Base product fallback (no bespoke print options yet)
+        if cart_key.endswith(":base"):
+            try:
+                product_id = int(cart_key.split(":")[0])
+            except (ValueError, AttributeError):
+                continue
+
+            product = Product.objects.filter(id=product_id, is_active=True).first()
+            if not product:
+                continue
+
+            unit_price = Decimal(product.price)
+            line_total = unit_price * qty
+            total += line_total
+
+            items.append({
+                "product": product,
+                "size": None,
+                "qty": qty,
+                "unit_price": unit_price,
+                "line_total": line_total,
+                "cart_key": cart_key,
+            })
+            continue
+
+        # Bespoke print option
         try:
             product_id_str, size_id_str = cart_key.split(":")
             product_id = int(product_id_str)
@@ -54,13 +83,12 @@ def cart(request):
         size = ProductSize.objects.filter(
             id=size_id,
             product_id=product_id,
-            is_active=True
+            is_active=True,
         ).first()
 
         if not product or not size:
             continue
 
-        qty = int(qty)
         unit_price = Decimal(size.price)
         line_total = unit_price * qty
         total += line_total
@@ -81,28 +109,61 @@ def cart(request):
     })
 
 
+
+
 def cart_add(request, product_id):
     if request.method != "POST":
         return redirect("store:product_detail", product_id=product_id)
 
     cart = _get_cart(request)
-    size_id = request.POST.get("size_id")
-
     product = get_object_or_404(Product, id=product_id, is_active=True)
 
-    if not size_id:
-        messages.warning(request, "Please select a size.")
-        return redirect("store:product_detail", product_id=product_id)
+    active_sizes = product.sizes.filter(is_active=True)
+    size_id = request.POST.get("size_id")
 
-    size = get_object_or_404(ProductSize, id=size_id, product=product, is_active=True)
+    # Product has bespoke print options
+    if active_sizes.exists():
+        if not size_id:
+            messages.warning(request, "Please select a print option.")
+            return redirect("store:product_detail", product_id=product_id)
 
-    cart_key = f"{product.id}:{size.id}"
+        size = get_object_or_404(
+            ProductSize,
+            id=size_id,
+            product=product,
+            is_active=True,
+        )
+
+        cart_key = f"{product.id}:{size.id}"
+        cart[cart_key] = int(cart.get(cart_key, 0)) + 1
+        request.session.modified = True
+
+        cart_count = sum(int(q) for q in cart.values())
+
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return JsonResponse({
+                "success": True,
+                "cart_count": cart_count,
+            })
+
+        messages.success(request, f"Added {product.name} ({size.display_name}) to cart.")
+        return redirect("store:cart")
+
+    # Product has no bespoke print options yet
+    cart_key = f"{product.id}:base"
     cart[cart_key] = int(cart.get(cart_key, 0)) + 1
     request.session.modified = True
 
-    messages.success(request, f"Added {product.name} ({size.size_code}) to cart.")
-    return redirect("store:cart")
+    cart_count = sum(int(q) for q in cart.values())
 
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        return JsonResponse({
+            "success": True,
+            "cart_count": cart_count,
+        })
+
+    messages.success(request, f"Added {product.name} to cart.")
+    return redirect("store:cart")
 
 def cart_remove(request):
     cart = _get_cart(request)
@@ -165,7 +226,7 @@ def cart_dec(request):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id, is_active=True)
-    sizes = product.sizes.filter(is_active=True)
+    sizes = product.sizes.filter(is_active=True).order_by("sort_order", "id")
 
     return render(request, "store/product_detail.html", {
         "product": product,
@@ -183,17 +244,12 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 # SHIPPING HELPERS
 # -----------------------------
 def _build_shipping_options():
-    """
-    Stripe shipping options.
-    Amounts are in pence because currency is GBP.
-    Edit these values/names as needed.
-    """
     return [
         {
             "shipping_rate_data": {
                 "type": "fixed_amount",
                 "fixed_amount": {
-                    "amount": 495,  # £4.95
+                    "amount": 495,
                     "currency": "gbp",
                 },
                 "display_name": "UK Standard Shipping",
@@ -207,7 +263,7 @@ def _build_shipping_options():
             "shipping_rate_data": {
                 "type": "fixed_amount",
                 "fixed_amount": {
-                    "amount": 1495,  # £14.95
+                    "amount": 1495,
                     "currency": "gbp",
                 },
                 "display_name": "International Shipping",
@@ -221,30 +277,26 @@ def _build_shipping_options():
 
 
 def _allowed_shipping_countries():
-    """
-    Add/remove countries as needed.
-    Stripe expects ISO country codes.
-    """
     return [
-        "GB",  # United Kingdom
-        "IE",  # Ireland
-        "FR",  # France
-        "DE",  # Germany
-        "ES",  # Spain
-        "IT",  # Italy
-        "NL",  # Netherlands
-        "BE",  # Belgium
-        "PT",  # Portugal
-        "SE",  # Sweden
-        "DK",  # Denmark
-        "NO",  # Norway
-        "CH",  # Switzerland
-        "AT",  # Austria
-        "PL",  # Poland
-        "US",  # United States
-        "CA",  # Canada
-        "AU",  # Australia
-        "NZ",  # New Zealand
+        "GB",
+        "IE",
+        "FR",
+        "DE",
+        "ES",
+        "IT",
+        "NL",
+        "BE",
+        "PT",
+        "SE",
+        "DK",
+        "NO",
+        "CH",
+        "AT",
+        "PL",
+        "US",
+        "CA",
+        "AU",
+        "NZ",
     ]
 
 
@@ -252,10 +304,6 @@ def _allowed_shipping_countries():
 # CHECKOUT (Stripe Checkout)
 # -----------------------------
 def checkout_start(request):
-    """
-    Creates a pending Order + OrderItems from the session cart,
-    then creates a Stripe Checkout Session and redirects the user.
-    """
     cart = _get_cart(request)
     if not cart:
         messages.warning(request, "Your cart is empty.")
@@ -272,11 +320,49 @@ def checkout_start(request):
     subtotal = Decimal("0.00")
 
     for cart_key, qty in cart.items():
+        qty = int(qty)
+
+        # Base product fallback
+        if cart_key.endswith(":base"):
+            try:
+                product_id = int(cart_key.split(":")[0])
+            except (ValueError, AttributeError):
+                continue
+
+            product = Product.objects.filter(id=product_id, is_active=True).first()
+            if not product:
+                continue
+
+            unit_price = Decimal(product.price)
+            subtotal += unit_price * qty
+
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                name=product.name,
+                option_name="",
+                option_dimensions="",
+                unit_price=unit_price,
+                quantity=qty,
+            )
+
+            line_items.append({
+                "price_data": {
+                    "currency": "gbp",
+                    "product_data": {
+                        "name": product.name,
+                    },
+                    "unit_amount": int((unit_price * 100).quantize(Decimal("1"))),
+                },
+                "quantity": qty,
+            })
+            continue
+
+        # Bespoke print option
         try:
             product_id_str, size_id_str = cart_key.split(":")
             product_id = int(product_id_str)
             size_id = int(size_id_str)
-            qty = int(qty)
         except (ValueError, AttributeError):
             continue
 
@@ -284,7 +370,7 @@ def checkout_start(request):
         size = ProductSize.objects.filter(
             id=size_id,
             product_id=product_id,
-            is_active=True
+            is_active=True,
         ).first()
 
         if not product or not size:
@@ -298,15 +384,13 @@ def checkout_start(request):
             product=product,
             product_size=size,
             name=product.name,
-            size_code=size.size_code,
-            size_label=size.label,
+            option_name=size.name or size.display_name,
+            option_dimensions=size.dimensions_label,
             unit_price=unit_price,
             quantity=qty,
         )
 
-        item_name = f"{product.name} - {size.size_code}"
-        if size.label:
-            item_name += f" ({size.label})"
+        item_name = f"{product.name} - {size.display_name}"
 
         line_items.append({
             "price_data": {
@@ -343,9 +427,7 @@ def checkout_start(request):
             line_items=line_items,
             success_url=success_url,
             cancel_url=cancel_url,
-            metadata={
-                "order_id": str(order.id),
-            },
+            metadata={"order_id": str(order.id)},
             client_reference_id=str(order.id),
             customer_email=order.email or None,
             billing_address_collection="required",
@@ -369,10 +451,6 @@ def checkout_start(request):
 
 
 def checkout_success(request):
-    """
-    User returns from Stripe.
-    Webhook is the source of truth for marking the order as paid.
-    """
     session_id = request.GET.get("session_id")
     order = None
 
@@ -405,10 +483,6 @@ def checkout_cancel(request):
 # -----------------------------
 @csrf_exempt
 def stripe_webhook(request):
-    """
-    Stripe calls this endpoint. It confirms payment, updates the Order,
-    and sends confirmation emails.
-    """
     payload = request.body
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE", "")
 
@@ -474,8 +548,8 @@ def stripe_webhook(request):
                     [
                         (
                             f"- {item.quantity} x {item.name}"
-                            f"{f' ({item.size_code}' if item.size_code else ''}"
-                            f"{f' — {item.size_label})' if item.size_label else (')' if item.size_code else '')}"
+                            f"{f' ({item.option_name})' if item.option_name else ''}"
+                            f"{f' — {item.option_dimensions}' if item.option_dimensions else ''}"
                             f" (£{item.unit_price} each)"
                         )
                         for item in order_items
