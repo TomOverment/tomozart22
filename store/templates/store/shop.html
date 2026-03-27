@@ -24,6 +24,39 @@
     border-radius: 0;
   }
 
+  .shop-card .card-body {
+    padding: 1.1rem;
+  }
+
+  .shop-card h3 {
+    font-weight: 500;
+  }
+
+  .shop-price-subtle {
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.65);
+    margin-bottom: 0.9rem;
+  }
+
+  .shop-option-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .shop-option-label {
+    margin: 0;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.68);
+    white-space: nowrap;
+  }
+
+  .shop-option-select {
+    max-width: 220px;
+  }
+
   .shop-card-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -42,6 +75,15 @@
   @media (max-width: 575.98px) {
     .shop-card-actions {
       grid-template-columns: 1fr;
+    }
+
+    .shop-option-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .shop-option-select {
+      max-width: 100%;
     }
   }
 </style>
@@ -87,9 +129,9 @@
             {% endif %}
 
             {% if product.has_print_options %}
-              <div class="h4 mb-3">From £{{ product.min_active_option_price }}</div>
+              <div class="shop-price-subtle">From £{{ product.min_active_option_price }}</div>
             {% else %}
-              <div class="h4 mb-3">£{{ product.price }}</div>
+              <div class="shop-price-subtle">£{{ product.price }}</div>
             {% endif %}
 
             {% if product.has_print_options and not product.has_in_stock_options %}
@@ -108,17 +150,18 @@
                 {% csrf_token %}
 
                 {% if product.has_print_options %}
-                  <div class="mb-3">
-                    <label for="size_id_{{ product.id }}" class="form-label fw-semibold small">
-                      Select Print Option
+                  <div class="shop-option-row">
+                    <label for="size_id_{{ product.id }}" class="shop-option-label">
+                      Print size
                     </label>
+
                     <select
                       name="size_id"
                       id="size_id_{{ product.id }}"
-                      class="form-select"
+                      class="form-select form-select-sm shop-option-select"
                       required
                     >
-                      <option value="">Choose option...</option>
+                      <option value="">Choose...</option>
                       {% for size in product.active_sizes %}
                         <option value="{{ size.id }}" {% if size.is_sold_out %}disabled{% endif %}>
                           {{ size.display_name }} — £{{ size.price }}{% if size.is_sold_out %} — Sold out{% endif %}
