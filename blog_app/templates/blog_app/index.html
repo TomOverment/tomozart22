@@ -5,23 +5,23 @@
 {% block content %}
 
 <!-- ========================= -->
-<!-- HERO INTRO -->
+<!-- HERO INTRO
 <!-- ========================= -->
-<div class="container py-5">
-  <div class="text-center hero-wrap">
+<div class="container py-4">
 
-    <h1 class="fw-light mb-3">
-      Welcome {% if user.is_authenticated %}{{ user.username }}. {% endif %}
-      This is Tomo’s Art Gallery.
+  <div class="text-center">
+
+    <h1 class="mb-3" style="font-weight: 500;">
+      Welcome{% if user.is_authenticated %} {{ user.username }}{% endif %}
     </h1>
 
-    <p class="lead text-muted mx-auto" style="max-width: 850px;">
-      Explore original artworks, limited edition Giclée prints and experimental
-      pieces. From vibrant spray painting to mixed-media canvases,
-      Tomo's work explores ideas built from the walls of everyday life.
+    <p class="text-muted mb-3" style="max-width: 720px; margin: 0 auto;">
+      This is Tomo’s Art Gallery. Explore original artworks, limited edition
+      Giclée prints and experimental pieces. From spray painting to mixed-media
+      canvases, the work explores ideas built from everyday environments.
     </p>
 
-    <p class="mx-auto mt-3" style="max-width:750px;">
+    <p class="text-muted mb-0" style="max-width: 680px; margin: 0 auto;">
       New work is released periodically.
       <a href="{% url 'blog:newsletter' %}" class="fw-semibold text-decoration-none">
         Join the TomozArt mailing list
@@ -29,20 +29,14 @@
       to hear first when new artwork and limited edition prints become available.
     </p>
 
-    {% if not user.is_authenticated %}
-      <p class="text-muted small mt-4" style="letter-spacing:.3px;">
-        Guests are welcome to explore freely. Creating an account lets you manage
-        purchases and access additional features.
-      </p>
-    {% endif %}
-
-    <hr class="my-4">
-
-    <p class="text-muted small mb-0">
-      Scroll down to discover and enjoy <strong>TomozArt</strong>.
-    </p>
-
   </div>
+
+  <hr class="my-4">
+
+  <p class="text-center text-muted mb-0">
+    Scroll down to discover and enjoy <strong>TomozArt</strong>.
+  </p>
+
 </div>
 
 <!-- ========================= -->
