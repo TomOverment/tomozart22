@@ -60,7 +60,7 @@
       .footer {
         background-color: #000;
         color: #fff;
-        padding: 14px 0; /* shorter */
+        padding: 14px 0;
         font-size: 0.9rem;
       }
 
@@ -115,21 +115,17 @@
       }
 
       /* Floating Back To Top */
-
       .back-to-top {
         position: fixed;
         right: 25px;
         bottom: 30px;
         z-index: 1050;
-
         border-radius: 50%;
         width: 42px;
         height: 42px;
-
         display: flex;
         align-items: center;
         justify-content: center;
-
         box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
         transition:
           transform 0.25s ease,
@@ -137,7 +133,7 @@
       }
 
       .back-to-top.raise {
-        bottom: 90px; /* pushes it above footer */
+        bottom: 90px;
       }
 
       .back-to-top:hover {
@@ -340,7 +336,7 @@
           </button>
         </div>
 
-        <!-- MOBILE NAV (sm only): FULL LIST -->
+        <!-- MOBILE NAV -->
         <div
           class="collapse navbar-collapse order-md-1 d-md-none"
           id="navbarMain"
@@ -454,7 +450,7 @@
     <!-- Main -->
     <main class="flex-fill">
       <div class="container py-4">
-        {# Global Django messages #} {% if messages %}
+        {% if messages %}
         <div class="flash-wrap" aria-live="polite" aria-atomic="true">
           {% for message in messages %}
           <div
@@ -472,7 +468,9 @@
           </div>
           {% endfor %}
         </div>
-        {% endif %} {% block content %}{% endblock %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
       </div>
     </main>
 
@@ -480,7 +478,6 @@
     <footer class="footer mt-auto">
       <div class="container position-relative">
         <div class="d-flex align-items-center justify-content-between">
-          <!-- LEFT -->
           <div>
             <a
               href="{% url 'blog:contact' %}"
@@ -490,7 +487,6 @@
             </a>
           </div>
 
-          <!-- CENTER -->
           <div class="position-absolute start-50 translate-middle-x">
             <a
               href="https://www.instagram.com/taodog22?igsh=bnV4a2xjZTRsbGR5"
@@ -508,12 +504,11 @@
               aria-label="LinkedIn"
               target="_blank"
               rel="noopener noreferrer"
-        >
+            >
               <i class="fa-brands fa-linkedin"></i>
             </a>
           </div>
 
-          <!-- RIGHT -->
           <div class="text-end">© {% now "Y" %} TomozArt</div>
         </div>
       </div>
@@ -531,20 +526,18 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- back to top -->
+
     <script>
       const backBtn = document.getElementById("backToTop");
       const footer = document.querySelector("footer");
 
       window.addEventListener("scroll", () => {
-        // Show / hide
         if (window.scrollY > 300) {
           backBtn.classList.remove("d-none");
         } else {
           backBtn.classList.add("d-none");
         }
 
-        // Detect footer collision
         const footerRect = footer.getBoundingClientRect();
         const windowHeight = window.innerHeight;
 
@@ -561,7 +554,6 @@
     </script>
 
     <script>
-      /* Hover preview (used by .js-hover-thumb thumbnails) */
       (() => {
         const GAP = 12;
         const DELAY = 500;
@@ -593,10 +585,12 @@
           let left = r.right + GAP;
           let top = r.top;
 
-          if (left + pr.width > window.innerWidth - 10)
+          if (left + pr.width > window.innerWidth - 10) {
             left = r.left - pr.width - GAP;
-          if (top + pr.height > window.innerHeight - 10)
+          }
+          if (top + pr.height > window.innerHeight - 10) {
             top = window.innerHeight - pr.height - 10;
+          }
           if (top < 10) top = 10;
 
           preview.style.left = `${left}px`;
@@ -644,11 +638,7 @@
           if (!el) return;
 
           const { preview } = getEls();
-          if (
-            preview &&
-            preview.classList.contains("show") &&
-            currentEl === el
-          ) {
+          if (preview && preview.classList.contains("show") && currentEl === el) {
             place(preview, el);
           }
         });
@@ -658,8 +648,9 @@
           if (!leftThumb) return;
 
           const to = e.relatedTarget;
-          if (to && to.closest && to.closest(".js-hover-thumb") === leftThumb)
+          if (to && to.closest && to.closest(".js-hover-thumb") === leftThumb) {
             return;
+          }
 
           clearTimer();
           currentEl = null;
@@ -675,6 +666,7 @@
           },
           true,
         );
+
         window.addEventListener("resize", () => {
           clearTimer();
           currentEl = null;
@@ -684,7 +676,6 @@
     </script>
 
     <script>
-      /* Auto-hide alerts (prevents duplicates by marking processed nodes) */
       (() => {
         document.querySelectorAll(".flash-msg").forEach((el) => {
           if (el.dataset.autohideInit === "1") return;
@@ -728,28 +719,86 @@
         }
       });
     </script>
+
     <script>
-(() => {
-  const csrftoken = (document.cookie.match(/csrftoken=([^;]+)/) || [])[1];
-  const setCount = (n) => document.querySelectorAll(".cart-badge").forEach(b => {
-    b.textContent = n; b.classList.toggle("d-none", n <= 0);
-  });
+      (() => {
+        const csrftoken = (document.cookie.match(/csrftoken=([^;]+)/) || [])[1];
 
-  document.addEventListener("submit", async (e) => {
-    const form = e.target.closest(".js-add-to-cart");
-    if (!form) return;
-    e.preventDefault();
+        const setCount = (n) => {
+          document.querySelectorAll(".cart-badge").forEach((b) => {
+            b.textContent = n;
+            b.classList.toggle("d-none", n <= 0);
+          });
+        };
 
-    const res = await fetch(form.action, {
-      method: "POST",
-      headers: { "X-CSRFToken": csrftoken, "X-Requested-With": "XMLHttpRequest" },
-      body: new FormData(form),
-    });
+        const resetButton = (button, originalText) => {
+          button.textContent = originalText;
+          button.classList.remove("btn-success", "btn-danger");
+          button.classList.add("btn-dark");
+          button.disabled = false;
+        };
 
-    const data = await res.json();
-    if (data && typeof data.cart_count !== "undefined") setCount(data.cart_count);
-  });
-})();
-</script>
+        document.addEventListener("submit", async (e) => {
+          const form = e.target.closest(".js-add-to-cart");
+          if (!form) return;
+
+          e.preventDefault();
+
+          const button = form.querySelector(".add-to-cart-btn");
+          if (!button) return;
+
+          const originalText = button.textContent;
+          button.textContent = "Adding...";
+          button.disabled = true;
+
+          try {
+            const res = await fetch(form.action, {
+              method: "POST",
+              headers: {
+                "X-CSRFToken": csrftoken,
+                "X-Requested-With": "XMLHttpRequest"
+              },
+              body: new FormData(form),
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+              if (typeof data.cart_count !== "undefined") {
+                setCount(data.cart_count);
+              }
+
+              button.textContent = "Added ✓";
+              button.classList.remove("btn-dark");
+              button.classList.add("btn-success");
+
+              setTimeout(() => {
+                resetButton(button, originalText);
+              }, 1500);
+            } else {
+              alert(data.error || "Could not add to cart.");
+              button.textContent = "Try again";
+              button.classList.remove("btn-dark");
+              button.classList.add("btn-danger");
+
+              setTimeout(() => {
+                resetButton(button, originalText);
+              }, 1500);
+            }
+          } catch (err) {
+            console.error(err);
+            alert("Something went wrong. Please try again.");
+
+            button.textContent = "Try again";
+            button.classList.remove("btn-dark");
+            button.classList.add("btn-danger");
+
+            setTimeout(() => {
+              resetButton(button, originalText);
+            }, 1500);
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
