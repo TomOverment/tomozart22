@@ -40,7 +40,7 @@
   }
 
   .cart-table-wrap {
-    padding: 1.25rem;
+    padding: 1.4rem 1.5rem;
   }
 
   .cart-summary-wrap {
@@ -71,7 +71,7 @@
   }
 
   .cart-segment {
-    padding: 1.3rem 0;
+    padding: 1.35rem 0;
     background: transparent;
     border: none;
   }
@@ -80,50 +80,15 @@
     border-top: 1px solid rgba(0,0,0,.08);
   }
 
-  .cart-segment-top {
-    margin-bottom: 1rem;
-  }
-
-  .cart-title-line {
-    display: flex;
-    align-items: baseline;
-    gap: .45rem;
-    flex-wrap: wrap;
-  }
-
-  .cart-item-title {
-    font-weight: 700;
-    margin: 0;
-    line-height: 1.2;
-  }
-
-  .cart-item-meta {
-    color: rgba(0,0,0,.62);
-    font-size: .92rem;
-    margin: 0;
-  }
-
-  .cart-inline-meta {
-    margin: 0;
-  }
-
-  .cart-option-meta,
-  .mobile-option-meta {
-    color: rgba(0,0,0,.68);
-    font-size: .92rem;
-    margin-top: .35rem;
-  }
-
-  .cart-segment-body {
+  .cart-segment-layout {
     display: grid;
-    grid-template-columns: 110px 1fr;
-    gap: 1.25rem;
-    align-items: center;
+    grid-template-columns: 150px 1fr;
+    gap: 1.4rem;
+    align-items: start;
   }
 
   .cart-segment-product {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
   }
 
@@ -137,7 +102,6 @@
   .cart-thumb,
   .cart-mobile-thumb {
     object-fit: cover;
-    border-radius: 14px;
     flex-shrink: 0;
     border: 1px solid rgba(0,0,0,.06);
     background: #f3f3f3;
@@ -146,13 +110,15 @@
   }
 
   .cart-thumb {
-    width: 92px;
-    height: 92px;
+    width: 138px;
+    height: 138px;
+    border-radius: 16px;
   }
 
   .cart-mobile-thumb {
-    width: 84px;
-    height: 84px;
+    width: 108px;
+    height: 108px;
+    border-radius: 14px;
   }
 
   .cart-thumb-link:hover .cart-thumb,
@@ -161,10 +127,38 @@
     box-shadow: 0 10px 22px rgba(0,0,0,.22);
   }
 
-  .cart-segment-meta {
+  .cart-segment-main {
+    min-width: 0;
+  }
+
+  .cart-top-meta {
+    margin-bottom: 1rem;
+  }
+
+  .cart-item-title {
+    font-weight: 700;
+    font-size: 1.55rem;
+    line-height: 1.15;
+    margin: 0 0 .45rem 0;
+  }
+
+  .cart-item-meta {
+    color: rgba(0,0,0,.62);
+    font-size: .98rem;
+    margin: 0 0 .28rem 0;
+  }
+
+  .cart-option-meta,
+  .mobile-option-meta {
+    color: rgba(0,0,0,.68);
+    font-size: .96rem;
+    margin: 0;
+  }
+
+  .cart-meta-row {
     display: grid;
-    grid-template-columns: repeat(4, minmax(110px, 1fr));
-    gap: 1rem;
+    grid-template-columns: 140px 140px auto;
+    gap: 1rem 1.25rem;
     align-items: end;
   }
 
@@ -174,9 +168,9 @@
 
   .cart-meta-label,
   .mobile-meta-label {
-    font-size: .8rem;
+    font-size: .78rem;
     text-transform: uppercase;
-    letter-spacing: .4px;
+    letter-spacing: .45px;
     color: rgba(0,0,0,.55);
     margin-bottom: .45rem;
   }
@@ -186,14 +180,15 @@
     font-size: 1.05rem;
   }
 
+  .cart-qty-input {
+    max-width: 90px;
+  }
+
   .cart-remove-block {
     display: flex;
     flex-direction: column;
     justify-content: end;
-  }
-
-  .cart-qty-input {
-    max-width: 90px;
+    align-items: flex-start;
   }
 
   .cart-item-card {
@@ -205,9 +200,10 @@
   }
 
   .mobile-cart-top {
-    display: flex;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 108px 1fr;
     gap: 1rem;
+    align-items: start;
     margin-bottom: 1rem;
   }
 
@@ -219,15 +215,15 @@
   .cart-mobile-title {
     font-weight: 700;
     line-height: 1.2;
-    margin-bottom: .15rem;
-    font-size: 1.1rem;
+    margin-bottom: .3rem;
+    font-size: 1.28rem;
   }
 
   .mobile-cart-meta-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr auto;
     gap: .75rem;
-    margin-bottom: 1rem;
+    align-items: end;
   }
 
   .mobile-meta-box {
@@ -235,14 +231,6 @@
     border: 1px solid rgba(0,0,0,.05);
     border-radius: 14px;
     padding: .8rem .9rem;
-  }
-
-  .mobile-cart-actions-row {
-    display: grid;
-    grid-template-columns: 110px auto;
-    gap: .75rem;
-    align-items: end;
-    justify-content: start;
   }
 
   .mobile-qty-form,
@@ -282,18 +270,41 @@
     }
   }
 
+  @media (max-width: 1199.98px) {
+    .cart-segment-layout {
+      grid-template-columns: 126px 1fr;
+    }
+
+    .cart-thumb {
+      width: 118px;
+      height: 118px;
+    }
+
+    .cart-item-title {
+      font-size: 1.35rem;
+    }
+
+    .cart-meta-row {
+      grid-template-columns: 130px 130px auto;
+    }
+  }
+
   @media (max-width: 575.98px) {
     .cart-mobile-thumb {
-      width: 80px;
-      height: 80px;
+      width: 96px;
+      height: 96px;
     }
 
     .cart-mobile-title {
-      font-size: 1rem;
+      font-size: 1.1rem;
     }
 
-    .mobile-cart-actions-row {
-      grid-template-columns: 90px auto;
+    .mobile-cart-top {
+      grid-template-columns: 96px 1fr;
+    }
+
+    .mobile-cart-meta-row {
+      grid-template-columns: 1fr;
     }
 
     .mobile-remove-btn {
@@ -327,22 +338,8 @@
             <div class="cart-segment-list">
               {% for i in items %}
                 <div class="cart-segment">
-                  <div class="cart-segment-top">
-                    <div class="cart-title-line">
-                      <span class="cart-item-title">{{ i.product.name }}</span>
-                      {% if i.product.category %}
-                        <span class="cart-item-meta cart-inline-meta">- {{ i.product.category }}</span>
-                      {% endif %}
-                    </div>
+                  <div class="cart-segment-layout">
 
-                    {% if i.size %}
-                      <div class="cart-option-meta">
-                        {{ i.size.display_name }}
-                      </div>
-                    {% endif %}
-                  </div>
-
-                  <div class="cart-segment-body">
                     <div class="cart-segment-product">
                       {% if i.product.image %}
                         <a
@@ -376,43 +373,53 @@
                       {% endif %}
                     </div>
 
-                    <div class="cart-segment-meta">
-                      <div class="cart-meta-block">
-                        <div class="cart-meta-label">Price</div>
-                        <div class="cart-meta-value">£{{ i.unit_price }}</div>
+                    <div class="cart-segment-main">
+                      <div class="cart-top-meta">
+                        <h3 class="cart-item-title">{{ i.product.name }}</h3>
+
+                        {% if i.product.category %}
+                          <p class="cart-item-meta">{{ i.product.category }}</p>
+                        {% endif %}
+
+                        {% if i.size %}
+                          <p class="cart-option-meta">{{ i.size.display_name }}</p>
+                        {% endif %}
                       </div>
 
-                      <div class="cart-meta-block">
-                        <div class="cart-meta-label">Qty</div>
-                        <form method="post" action="{% url 'store:cart_set_qty' %}">
-                          {% csrf_token %}
-                          <input type="hidden" name="cart_key" value="{{ i.cart_key }}">
-                          <input
-                            type="number"
-                            name="qty"
-                            value="{{ i.qty }}"
-                            min="0"
-                            max="99"
-                            class="form-control form-control-sm cart-qty-input"
-                            oninput="this.form.submit()"
-                          >
-                        </form>
-                      </div>
+                      <div class="cart-meta-row">
+                        <div class="cart-meta-block">
+                          <div class="cart-meta-label">Price</div>
+                          <div class="cart-meta-value">£{{ i.unit_price }}</div>
+                        </div>
 
-                      <div class="cart-meta-block">
-                        <div class="cart-meta-label">Line total</div>
-                        <div class="cart-meta-value fw-bold">£{{ i.line_total }}</div>
-                      </div>
+                        <div class="cart-meta-block">
+                          <div class="cart-meta-label">Qty</div>
+                          <form method="post" action="{% url 'store:cart_set_qty' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="cart_key" value="{{ i.cart_key }}">
+                            <input
+                              type="number"
+                              name="qty"
+                              value="{{ i.qty }}"
+                              min="0"
+                              max="99"
+                              class="form-control form-control-sm cart-qty-input"
+                              oninput="this.form.submit()"
+                            >
+                          </form>
+                        </div>
 
-                      <div class="cart-meta-block cart-remove-block">
-                        <div class="cart-meta-label">&nbsp;</div>
-                        <form method="post" action="{% url 'store:cart_remove' %}">
-                          {% csrf_token %}
-                          <input type="hidden" name="cart_key" value="{{ i.cart_key }}">
-                          <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
-                        </form>
+                        <div class="cart-meta-block cart-remove-block">
+                          <div class="cart-meta-label">&nbsp;</div>
+                          <form method="post" action="{% url 'store:cart_remove' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="cart_key" value="{{ i.cart_key }}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                          </form>
+                        </div>
                       </div>
                     </div>
+
                   </div>
                 </div>
               {% endfor %}
@@ -487,13 +494,6 @@
                   <div class="mobile-meta-value">£{{ i.unit_price }}</div>
                 </div>
 
-                <div class="mobile-meta-box">
-                  <div class="mobile-meta-label">Line total</div>
-                  <div class="mobile-meta-value fw-bold">£{{ i.line_total }}</div>
-                </div>
-              </div>
-
-              <div class="mobile-cart-actions-row">
                 <form method="post" action="{% url 'store:cart_set_qty' %}" class="mobile-qty-form">
                   {% csrf_token %}
                   <input type="hidden" name="cart_key" value="{{ i.cart_key }}">
