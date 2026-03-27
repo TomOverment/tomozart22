@@ -79,6 +79,18 @@ class Product(models.Model):
     def min_active_option_price(self):
         option = self.sizes.filter(is_active=True).order_by("sort_order", "id").first()
         return option.price if option else self.price
+    
+    @property
+    def active_sizes(self):
+        return self.sizes.filter(is_active=True).order_by("sort_order", "id")
+
+    @property
+    def has_print_options(self):
+        return self.active_sizes.exists()
+
+    @property
+    def has_in_stock_options(self):
+        return self.active_sizes.filter(stock__gt=0).exists()
 
 
 class ProductSize(models.Model):

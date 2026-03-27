@@ -50,7 +50,12 @@ def store_home(request):
 
 
 def shop(request):
-    products = Product.objects.filter(is_active=True).order_by("name")
+    products = (
+        Product.objects
+        .filter(is_active=True)
+        .prefetch_related("sizes")
+        .order_by("name")
+    )
     return render(request, "store/shop.html", {"products": products})
 
 
