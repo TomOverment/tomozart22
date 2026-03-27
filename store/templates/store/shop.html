@@ -32,29 +32,18 @@
     font-weight: 500;
   }
 
-  .shop-price-subtle {
+  .shop-print-line {
     font-size: 0.95rem;
-    color: rgba(0, 0, 0, 0.65);
-    margin-bottom: 0.9rem;
-  }
-
-  .shop-option-row {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .shop-option-label {
-    margin: 0;
-    font-size: 0.9rem;
-    color: rgba(0, 0, 0, 0.68);
-    white-space: nowrap;
+    color: rgba(0, 0, 0, 0.7);
+    margin-bottom: 0.45rem;
+    font-weight: 500;
   }
 
   .shop-option-select {
-    max-width: 220px;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
   }
 
   .shop-card-actions {
@@ -75,15 +64,6 @@
   @media (max-width: 575.98px) {
     .shop-card-actions {
       grid-template-columns: 1fr;
-    }
-
-    .shop-option-row {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .shop-option-select {
-      max-width: 100%;
     }
   }
 </style>
@@ -128,13 +108,9 @@
               </p>
             {% endif %}
 
-            {% if product.has_print_options %}
-              <div class="shop-price-subtle">From £{{ product.min_active_option_price }}</div>
-            {% else %}
-              <div class="shop-price-subtle">£{{ product.price }}</div>
-            {% endif %}
-
             {% if product.has_print_options and not product.has_in_stock_options %}
+              <div class="shop-print-line">Prints sold out</div>
+
               <div class="shop-card-actions mt-auto">
                 <a href="{% url 'store:product_detail' product.id %}" class="btn btn-outline-dark">
                   View details
@@ -150,24 +126,26 @@
                 {% csrf_token %}
 
                 {% if product.has_print_options %}
-                  <div class="shop-option-row">
-                    <label for="size_id_{{ product.id }}" class="shop-option-label">
-                      Print size
-                    </label>
+                  <div class="shop-print-line">
+                    Prints from £{{ product.min_active_option_price }}
+                  </div>
 
-                    <select
-                      name="size_id"
-                      id="size_id_{{ product.id }}"
-                      class="form-select form-select-sm shop-option-select"
-                      required
-                    >
-                      <option value="">Choose...</option>
-                      {% for size in product.active_sizes %}
-                        <option value="{{ size.id }}" {% if size.is_sold_out %}disabled{% endif %}>
-                          {{ size.display_name }} — £{{ size.price }}{% if size.is_sold_out %} — Sold out{% endif %}
-                        </option>
-                      {% endfor %}
-                    </select>
+                  <select
+                    name="size_id"
+                    id="size_id_{{ product.id }}"
+                    class="form-select form-select-sm shop-option-select"
+                    required
+                  >
+                    <option value="">Choose print...</option>
+                    {% for size in product.active_sizes %}
+                      <option value="{{ size.id }}" {% if size.is_sold_out %}disabled{% endif %}>
+                        {{ size.display_name }} — £{{ size.price }}{% if size.is_sold_out %} — Sold out{% endif %}
+                      </option>
+                    {% endfor %}
+                  </select>
+                {% else %}
+                  <div class="shop-print-line">
+                    £{{ product.price }}
                   </div>
                 {% endif %}
 
