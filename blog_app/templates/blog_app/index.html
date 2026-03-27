@@ -4,8 +4,6 @@
 
 {% block content %}
 
-
-
 <!-- ========================= -->
 <!-- HERO INTRO -->
 <!-- ========================= -->
@@ -23,9 +21,8 @@
       Tomo's work explores ideas built from the walls of everyday life.
     </p>
 
-    <!-- Newsletter sentence -->
     <p class="mx-auto mt-3" style="max-width:750px;">
-      New work is released periodically.  
+      New work is released periodically.
       <a href="{% url 'blog:newsletter' %}" class="fw-semibold text-decoration-none">
         Join the TomozArt mailing list
       </a>
@@ -47,6 +44,7 @@
 
   </div>
 </div>
+
 <!-- ========================= -->
 <!-- PRODUCT CAROUSEL (MOBILE: 1 / DESKTOP: 3) -->
 <!-- ========================= -->
@@ -73,10 +71,10 @@
                     <a href="{% url 'store:product_detail' product.id %}?next=home">
                       {% if product.image %}
                         <img
-                          src="{{ product.optimized_image_url }}"
+                          src="{{ product.optimized_image_url|default:product.image.url }}"
                           class="card-img-top product-card-img"
                           alt="{{ product.name }}"
-                      {% if not forloop.first %}loading="lazy"{% endif %}
+                          {% if not forloop.first %}loading="lazy"{% endif %}
                         />
                       {% endif %}
                     </a>
@@ -86,7 +84,7 @@
                       {% if product.price %}
                         <p class="card-text mb-2">£{{ product.price }}</p>
                       {% endif %}
-                      <a href="{% url 'store:product_detail' product.id %}?next=home">
+                      <a href="{% url 'store:product_detail' product.id %}?next=home"
                          class="btn btn-sm btn-outline-dark">
                         View
                       </a>
@@ -117,7 +115,7 @@
         </div>
       </div>
 
-      <!-- DESKTOP (3 items per slide - your existing logic) -->
+      <!-- DESKTOP (3 items per slide) -->
       <div class="d-none d-md-block">
         <div id="productCarouselDesktop"
              class="carousel slide"
@@ -137,10 +135,12 @@
 
                         <a href="{% url 'store:product_detail' product.id %}?next=home">
                           {% if product.image %}
-                            <img src="{{ product.optimized_image_url }}"
-                            class="card-img-top product-card-img"
-                            alt="{{ product.name }}"
-                            {% if not forloop.first %}loading="lazy"{% endif %}>
+                            <img
+                              src="{{ product.optimized_image_url|default:product.image.url }}"
+                              class="card-img-top product-card-img"
+                              alt="{{ product.name }}"
+                              {% if not forloop.first %}loading="lazy"{% endif %}
+                            >
                           {% endif %}
                         </a>
 
@@ -149,7 +149,7 @@
                           {% if product.price %}
                             <p class="card-text mb-2">£{{ product.price }}</p>
                           {% endif %}
-                          <a href="{% url 'store:product_detail' product.id %}?next=home">
+                          <a href="{% url 'store:product_detail' product.id %}?next=home"
                              class="btn btn-sm btn-outline-dark">
                             View
                           </a>
