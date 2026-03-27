@@ -9,10 +9,15 @@
       <a href="{% url 'store:cart' %}" class="btn btn-outline-dark">
         ← Back to Cart
       </a>
+    {% elif request.GET.next == "home" %}
+      <a href="{% url 'blog:home' %}" class="btn btn-outline-dark">
+        ← Back to Home
+    </a>
+
     {% else %}
       <a href="{% url 'store:shop' %}" class="btn btn-outline-dark">
         ← Back to Shop
-      </a>
+    </a>
     {% endif %}
   </div>
 
