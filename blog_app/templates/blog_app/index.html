@@ -70,7 +70,7 @@
                 <div class="px-3">
                   <div class="card product-card h-100 shadow-sm">
 
-                    <a href="{% url 'store:product_detail' product.id %}">
+                    <a href="{% url 'store:product_detail' product.id %}?next=home">
                       {% if product.image %}
                         <img
                           src="{{ product.optimized_image_url }}"
@@ -86,7 +86,7 @@
                       {% if product.price %}
                         <p class="card-text mb-2">£{{ product.price }}</p>
                       {% endif %}
-                      <a href="{% url 'store:product_detail' product.id %}"
+                      <a href="{% url 'store:product_detail' product.id %}?next=home">
                          class="btn btn-sm btn-outline-dark">
                         View
                       </a>
@@ -135,7 +135,7 @@
                     <div class="col-12 col-md-4">
                       <div class="card product-card h-100 shadow-sm">
 
-                        <a href="{% url 'store:product_detail' product.id %}">
+                        <a href="{% url 'store:product_detail' product.id %}?next=home">
                           {% if product.image %}
                             <img src="{{ product.optimized_image_url }}"
                             class="card-img-top product-card-img"
@@ -149,7 +149,7 @@
                           {% if product.price %}
                             <p class="card-text mb-2">£{{ product.price }}</p>
                           {% endif %}
-                          <a href="{% url 'store:product_detail' product.id %}"
+                          <a href="{% url 'store:product_detail' product.id %}?next=home">
                              class="btn btn-sm btn-outline-dark">
                             View
                           </a>
