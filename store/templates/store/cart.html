@@ -316,6 +316,11 @@
     .cart-qty-input {
       max-width: 100%;
     }
+
+    .cart-summary-sticky {
+      position: sticky;
+      top: 110px;
+    }
   }
 </style>
 
@@ -324,7 +329,7 @@
   <div class="cart-header-row">
     <h2 class="page-title mb-2">Cart</h2>
     <a href="{% url 'store:shop' %}" class="btn btn-outline-dark cart-back-btn">
-      Back to Shop
+      Shop
     </a>
   </div>
 
@@ -366,7 +371,7 @@
                         >
                           <img
                             src="{% static 'images/placeholder.png' %}"
-                            alt="No image"
+                            alt="wish I was here"
                             class="cart-thumb"
                           >
                         </a>
