@@ -99,8 +99,9 @@
 
   .cart-mobile-thumb {
     width: 100%;
-    max-width: 100%;
+    height: auto;
     aspect-ratio: 1 / 1;
+    object-fit: cover;
     border-radius: 0;
     border: 1px solid rgba(0,0,0,.12);
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
@@ -217,6 +218,7 @@
 
   .mobile-cart-image-wrap {
     width: 90%;
+    max-width: 320px;
     margin: 0 auto 1rem;
   }
 
@@ -226,7 +228,7 @@
     justify-content: space-between;
     gap: .75rem;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
+    margin-bottom: .35rem;
   }
 
   .mobile-cart-category {
@@ -240,23 +242,42 @@
     white-space: nowrap;
   }
 
+  .mobile-option-meta {
+    margin-bottom: 1rem;
+  }
+
   .mobile-cart-controls {
     display: grid;
-    grid-template-columns: minmax(110px, 1fr) auto;
-    gap: .85rem;
+    grid-template-columns: auto minmax(110px, 1fr) minmax(110px, 1fr);
+    gap: 0.75rem;
     align-items: end;
+  }
+
+  .mobile-qty-label-inline {
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .45px;
+    color: rgba(0,0,0,.55);
+    line-height: 44px;
+    margin: 0;
+    white-space: nowrap;
   }
 
   .mobile-qty-form,
   .mobile-remove-form {
     margin: 0;
-    width: auto;
+    width: 100%;
+  }
+
+  .mobile-qty-form .cart-qty-input,
+  .mobile-remove-btn {
+    width: 100%;
+    min-width: 0;
+    height: 44px;
+    border-radius: 8px;
   }
 
   .mobile-remove-btn {
-    min-width: 110px;
-    height: 44px;
-    border-radius: 8px;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -308,6 +329,7 @@
 
     .mobile-cart-image-wrap {
       width: 90%;
+      max-width: none;
     }
 
     .mobile-cart-meta-inline {
@@ -316,14 +338,12 @@
     }
 
     .mobile-cart-controls {
-      grid-template-columns: minmax(110px, 1fr) auto;
-      gap: .75rem;
+      grid-template-columns: auto 1fr 1fr;
+      gap: 0.6rem;
     }
 
-    .mobile-remove-btn {
-      min-width: 98px;
-      height: 44px;
-      padding: 0 .85rem;
+    .mobile-qty-label-inline {
+      font-size: .75rem;
     }
 
     .cart-qty-input {
@@ -524,9 +544,10 @@
               {% endif %}
 
               <div class="mobile-cart-controls">
+                <div class="mobile-qty-label-inline">Qty</div>
+
                 <form method="post" action="{% url 'store:cart_set_qty' %}" class="mobile-qty-form">
                   {% csrf_token %}
-                  <div class="mobile-meta-label">Qty</div>
                   <input type="hidden" name="cart_key" value="{{ i.cart_key }}">
                   <input
                     type="number"
@@ -541,7 +562,6 @@
 
                 <form method="post" action="{% url 'store:cart_remove' %}" class="mobile-remove-form">
                   {% csrf_token %}
-                  <div class="mobile-meta-label">&nbsp;</div>
                   <input type="hidden" name="cart_key" value="{{ i.cart_key }}">
                   <button type="submit" class="btn btn-outline-danger mobile-remove-btn">
                     Remove
