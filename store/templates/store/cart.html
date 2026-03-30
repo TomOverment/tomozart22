@@ -83,7 +83,6 @@
   .cart-mobile-thumb {
     object-fit: cover;
     flex-shrink: 0;
-    border: 1px solid rgba(0,0,0,.06);
     background: #f3f3f3;
     transition:
       transform 0.22s ease,
@@ -94,13 +93,16 @@
     width: 138px;
     height: 138px;
     border-radius: 0;
+    border: 1px solid rgba(0,0,0,.08);
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
   }
 
   .cart-mobile-thumb {
-    width: 108px;
-    height: 108px;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
     border-radius: 0;
+    border: 1px solid rgba(0,0,0,.12);
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
   }
 
@@ -203,35 +205,46 @@
   }
 
   .mobile-cart-card {
-    padding: 1rem 1rem 1.1rem;
-  }
-
-  .mobile-cart-top {
-    display: grid;
-    grid-template-columns: 108px 1fr;
-    gap: 1rem;
-    align-items: start;
-    margin-bottom: 1rem;
-  }
-
-  .mobile-cart-head {
-    min-width: 0;
-    padding-top: .1rem;
+    padding: 1rem;
   }
 
   .cart-mobile-title {
     font-weight: 500;
     line-height: 1.2;
-    margin-bottom: .3rem;
+    margin-bottom: .85rem;
     font-size: 1.35rem;
+  }
+
+  .mobile-cart-image-wrap {
+    width: 90%;
+    margin: 0 auto 1rem;
+  }
+
+  .mobile-cart-meta-inline {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .mobile-cart-category {
+    color: rgba(0,0,0,.62);
+    font-size: .98rem;
+    margin: 0;
+  }
+
+  .mobile-price-line {
+    margin: 0;
+    white-space: nowrap;
   }
 
   .mobile-cart-controls {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(110px, 1fr) auto;
     gap: .85rem;
     align-items: end;
-    margin-top: 1rem;
   }
 
   .mobile-qty-form,
@@ -289,21 +302,22 @@
   }
 
   @media (max-width: 575.98px) {
-    .cart-mobile-thumb {
-      width: 96px;
-      height: 96px;
-    }
-
     .cart-mobile-title {
-      font-size: 1.12rem;
+      font-size: 1.15rem;
     }
 
-    .mobile-cart-top {
-      grid-template-columns: 96px 1fr;
+    .mobile-cart-image-wrap {
+      width: 90%;
+    }
+
+    .mobile-cart-meta-inline {
+      flex-direction: row;
+      align-items: baseline;
     }
 
     .mobile-cart-controls {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(110px, 1fr) auto;
+      gap: .75rem;
     }
 
     .mobile-remove-btn {
@@ -473,7 +487,9 @@
           <div class="col-12">
             <div class="cart-item-card mobile-cart-card">
 
-              <div class="mobile-cart-top">
+              <div class="cart-mobile-title">{{ i.product.name }}</div>
+
+              <div class="mobile-cart-image-wrap">
                 <a href="{% url 'store:product_detail' i.product.id %}?next=cart" class="mobile-cart-thumb-link">
                   {% if i.product.image %}
                     <img
@@ -489,23 +505,23 @@
                     >
                   {% endif %}
                 </a>
+              </div>
 
-                <div class="mobile-cart-head">
-                  <div class="cart-mobile-title">{{ i.product.name }}</div>
-
+              <div class="mobile-cart-meta-inline">
+                <div>
                   {% if i.product.category %}
-                    <div class="cart-item-meta">{{ i.product.category }}</div>
+                    <span class="mobile-cart-category">{{ i.product.category }}</span>
                   {% endif %}
+                </div>
 
-                  {% if i.size %}
-                    <div class="mobile-option-meta">{{ i.size.display_name }}</div>
-                  {% endif %}
+                <div class="mobile-price-line">
+                  £{{ i.unit_price }}<span class="vat-note">inc VAT</span>
                 </div>
               </div>
 
-              <div class="mobile-price-line">
-                Price £{{ i.unit_price }}<span class="vat-note">inc VAT</span>
-              </div>
+              {% if i.size %}
+                <div class="mobile-option-meta">{{ i.size.display_name }}</div>
+              {% endif %}
 
               <div class="mobile-cart-controls">
                 <form method="post" action="{% url 'store:cart_set_qty' %}" class="mobile-qty-form">
