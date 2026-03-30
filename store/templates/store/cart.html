@@ -5,53 +5,28 @@
 
 {% block content %}
 <style>
-  .cart-shell {
-    background: transparent;
-  }
-
-  .cart-header-row {
+  .cart-page-header {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 52px;
-    margin-bottom: 2rem;
   }
 
-  .cart-header-row .page-title {
-    margin: 0;
-    text-align: center;
-  }
-
-  .cart-back-btn {
+  .cart-back-btn-desktop {
     position: absolute;
-    right: 0;
+    left: 0;
     top: 50%;
     transform: translateY(-50%);
   }
 
-  .cart-table-wrap,
+  .cart-card,
   .cart-summary-card,
   .cart-item-card {
-    background: rgba(255, 255, 255, 0.88);
-    border-radius: 24px;
-    box-shadow: 10px 10px 24px rgba(0,0,0,.18);
-    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 0;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.92);
   }
 
-  .cart-table-wrap {
+  .cart-card {
     padding: 1.4rem 1.5rem;
-  }
-
-  .cart-summary-wrap {
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .cart-summary-card {
-    min-width: 300px;
-    max-width: 420px;
-    width: 100%;
   }
 
   .cart-summary-sticky {
@@ -110,26 +85,29 @@
     flex-shrink: 0;
     border: 1px solid rgba(0,0,0,.06);
     background: #f3f3f3;
-    box-shadow: 0 4px 10px rgba(0,0,0,.15);
-    transition: transform .18s ease, box-shadow .18s ease;
+    transition:
+      transform 0.22s ease,
+      box-shadow 0.22s ease;
   }
 
   .cart-thumb {
     width: 138px;
     height: 138px;
-    border-radius: 16px;
+    border-radius: 0;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
   }
 
   .cart-mobile-thumb {
     width: 108px;
     height: 108px;
-    border-radius: 14px;
+    border-radius: 0;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
   }
 
   .cart-thumb-link:hover .cart-thumb,
   .mobile-cart-thumb-link:hover .cart-mobile-thumb {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 22px rgba(0,0,0,.22);
+    transform: translateY(-4px) scale(1.015);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.22);
   }
 
   .cart-segment-main {
@@ -148,33 +126,35 @@
   }
 
   .cart-item-title {
-    font-weight: 700;
-    font-size: 1.55rem;
-    line-height: 1.15;
+    font-weight: 500;
+    font-size: 1.75rem;
+    line-height: 1.12;
     margin: 0 0 .45rem 0;
   }
 
   .cart-item-meta {
     color: rgba(0,0,0,.62);
-    font-size: .98rem;
+    font-size: 1rem;
     margin: 0 0 .28rem 0;
   }
 
   .cart-option-meta,
   .mobile-option-meta {
     color: rgba(0,0,0,.68);
-    font-size: .96rem;
+    font-size: .98rem;
     margin: 0 0 .55rem 0;
   }
 
-  .cart-price-line {
-    font-size: 1.08rem;
-    font-weight: 500;
-    color: #111;
+  .cart-price-line,
+  .mobile-price-line {
+    font-size: 1.02rem;
+    color: rgba(0, 0, 0, 0.82);
     margin: 0;
+    font-weight: 500;
   }
 
-  .cart-price-line .vat-note {
+  .cart-price-line .vat-note,
+  .mobile-price-line .vat-note {
     font-size: .9rem;
     font-weight: 400;
     color: rgba(0,0,0,.62);
@@ -200,7 +180,7 @@
 
   .cart-control-height {
     height: 44px;
-    border-radius: 12px;
+    border-radius: 8px;
   }
 
   .cart-qty-input {
@@ -215,15 +195,11 @@
     width: 110px;
     min-width: 110px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: 8px;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .cart-item-card {
-    padding: 1rem;
   }
 
   .mobile-cart-card {
@@ -244,24 +220,10 @@
   }
 
   .cart-mobile-title {
-    font-weight: 700;
+    font-weight: 500;
     line-height: 1.2;
     margin-bottom: .3rem;
-    font-size: 1.28rem;
-  }
-
-  .mobile-price-line {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #111;
-    margin-bottom: 1rem;
-  }
-
-  .mobile-price-line .vat-note {
-    font-size: .88rem;
-    font-weight: 400;
-    color: rgba(0,0,0,.62);
-    margin-left: .25rem;
+    font-size: 1.35rem;
   }
 
   .mobile-cart-controls {
@@ -269,6 +231,7 @@
     grid-template-columns: 1fr auto;
     gap: .85rem;
     align-items: end;
+    margin-top: 1rem;
   }
 
   .mobile-qty-form,
@@ -280,7 +243,7 @@
   .mobile-remove-btn {
     min-width: 110px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: 8px;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -289,29 +252,13 @@
   }
 
   @media (max-width: 991.98px) {
-    .cart-summary-wrap {
-      justify-content: stretch;
-    }
-
-    .cart-summary-card {
-      min-width: 100%;
-      max-width: none;
-    }
-
     .cart-summary-sticky {
       position: static;
       top: auto;
     }
 
-    .cart-header-row {
-      flex-direction: column;
-      gap: 1rem;
-      min-height: auto;
-    }
-
-    .cart-back-btn {
-      position: static;
-      transform: none;
+    .cart-back-btn-desktop {
+      display: none !important;
     }
   }
 
@@ -326,7 +273,7 @@
     }
 
     .cart-item-title {
-      font-size: 1.35rem;
+      font-size: 1.45rem;
     }
 
     .cart-desktop-row {
@@ -348,7 +295,7 @@
     }
 
     .cart-mobile-title {
-      font-size: 1.1rem;
+      font-size: 1.12rem;
     }
 
     .mobile-cart-top {
@@ -372,12 +319,25 @@
   }
 </style>
 
-<div class="container py-4 py-md-5 cart-shell">
+<div class="container py-4 py-md-5">
 
-  <div class="cart-header-row">
-    <h2 class="page-title mb-2">Cart</h2>
-    <a href="{% url 'store:shop' %}" class="btn btn-outline-dark cart-back-btn">
-      Shop
+  <div class="cart-page-header text-center mb-4">
+    <a href="{% url 'store:shop' %}"
+       class="btn btn-outline-dark btn-sm cart-back-btn-desktop">
+      ← Back to Shop
+    </a>
+
+    <h1 class="mb-3">Cart</h1>
+    <p class="lead text-muted mb-0">
+      Review your selected prints before checkout.
+    </p>
+  </div>
+
+  <hr class="mb-5">
+
+  <div class="d-md-none mb-3">
+    <a href="{% url 'store:shop' %}" class="btn btn-outline-dark btn-sm">
+      ← Back to Shop
     </a>
   </div>
 
@@ -387,7 +347,7 @@
     <div class="d-none d-lg-block">
       <div class="row g-4 align-items-start">
         <div class="col-lg-8">
-          <div class="cart-table-wrap">
+          <div class="cart-card">
             <div class="cart-segment-list">
               {% for i in items %}
                 <div class="cart-segment">
@@ -419,7 +379,7 @@
                         >
                           <img
                             src="{% static 'images/placeholder.png' %}"
-                            alt="wish I was here"
+                            alt="No image"
                             class="cart-thumb"
                           >
                         </a>
@@ -578,7 +538,7 @@
         {% endfor %}
       </div>
 
-      <div class="cart-summary-wrap mt-4">
+      <div class="mt-4">
         <div class="card cart-summary-card border-0">
           <div class="card-body p-4">
             <div class="cart-summary-row">
